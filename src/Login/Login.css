@@ -1,10 +1,6 @@
 /* src/Login.css */
 body {
     background-color: #1A1A1A;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     margin: 0;
   }
   
@@ -12,19 +8,26 @@ body {
     width: 100%;
     max-width: 400px;
     padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     border: 1px solid #ccc;
+    box-shadow: 0px 0px 10px white;
     border-radius: 8px;
     background-color: #282828;
-    box-shadow: 0 0 10px 0 white;
-    
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
   }
   
   .login-container img {
-    display: grid;
+ 
     width: 100px;
     height: 100px;
     margin-bottom: 20px;
-    margin-left: 110px;
+   
     
   }
   
@@ -51,9 +54,10 @@ body {
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    margin-top: 10px;
     font-size: 16px;
     width: 95%;
-    background-color: #6e6e6e;
+    background-color: #4d4d4d;
     color: white;
   }
   
