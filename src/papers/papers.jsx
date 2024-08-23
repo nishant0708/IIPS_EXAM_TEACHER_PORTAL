@@ -5,56 +5,57 @@ function Papers() {
   const [exams] = useState([
     {
       className: "MCA 7th Sem",
-      subjectName: "computer architecture",
+      subjectName: "computer architecture(ic-1032)",
       duration: "3 hours",
       maxMarks: 60,
+       scheduledOn: "30/12/24 (1:30 AM)"
     },
     {
-      className: "Mtech(it) 5th sem",
-      subjectName: "jawa(ic-3575875)",
+      className: "Mtech(IT) 5th sem",
+      subjectName: "java(ic-3575875)",
       duration: "3 hours",
       maxMarks: 60,
+       scheduledOn: "30/12/24 (1:30 AM)"
     },
     {
-      className: "Mtech(it) 3rd sem",
-      subjectName: "cpp",
+      className: "Mtech(IT) 3rd sem",
+      subjectName: "cpp(ic-12324)",
       duration: "3 hours",
       maxMarks: 60,
+       scheduledOn: "30/12/24 (1:30 AM)"
     },
   ]);
 
   const handleCreateNew = () => {
-    alert("Create new exam item clicked!");
+    alert("create newww paper");
   };
 
   return (
     <div className="exam-list-container">
       <div className="header">
-        <h2>Exam List</h2>
+        <h2>Previous Papers:</h2>
         <button className="create-new-button" onClick={handleCreateNew}>
           Create New
         </button>
       </div>
-      <table className="exam-table">
-        <thead>
-          <tr>
-            <th>Class Name</th>
-            <th>Subject Name</th>
-            <th>Duration</th>
-            <th>Max Marks</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div className="exam-table">
+
           {exams.map((exam, index) => (
-            <tr key={index}>
-              <td>{exam.className}</td>
-              <td>{exam.subjectName}</td>
-              <td>{exam.duration}</td>
-              <td>{exam.maxMarks}</td>
-            </tr>
+            <div key={index}>
+              <div className="scheduled">
+            Scheduled on: {exam.scheduledOn}
+          </div>
+          <div className="table-data">
+             <div className="classhead">{exam.className}</div>
+             <div className="subname">{exam.subjectName}</div>
+              <span>Duration  :  {exam.duration}</span>
+
+              <span>Marks  :  {exam.maxMarks}</span>
+              </div>
+            </div>
           ))}
-        </tbody>
-      </table>
+    
+      </div>
     </div>
   );
 }
