@@ -69,3 +69,44 @@
 {
     margin-right: 40px;
 }
+.menu
+{
+    display: none;
+}
+.menu-button
+{
+    background: transparent;
+    border: none;
+}
+@media(max-width:720px)
+{
+    .logout
+    {
+        width:75px;
+        font-size: medium;
+    }
+    .navbar
+    {
+        font-size: medium;
+        justify-content: center;
+    }
+    .papers
+    {
+        width:75px;
+        font-size:medium;
+        margin-left:10px;
+    }
+    .left-margin
+    {
+        margin-left:20px;
+    }
+    .right-margin
+    {
+        margin-right: 20px;
+        margin-left:10px;
+    }
+    .contents
+    {
+        gap:10px;
+    }
+}

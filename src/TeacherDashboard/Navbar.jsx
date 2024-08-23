@@ -1,6 +1,7 @@
 import React from "react";
 import "./TeacherDashboard.css";
 
+
 const Navbar=()=>
 {
     return(
@@ -18,7 +19,7 @@ const Navbar=()=>
                     Ready for Evaluation
                 </div>
             </div>
-            <div className="contents right-margin">
+            <div className="right-margin">
                 <button className="logout">Logout</button>
             </div>
         </div>
