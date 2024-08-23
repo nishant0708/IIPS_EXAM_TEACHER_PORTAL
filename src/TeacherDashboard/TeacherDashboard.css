@@ -10,7 +10,7 @@
     font-family: poppins_bold;
     src: url(../Assets/Poppins-Bold.ttf);
 }
-.navbar
+.navbar-tanishq
 {
     display: flex;
     justify-content: space-between;
@@ -25,13 +25,13 @@
 {
     border-radius: 50%;
 }
-.contents
+.contents-tanishq
 {
     display: flex;
     gap: 15px;
     align-items: center;
 }
-.papers
+.papers-tanishq
 {
     width: 100px;
     height: 40px;
@@ -44,7 +44,7 @@
     font-size: large;
     font-weight: 600;
 }
-.logout
+.logout-tanishq
 {
     width: 100px;
     height: 40px;
@@ -57,55 +57,46 @@
     font-weight: 600;
     color: white;
 }
-.logout:hover
+.logout-tanishq:hover
 {
     background-color: red;
 }
-.left-margin
+.left-margin-tanishq
 {
     margin-left: 40px;
 }
-.right-margin
+.right-margin-tanishq
 {
     margin-right: 40px;
 }
-.menu
-{
-    display: none;
-}
-.menu-button
-{
-    background: transparent;
-    border: none;
-}
 @media(max-width:720px)
 {
-    .logout
+    .logout-tanishq
     {
         width:75px;
         font-size: medium;
     }
-    .navbar
+    .navbar-tanishq
     {
         font-size: medium;
         justify-content: center;
     }
-    .papers
+    .papers-tanishq
     {
         width:75px;
         font-size:medium;
         margin-left:10px;
     }
-    .left-margin
+    .left-margin-tanishq
     {
         margin-left:20px;
     }
-    .right-margin
+    .right-margin-tanishq
     {
         margin-right: 20px;
         margin-left:10px;
     }
-    .contents
+    .contents-tanishq
     {
         gap:10px;
     }

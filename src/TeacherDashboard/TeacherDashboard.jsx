@@ -1,11 +1,10 @@
 import React from 'react';
-import Navbar from "./Navbar";
+// import Navbar from "./Navbar";
 
 const TeacherDashboard=()=>
 {
     return(
         <>
-        <Navbar />
         </>
     );
 }
