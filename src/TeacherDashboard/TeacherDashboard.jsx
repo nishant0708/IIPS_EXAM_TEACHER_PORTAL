@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+// import Navbar from "./Navbar";
 
-const TeacherDashboard = () => {
-  return (
-    <div>TeacherDashboard</div>
-  )
+const TeacherDashboard=()=>
+{
+    return(
+        <>
+        </>
+    );
 }
 
-export default TeacherDashboard
+export default TeacherDashboard;
