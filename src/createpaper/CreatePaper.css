@@ -1,0 +1,123 @@
+.create_paper_container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1A1A1A; /* Dark background color */
+  }
+  
+  .formContainer {
+    background-color: #282828; /* Dark color for the form container */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 350px; /* Adjust width as needed */
+  }
+  
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .inputGroup {
+    flex: 1;
+    margin-right: 10px; /* Adjust margin for spacing */
+  }
+  
+  .label {
+    margin-top: 10px;
+    width: 100%;
+    display: block;
+    color: #fff; /* White color for labels */
+    margin-bottom: 3px;
+  }
+  .enter_marks {
+    
+    width: 80%;
+    padding: 10px; /* Padding for input fields */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #282828; /* Dark color for input fields */
+    color: #fff; /* White text color for input fields */
+    font-size: 16px; /* Font size */
+  }
+  .enter_duration {
+    
+    width: 80%;
+    padding: 10px; /* Padding for input fields */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #282828; /* Dark color for input fields */
+    color: #fff; /* White text color for input fields */
+    font-size: 16px; /* Font size */
+  }
+  
+  .class_input,
+  .semester_input,
+  .enter_marks,
+  .enter_duration,
+  .enter_subject_code,
+  .enter_time,
+  .inputLarge {
+    width: 80%;
+    padding: 10px; /* Padding for input fields */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #282828; /* Dark color for input fields */
+    color: #fff; /* White text color for input fields */
+    font-size: 16px; /* Font size */
+  }
+  .enter_date {
+    width: 100%;
+    padding: 10px; /* Padding for input fields */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #282828; /* Dark color for input fields */
+    color: #fff; /* White text color for input fields */
+    font-size: 16px; /* Font size */
+  }
+  .enter_subject{
+    width: 100%;
+    padding: 10px; /* Padding for input fields */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #282828; /* Dark color for input fields */
+    color: #fff; /* White text color for input fields */
+    font-size: 16px; /* Font size */
+
+  }
+  
+  .enter_time {
+    width: calc(100% - 40px); /* Adjust width to fit icon */
+    padding-right: 40px; /* Space for icon */
+  }
+  
+  .inputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .icon {
+    position: absolute;
+    right: 10px;
+    color: #fff; /* White color for icons */
+    font-size: 20px; /* Icon size */
+  }
+  
+  .submitButtonContainer {
+    margin-top: 20px; /* Space above the submit button */
+  }
+  
+  .submitButton {
+    width: 100%;
+    padding: 10px; /* Padding for the button */
+    border-radius: 5px;
+    border: none;
+    background-color: #4CAF50; /* Green color for the button */
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
