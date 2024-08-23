@@ -1,13 +1,13 @@
 import React from 'react';
 import Navbar from '../Navbar/Navbar';
-// import Navbar from "./Navbar";
+import "./TeacherDashboard.css"
 
 const TeacherDashboard=()=>
 {
     return(
         <div>
             <Navbar/>
-          TeacherDashboard
+        <p>hello</p>
         </div>
     );
 }
