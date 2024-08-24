@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
-import logo from "../assets/iips_logo2.png";
+import logo from "../Assets/iips_logo2.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AlertModal from "../AlertModal/AlertModal";
