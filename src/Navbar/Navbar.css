@@ -1,91 +1,127 @@
-.navbar-tanishq
-{
+.navbar {
     display: flex;
     justify-content: space-between;
     width: 100%;
     color: white;
     background-color: #282828;
-    align-items:center ;
+    align-items: center;
     height: 75px;
     font-size: large;
+    box-shadow: none;
 }
-.pfp
-{
-    border-radius: 50%;
-}
-.contents-tanishq
-{
+
+.navbar-contents {
     display: flex;
     gap: 15px;
+}
+
+.navbar-left-margin {
+    margin-left: 40px;
+}
+
+.navbar-right-margin {
+    margin-right: 40px;
+}
+
+.pfp {
+    margin-top:-5px;
+    border-radius: 50%;
+}
+
+.navbar-links,
+.navbar-logout {
+    width: 100px;
+    height: 40px;
+    display: flex;
     align-items: center;
-}
-.papers-tanishq
-{
-    width: 100px;
-    height: 40px;
-    border-radius: 10px;
-    background-color: #4caf50;
-    border-color: #4caf50;
-    border-style: solid;
-    border-width: 2px;
-    color: #000000;
-    font-size: large;
-    font-weight: 600;
-}
-.logout-tanishq
-{
-    width: 100px;
-    height: 40px;
-    border-radius: 10px;
-    border-color: #1a1a1a;
-    border-style: solid;
-    border-width: 2px;
-    background-color: #1a1a1aa1;
+    justify-content: center;
     font-size: large;
     font-weight: 600;
     color: white;
+    margin-top:5px;
+    cursor: pointer;
 }
-.logout-tanishq:hover
+
+.navbar-ready
 {
+    width:200px;
+}
+
+.navbar-links {
+    
+}
+
+.navbar-links.active {
+    background-color: #4caf50;
+    border-radius: 10px;
+    border: 2px solid white;
+    color: #000000;
+}
+
+.navbar-logout {
+    margin-top: 10px;
+    background-color: #282828;
+}
+
+.navbar-logout:hover {
+    border-radius: 10px;
     background-color: red;
+    border: 2px solid #1a1a1a;
+    transition: all 1s;
 }
-.left-margin-tanishq
-{
-    margin-left: 40px;
+
+.navbar-menu {
+    display: none;
 }
-.right-margin-tanishq
-{
-    margin-right: 40px;
+
+.navbar-sidebar {
+    width: 100%;
+    position: relative;
+    transform: translate(100%);
+    background: #313030;
+    transition: all 1s;
+    padding: 12px 0 5px;
+    margin-top: 2px;
+    opacity: 0;
+    visibility: hidden;
 }
-@media(max-width:720px)
-{
-    .logout-tanishq
-    {
-        width:75px;
-        font-size: medium;
+
+@media (max-width: 720px) {
+    .navbar {
+        box-shadow: 4px 4px 5px white;
     }
-    .navbar-tanishq
-    {
-        font-size: medium;
-        justify-content: center;
+
+    .navbar-menu {
+        display: block;
     }
-    .papers-tanishq
-    {
-        width:75px;
-        font-size:medium;
-        margin-left:10px;
+
+    .navbar-displayed {
+        display: none;
     }
-    .left-margin-tanishq
-    {
-        margin-left:20px;
+
+    .navbar-logout-menu,
+    .navbar-links {
+        background-color: #313030;
+        width: 100%;
+        justify-content: left;
+        border: none;
+        border-radius: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.253);
+        margin-left: -15px;
     }
-    .right-margin-tanishq
+    .navbar-logout-menu
     {
-        margin-right: 20px;
-        margin-left:10px;
+        color: red;
     }
-    .contents-tanishq
+
+    .navbar-sidebar {
+        display: block;
+    }
+    .navbar-logout-menu:hover
     {
-        gap:10px;
+        border:none;
+        border-radius: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.253);
+        background: #313030;
     }
 }

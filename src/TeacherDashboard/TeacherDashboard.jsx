@@ -5,7 +5,7 @@ import "./TeacherDashboard.css"
 const TeacherDashboard=()=>
 {
     return(
-        <div>
+        <div style={{overflowX:"hidden"}}>
             <Navbar/>
         <p>hello</p>
         </div>
