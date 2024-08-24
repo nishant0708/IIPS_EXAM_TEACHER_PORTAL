@@ -96,8 +96,8 @@ function Login() {
             Email:
             <input
               type="email"
-              placeholder="Enter Your EmailId"
               value={email}
+              placeholder="Enter your Email"
               onChange={(e) => setEmail(e.target.value)}
               required
             />
