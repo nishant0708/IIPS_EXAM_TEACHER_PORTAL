@@ -1,13 +1,14 @@
-body {
-    background-color: #1a1a1a;
+.sign_up_Box_min{
     display: flex;
+    align-items: center;
+    justify-content: center;
+    padding : 20px ;
+}
+.Sign_up_Box {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.Sign_up_Box {
     width: 100%;
     max-width: 400px;
     padding: 20px;
@@ -19,12 +20,11 @@ body {
 }
 
 .Sign_up_Box img {
-    
     display: grid;
     height: 90px;
     width: 80px;
-    margin-bottom: 20px;
-    margin-left: 150px;
+    /* margin-bottom: 10px; */
+    
     
 }
 
@@ -48,7 +48,7 @@ body {
     border-radius: 4px;
     margin-top: 5px;
     /* margin-left: 20px; */
-    font-size: 12px;
+    font-size: 16px;
     width: 95%;
     background-color: #4d4d4d;
     color: white;
@@ -62,8 +62,8 @@ body {
     background-color: #4caf50;
     font-size: 16px;
     cursor: pointer;
-    margin-left: 10px;
-    width: 95%;
+    /* margin-left: 10px; */
+    width: 90%;
 }
 
 .Sign_up_Box button:hover {

@@ -1,10 +1,10 @@
 import React from "react";
 import "./Sign_up.css";
-import var1 from "../assets/iips_logo2.png";
+import var1 from "../Assets/iips_logo2.png";
 
 const SignUp = () => {
   return (
-    <div>
+    <div className="sign_up_Box_min">
       <div className="Sign_up_Box ">
         <img src={var1} alt="" />
         <h3>Teacher : Sign Up</h3>
