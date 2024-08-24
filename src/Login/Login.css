@@ -56,7 +56,7 @@ body {
     border-radius: 4px;
     margin-top: 10px;
     font-size: 16px;
-    width: 95%;
+    width: 92%;
     background-color: #4d4d4d;
     color: white;
   }
@@ -73,4 +73,10 @@ body {
   
   .login-container button:hover {
     background-color: #45a049;
+  }
+  @media (max-width:768px) {
+    .login-container{
+      width: 270px;
+    }
+    
   }

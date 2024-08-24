@@ -1,0 +1,84 @@
+.create_paper_container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    
+    background-color: #1a1a1a;
+  }
+  
+  .create_paper_form {
+    margin-top: 80px;
+    background-color: #282828;
+    padding: 30px;
+    border-radius: 10px;
+    width: 450px;
+    border: 1px solid #ffffff;
+    box-shadow: 0px 0px 10px white;
+  }
+  .create_paper_row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  
+  .create_paper_group {
+    width: 100%;
+    color: white;
+    margin-bottom: 15px;
+  }
+  
+  .create_paper_label {
+    color: #ddd;
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .create_paper_input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    color: white;
+    border: 0.5px solid #cccccc58;
+    background-color: #373535;
+  }
+  .create_paper_input::placeholder{
+    color: #ccc ;
+  }
+  .create_paper_duration_inputs {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .create_paper_duration_hours,
+  .create_paper_duration_minutes {
+    width: 45%;
+  }
+  
+  .create_paper_submit_btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .create_paper_time input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(100%); /* This changes the color to white */
+  }
+  .create_paper_submit_btn:hover {
+    background-color: #45a049;
+  }
+  @media (max-width:768px) {
+      .create_paper_form{
+        width: 270px;
+      }
+      .create_paper_label{
+        font-size: 12px;
+      }
+  }

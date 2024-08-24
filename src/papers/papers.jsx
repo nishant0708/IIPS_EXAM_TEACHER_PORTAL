@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import "./papers.css"; 
+import { useNavigate } from "react-router-dom";
 
 function Papers() {
+  const navigate=useNavigate();
   const [exams] = useState([
     {
       className: "MCA 7th Sem",
@@ -28,7 +30,7 @@ function Papers() {
   ]);
 
   const handleCreateNew = () => {
-    alert("create new paper");
+    navigate("/create-paper")
   };
 
   return (
