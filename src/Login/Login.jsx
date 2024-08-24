@@ -129,7 +129,9 @@ function Login() {
             </label>
           </div>
         )}
+      
         <button type="submit">{showOtp ? "Submit" : "Next"}</button>
+        <p className="signup_text_redirect" onClick={()=>{navigate("/sign_up")}}> Want to create Account? Signup. </p>
       </form>
       <AlertModal
         isOpen={modalIsOpen}

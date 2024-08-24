@@ -66,8 +66,23 @@
     font-size: 16px;
     cursor: pointer;
   }
+  .signup_text_redirect{
+    margin-top: 5px !important;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px 10px;
+    margin: 0px;
+    color: #45a049;
+    transition: 0.3s all;
+    cursor: pointer;
+
+  }
+  .signup_text_redirect:hover{
+    text-decoration: underline;
+  }
   
   .login-container button:hover {
+
     background-color: #45a049;
   }
   @media (max-width:768px) {
