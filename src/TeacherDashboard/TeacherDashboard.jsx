@@ -6,7 +6,7 @@ import Papers from '../papers/papers';
 const TeacherDashboard=()=>
 {
     return(
-        <div>
+        <div style={{overflowX:"hidden"}}>
             <Navbar/>
              <Papers/>
         </div>
