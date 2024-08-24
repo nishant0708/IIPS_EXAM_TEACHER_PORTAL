@@ -80,6 +80,7 @@
     margin-top: 2px;
     opacity: 0;
     visibility: hidden;
+    display: none;
 }
 
 @media (max-width: 720px) {
