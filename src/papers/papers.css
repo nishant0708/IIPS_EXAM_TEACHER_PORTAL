@@ -1,97 +1,113 @@
 .exam-list-container {
-    padding: 20px;
-    background-color: #1A1A1A;
-    border-radius: 8px;
-    /* width: 95%; */
-   
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .header h2 {
-    margin: 0;
-    color: white;
-  }
-  
-  .create-new-button {
-    padding: 10px 20px;
-    background-color: #404040;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .create-new-button:hover {
-    background-color: #656565;
-  }
-  
-  .exam-table {
-    margin-top: 50px;
-    width: 100%;
-    height: 300px;
-    margin-bottom: 20px;
-  }
+  padding: 20px;
+  background-color: #1A1A1A;
+  border-radius: 8px;
+}
 
-  .papers_table{
-    position: relative;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h2 {
+  margin: 0;
+  color: white;
+}
+
+.create-new-button {
+  padding: 10px 20px;
+  background-color: #404040;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.create-new-button:hover {
+  background-color: #656565;
+}
+
+.exam-table {
+  margin-top: 50px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.papers_table {
+  position: relative;
+  margin-bottom: 20px; /* Add space between items */
+}
+
+.table-data {
+  background-color: #333333;
+  margin-bottom: 10px;
+  transition: .3s ease-in-out;
+  z-index: 0;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  color: white;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  flex-direction: column;
+  border: none;
+  position: relative;
+  gap: 4px;
+}
+
+.classhead {
+  font-size: 24px;
+  font-weight: 900;
+  color: white;
+}
+
+.subname {
+  color: white;
+  font-size: 16px;
+}
+
+.scheduled {
+  color: #FF6206;
+  font-size: 14px;
+  position: absolute;
+  z-index: 1;
+  right: 20px;
+  top: 20px;
+}
+
+.exam-table tr:hover {
+  background-color: #333333;
+}
+
+.icon-button-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.plus-icon {
+  margin-right: 15px;
+  color: white;
+}
+
+/* Media Query for responsive design at 768px */
+@media screen and (max-width: 768px) {
+  .header {
+    align-items: flex-start;
   }
 
   .table-data {
-    background-color: #333333;
-    margin-bottom: 10px;
-    transition: .3s ease-in-out;
-    z-index: 0;
-    height: 120px;
-    display: flex;
-    justify-content: center;
-    padding: 20px 20px;
-    color: white;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    flex-direction: column;
-    border: none; 
-    position: relative;
-    gap: 4px;
-  }
-  
-  .classhead{
-    font-size: 24px;
-    font-weight: 900;
-    color: white;
+    padding: 15px;
   }
 
-  .subname{
-    color: white;
-    font-size: 16px;
-
-  }
   .scheduled {
-    color: #FF6206; /* Orange color for the scheduled date */
-    font-size: 14px;
-   position: absolute;
-   z-index: 1;
-   right: 20px;
-   top: 20px;
+    position: absolute;
+        left: 15px;
+        top: 0px;
+        padding: 2px;
   }
-  
-  .exam-table tr:hover {
-    background-color: #333333;
-  }
-
-  .icon-button-wrapper {
-    display: flex;
-    align-items: center; 
-  }
-  
-  .plus-icon {
-    margin-right: 15px; 
-    color: white;
-  }
-  
+}
