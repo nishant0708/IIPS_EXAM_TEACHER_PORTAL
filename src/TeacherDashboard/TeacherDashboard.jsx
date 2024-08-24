@@ -1,13 +1,14 @@
 import React from 'react';
 import Navbar from '../Navbar/Navbar';
-import "./TeacherDashboard.css"
+import Papers from '../papers/papers';
+// import Navbar from "./Navbar";
 
 const TeacherDashboard=()=>
 {
     return(
         <div style={{overflowX:"hidden"}}>
             <Navbar/>
-        <p>hello</p>
+             <Papers/>
         </div>
     );
 }
