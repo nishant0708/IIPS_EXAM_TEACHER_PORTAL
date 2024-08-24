@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding : 20px ;
+    min-height: 100vh;
 }
 .Sign_up_Box {
     display: flex;
@@ -62,10 +62,15 @@
     background-color: #4caf50;
     font-size: 16px;
     cursor: pointer;
-    /* margin-left: 10px; */
-    width: 90%;
+
+    width: 100%;
 }
 
 .Sign_up_Box button:hover {
     background-color: #45a049;
   }
+
+  /* verify passcode */
+  .verify_passcode_form{
+    width: 100%;
+}

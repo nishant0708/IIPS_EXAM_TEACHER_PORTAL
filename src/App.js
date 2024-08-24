@@ -4,6 +4,7 @@ import Login from './Login/Login'
 import TeacherDashboard from './TeacherDashboard/TeacherDashboard'
 import Createpaper from './Create_paper/Createpaper'
 import SignUp from './Sign_up/SignUp'
+import VerifyOtp from './Sign_up/VerifyOtp'
 
 
 
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/teacherDashboard" element={<TeacherDashboard/>} />
         <Route path="/create-paper" element={< Createpaper />} />
         <Route path="/sign_up" element = {<SignUp/>} />
+        <Route path="/verify_passcode" element = {<VerifyOtp/>} />
       </Routes>
     </Router>
   )

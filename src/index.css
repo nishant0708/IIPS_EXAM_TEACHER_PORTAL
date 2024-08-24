@@ -7,9 +7,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #1A1A1A !important;
   color: white !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: #4CAF50 #1c1c1c !important; /* Thumb color, track color */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+/* Custom scrollbar for the entire page */
+html, body {
+  scrollbar-width: thin;          /* Firefox */
+  scrollbar-color: #616161 #1c1c1c; /* Thumb color, Track color (Firefox) */
 }
