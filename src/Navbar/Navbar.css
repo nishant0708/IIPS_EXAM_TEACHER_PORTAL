@@ -47,10 +47,6 @@
     width:200px;
 }
 
-.navbar-links {
-    
-}
-
 .navbar-links.active {
     background-color: #4caf50;
     border-radius: 10px;
