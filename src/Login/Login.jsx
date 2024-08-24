@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
-import logo from "../Assets/iips_logo2.png";
+import logo from "../assets/iips_logo2.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AlertModal from "../AlertModal/AlertModal";
@@ -96,7 +96,6 @@ function Login() {
             Email:
             <input
               type="email"
-              placeholder="Enter Your EmailId"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
