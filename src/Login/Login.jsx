@@ -4,6 +4,8 @@ import logo from "../Assets/iips_logo2.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AlertModal from "../AlertModal/AlertModal";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -14,6 +16,7 @@ function Login() {
   const [modalMessage, setModalMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
@@ -96,6 +99,10 @@ function Login() {
     setModalIsOpen(false);
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="login-container">
       <img src={logo} alt="Logo" />
@@ -113,16 +120,19 @@ function Login() {
             />
           </label>
         </div>
-        <div>
+        <div className="password-input-container">
           <label>
             Password:
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Enter Your Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <span className="eye-icon" onClick={togglePasswordVisibility}>
+              <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+            </span>
           </label>
         </div>
         {showOtp && (
@@ -141,9 +151,11 @@ function Login() {
         )}
 
         <button type="submit" disabled={isLoading}>
-          {isLoading ? "Submiting..." : showOtp ? "Submit" : "Next"}
+          {isLoading ? "Submitting..." : showOtp ? "Submit" : "Next"}
         </button>
-        <p className="signup_text_redirect" onClick={() => navigate("/sign_up")}> Want to create Account? Signup. </p>
+        <p className="signup_text_redirect" onClick={() => navigate("/sign_up")}>
+          Want to create Account? Signup.
+        </p>
       </form>
       <AlertModal
         isOpen={modalIsOpen}

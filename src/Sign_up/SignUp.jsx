@@ -3,6 +3,8 @@ import "./Sign_up.css";
 import var1 from "../Assets/iips_logo2.png";
 import { useNavigate } from "react-router-dom";
 import AlertModal from "../AlertModal/AlertModal";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -19,12 +21,22 @@ const SignUp = () => {
   const [isErrorAlert, setIsErrorAlert] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state for signup button
   const [isFirstClick, setIsFirstClick] = useState(true); // Track if it is the first click
+  const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Confirm password visibility toggle
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const handleSignUp = async (e) => {
@@ -135,30 +147,36 @@ const SignUp = () => {
               />
             </label>
           </div>
-          <div>
+          <div className="password-input-container">
             <label>
               Password:
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Enter Your Password"
                 value={formData.password}
                 onChange={handleChange}
                 required
               />
+              <span className="eye-icon" onClick={togglePasswordVisibility}>
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+              </span>
             </label>
           </div>
-          <div>
+          <div className="password-input-container">
             <label>
               Confirm Password:
               <input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Confirm Your Password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
               />
+              <span className="eye-icon" onClick={toggleConfirmPasswordVisibility}>
+                <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
+              </span>
             </label>
           </div>
 
