@@ -13,6 +13,7 @@ function Login() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
@@ -35,6 +36,7 @@ function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setIsLoading(true); // Start loading
 
     axios
       .post("http://localhost:5000/teacher/login", { email, password })
@@ -49,22 +51,26 @@ function Login() {
         setModalMessage(error.response.data.error);
         setIsError(true);
         setModalIsOpen(true);
+      })
+      .finally(() => {
+        setIsLoading(false); // Stop loading
       });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+    setIsLoading(true); // Start loading
+
     axios
       .post("http://localhost:5000/teacher/verify-otp", { email, otp })
       .then((response) => {
         const { sessionId, message } = response.data;
-        
+
         // Set modal state first
         setModalMessage(message);
         setIsError(false);
         setModalIsOpen(true);
-  
+
         // Navigate after a short delay to ensure modal is shown
         setTimeout(() => {
           localStorage.setItem("sessionId", sessionId); // Store session ID in local storage
@@ -75,8 +81,12 @@ function Login() {
         setModalMessage(error.response.data.error);
         setIsError(true);
         setModalIsOpen(true);
+      })
+      .finally(() => {
+        setIsLoading(false); // Stop loading
       });
   };
+
   const handleLogout = () => {
     localStorage.removeItem("sessionId"); // Remove session ID from local storage
     navigate("/"); // Redirect back to login page
@@ -129,9 +139,11 @@ function Login() {
             </label>
           </div>
         )}
-      
-        <button type="submit">{showOtp ? "Submit" : "Next"}</button>
-        <p className="signup_text_redirect" onClick={()=>{navigate("/sign_up")}}> Want to create Account? Signup. </p>
+
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? "Submiting..." : showOtp ? "Submit" : "Next"}
+        </button>
+        <p className="signup_text_redirect" onClick={() => navigate("/sign_up")}> Want to create Account? Signup. </p>
       </form>
       <AlertModal
         isOpen={modalIsOpen}
