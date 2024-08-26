@@ -1,0 +1,127 @@
+.add_question_container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 10px white;
+    border-radius: 8px;
+    background-color: #282828;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.add_question_heading {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.add_question_label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.add_question_textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: white;
+    background-color: #404040;
+    resize: vertical;
+}
+
+.add_question_input,
+.add_question_select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: white;
+    background-color: #404040;
+}
+
+.add_question_button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.add_question_button:hover {
+    background-color: #45a049;
+}
+
+.add_question_row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.add_question_column {
+    flex: 50%;
+    padding-right: 10px;
+}
+
+.add_question_preview_image {
+    width: 100%; /* Ensure the image fits within the container */
+    height: auto; /* Maintain the aspect ratio */
+    border-radius: 4px;
+}
+
+.add_question_image_preview {
+    position: relative;
+    display: inline-block;
+    max-width: 100%; /* Ensure the container does not overflow */
+    max-height: 100%; /* Set a maximum height for the image */
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.add_question_remove_image_icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    color: white;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.add_question_dropbox {
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+    background-color: #404040;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.add_question_dropbox p {
+    margin: 0;
+}
+
+.add_question_cloudicon {
+    color: #45a049;
+    font-size: 48px;
+    font-weight: 400;
+}
