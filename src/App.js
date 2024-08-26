@@ -5,9 +5,10 @@ import TeacherDashboard from './TeacherDashboard/TeacherDashboard';
 import Createpaper from './Create_paper/Createpaper';
 import SignUp from './Sign_up/SignUp';
 import VerifyOtp from './Sign_up/VerifyOtp';
+import Forgot_Password from './Forgot_Password/Forgot_Password';
+import Reset_Password from './Reset_Password/Reset_Password';
 import axios from 'axios';
 import Question from './question/question';
-
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,7 +16,7 @@ const App = () => {
   const location = useLocation(); // Get the current location
 
   useEffect(() => {
-    const publicRoutes = ["/sign_up", "/verify_passcode"];
+    const publicRoutes = ["/sign_up", "/verify_passcode","/forgot_password","/reset_password"];
     const sessionId = localStorage.getItem("sessionId");
 
     // If the current route is public, skip the authentication check
@@ -51,12 +52,15 @@ const App = () => {
       <Route path="/" element={<Login />} />
       <Route path="/sign_up" element={<SignUp />} />
       <Route path="/verify_passcode" element={<VerifyOtp />} />
+      <Route path="/forgot_password" element={<Forgot_Password />} />
+      <Route path='/reset_password' element={<Reset_Password />} />
+
       {isAuthenticated && (
         // All protected routes should be placed here 
         <>
           <Route path="/teacherDashboard" element={<TeacherDashboard />} />
           <Route path="/create-paper" element={<Createpaper />} />
-          <Route path="/question" element={<Question />} />
+          <Route path="/add-question" element={<Question />} />
         </>
       )}
     </Routes>

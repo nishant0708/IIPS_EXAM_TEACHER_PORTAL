@@ -1,4 +1,4 @@
-.container {
+.add_question_container {
     width: 100%;
     max-width: 400px;
     padding: 20px;
@@ -10,23 +10,23 @@
     border-radius: 8px;
     background-color: #282828;
     position: absolute;
-    top:50%;
-    left:50%;
-    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
-  
-h2 {
+
+.add_question_heading {
     text-align: center;
     margin-bottom: 20px;
 }
-  
-label {
+
+.add_question_label {
     display: block;
     font-weight: bold;
     margin-top: 10px;
 }
-  
-textarea {
+
+.add_question_textarea {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
@@ -36,11 +36,11 @@ textarea {
     box-sizing: border-box;
     color: white;
     background-color: #404040;
-    resize: vertical; /* Allows the textarea to be resized vertically */
+    resize: vertical;
 }
-input[type="text"],
-input[type="number"],
-select {
+
+.add_question_input,
+.add_question_select {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
@@ -51,8 +51,8 @@ select {
     color: white;
     background-color: #404040;
 }
-  
-button {
+
+.add_question_button {
     display: block;
     width: 100%;
     padding: 10px;
@@ -63,34 +63,37 @@ button {
     cursor: pointer;
     margin-top: 10px;
 }
-  
-button:hover {
+
+.add_question_button:hover {
     background-color: #45a049;
 }
-  
-.row {
+
+.add_question_row {
     display: flex;
     justify-content: space-between;
 }
-  
-.column {
+
+.add_question_column {
     flex: 50%;
     padding-right: 10px;
 }
-  
-.preview-image {
-    max-width: 100%;
-    height: auto;
-    margin-top: 10px;
+
+.add_question_preview_image {
+    width: 100%; /* Ensure the image fits within the container */
+    height: auto; /* Maintain the aspect ratio */
     border-radius: 4px;
 }
 
-.image-preview {
+.add_question_image_preview {
     position: relative;
     display: inline-block;
+    max-width: 100%; /* Ensure the container does not overflow */
+    max-height: 100%; /* Set a maximum height for the image */
+    overflow: hidden;
+    border-radius: 4px;
 }
 
-.remove-image-icon {
+.add_question_remove_image_icon {
     position: absolute;
     top: 0;
     right: 0;
@@ -102,7 +105,7 @@ button:hover {
     font-size: 16px;
 }
 
-.dropbox {
+.add_question_dropbox {
     border: 2px dashed #ccc;
     border-radius: 4px;
     background-color: #404040;
@@ -111,15 +114,13 @@ button:hover {
     color: white;
     cursor: pointer;
     margin-top: 10px;
-    height: 50px;
-
 }
 
-.dropbox p {
+.add_question_dropbox p {
     margin: 0;
 }
 
-.question_cloudicon{
+.add_question_cloudicon {
     color: #45a049;
     font-size: 48px;
     font-weight: 400;
