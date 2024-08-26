@@ -80,6 +80,7 @@
   }
   .login_forgot_password
   {
+    text-align: right;
       margin-top: -15px !important;
   }
   

@@ -9,7 +9,7 @@ const ForgotPassword=()=>
         <>
         <div className="forgot-container">
             <img alt="Logo" src={Logo}/>
-            <h2>Teacher : Forgot Password</h2>
+            <h2> Forgot Your Password ?</h2>
             <form onSubmit={()=> navigate("/Login")}>
                 <label>Email:</label>
                 <input type="email" name="forgot_email" placeholder="Enter your Email"/>
