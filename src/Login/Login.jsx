@@ -149,7 +149,7 @@ function Login() {
             </label>
           </div>
         )}
-
+        <p className="login_forgot_password" onClick={() => navigate("/forgot_password")}>Forgot Password</p>
         <button type="submit" disabled={isLoading}>
           {isLoading ? "Submitting..." : showOtp ? "Submit" : "Next"}
         </button>
