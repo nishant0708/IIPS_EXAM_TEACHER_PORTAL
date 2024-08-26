@@ -3,6 +3,7 @@ import './question.css'; // Import the CSS file
 import { FaTimes } from 'react-icons/fa'; // Import the cross icon
 import { useDropzone } from 'react-dropzone'; // Import Dropzone
 import { IoCloudUploadOutline } from "react-icons/io5";
+import Navbar from '../Navbar/Navbar';
 
 const Question = () => {
   const [questionText, setQuestionText] = useState('');
@@ -34,6 +35,10 @@ const Question = () => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
+  
+    <>
+    <Navbar />
+    <div className='add_question_container_main'>
     <div className="add_question_container">
       <h2 className="add_question_heading">Add Question</h2>
 
@@ -74,9 +79,8 @@ const Question = () => {
             <option value="cpp">C++</option>
             <option value="java">Java</option>
             <option value="python">Python</option>
-            <option value="html">HTML</option>
-            <option value="css">CSS</option>
-            <option value="javascript">JavaScript</option>
+            <option value="sql">sql</option>
+           
           </select>
         </div>
         <div className="add_question_column">
@@ -113,6 +117,9 @@ const Question = () => {
       </div>
       <button onClick={handleAddQuestion} className="add_question_button">Add Question</button>
     </div>
+    
+    </div>
+    </>
   );
 };
 

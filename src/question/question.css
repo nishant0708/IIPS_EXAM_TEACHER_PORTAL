@@ -3,6 +3,9 @@
     max-width: 400px;
     padding: 20px;
     display: flex;
+    margin-top: 100px;
+    margin-bottom: 50px;
+
     justify-content: center;
     flex-direction: column;
     border: 1px solid #ccc;
@@ -13,6 +16,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+.add_question_container_main{
+    width: 100%;
+    min-height: 100vh;
+    padding: 30px 0px;
 }
 
 .add_question_heading {
