@@ -84,7 +84,6 @@
     .sign_up_Box_min {
         width: 100%;
         padding: 5px;
-      
     }
 
     .Sign_up_Box {
@@ -108,11 +107,12 @@
         padding: 8px;
     }
 }
+
 .password-input-container {
     position: relative;
-  }
-  
-  .eye-icon {
+}
+
+.eye-icon {
     position: absolute;
     right: 10px;
     top: 50%;
@@ -120,26 +120,8 @@
     cursor: pointer;
     font-size: 18px;
     color: #ccc;
-  }
-  
-  .eye-icon:hover {
+}
+
+.eye-icon:hover {
     color: #666;
-  }
-  .password-input-container {
-    position: relative;
-  }
-  
-  .eye-icon {
-    position: absolute;
-    right: 10px;
-    top: 55%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    font-size: 18px;
-    color: #ccc;
-  }
-  
-  .eye-icon:hover {
-    color: #666;
-  }
-  
+}

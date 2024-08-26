@@ -3,8 +3,7 @@ import "./Sign_up.css";
 import var1 from "../Assets/iips_logo2.png";
 import { useNavigate } from "react-router-dom";
 import AlertModal from "../AlertModal/AlertModal";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -15,14 +14,14 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
-  const [isWarningOpen, setIsWarningOpen] = useState(false); // Modal for OTP warning
-  const [isAlertOpen, setIsAlertOpen] = useState(false); // Modal for success/failure messages
+  const [isWarningOpen, setIsWarningOpen] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [isErrorAlert, setIsErrorAlert] = useState(false);
-  const [loading, setLoading] = useState(false); // Loading state for signup button
-  const [isFirstClick, setIsFirstClick] = useState(true); // Track if it is the first click
-  const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Confirm password visibility toggle
+  const [loading, setLoading] = useState(false);
+  const [isFirstClick, setIsFirstClick] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -32,17 +31,16 @@ const SignUp = () => {
   };
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    setShowPassword((prev) => !prev);
   };
 
   const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
+    setShowConfirmPassword((prev) => !prev);
   };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-
-    setLoading(true); // Set loading state
+    setLoading(true);
     try {
       const response = await fetch("http://localhost:5000/teacher/signup", {
         method: "POST",
@@ -63,7 +61,7 @@ const SignUp = () => {
         setAlertMessage("Your account has been created successfully.");
         setIsErrorAlert(false);
         setIsAlertOpen(true);
-        setTimeout(() => navigate("/verify_passcode"), 2000); // Redirect after showing success message
+        setTimeout(() => navigate("/verify_passcode"), 2000);
       } else {
         setAlertMessage(data.error || "Failed to sign up");
         setIsErrorAlert(true);
@@ -74,7 +72,7 @@ const SignUp = () => {
       setIsErrorAlert(true);
       setIsAlertOpen(true);
     } finally {
-      setLoading(false); // Remove loading state
+      setLoading(false);
     }
   };
 
@@ -85,26 +83,26 @@ const SignUp = () => {
       setAlertMessage("Passwords do not match!");
       setIsErrorAlert(true);
       setIsAlertOpen(true);
-      return; // Stop further execution
+      return;
     }
 
     if (isFirstClick) {
       setIsWarningOpen(true);
-      setIsFirstClick(false); // Disable modal for subsequent clicks
+      setIsFirstClick(false);
     } else {
-      handleSignUp(e); // Proceed with the signup process directly after the first click
+      handleSignUp(e);
     }
   };
 
   const handleWarningConfirm = () => {
     setIsWarningOpen(false);
-    handleSignUp(); // Proceed with sign-up after confirming the warning
+    handleSignUp();
   };
 
   return (
     <div className="sign_up_Box_min">
       <div className="Sign_up_Box">
-        <img src={var1} alt="" />
+        <img src={var1} alt="Logo" />
         <h3>Teacher : Sign Up</h3>
         <form onSubmit={handleFormSubmit}>
           <div>
@@ -158,9 +156,11 @@ const SignUp = () => {
                 onChange={handleChange}
                 required
               />
-              <span className="eye-icon" onClick={togglePasswordVisibility}>
-                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-              </span>
+              {showPassword ? (
+                <FaEye className="eye-icon" onClick={togglePasswordVisibility} />
+              ) : (
+                <FaEyeSlash className="eye-icon-slash" onClick={togglePasswordVisibility} />
+              )}
             </label>
           </div>
           <div className="password-input-container">
@@ -174,9 +174,11 @@ const SignUp = () => {
                 onChange={handleChange}
                 required
               />
-              <span className="eye-icon" onClick={toggleConfirmPasswordVisibility}>
-                <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
-              </span>
+              {showConfirmPassword ? (
+                <FaEye className="eye-icon" onClick={toggleConfirmPasswordVisibility} />
+              ) : (
+                <FaEyeSlash className="eye-icon-slash" onClick={toggleConfirmPasswordVisibility} />
+              )}
             </label>
           </div>
 
@@ -189,16 +191,14 @@ const SignUp = () => {
         </p>
       </div>
 
-      {/* Warning Modal for OTP */}
       <AlertModal
         isOpen={isWarningOpen}
         onClose={() => setIsWarningOpen(false)}
         message={`An OTP will be sent to Nishantkaushal0708@gmail.com. Please collect this mail, and after that, you need to verify the code using the "Already Have passcode?" option.`}
         iserror={false}
-        onConfirm={handleWarningConfirm} // Confirm OTP sending
+        onConfirm={handleWarningConfirm}
       />
 
-      {/* Alert Modal for success/error messages */}
       <AlertModal
         isOpen={isAlertOpen}
         onClose={() => setIsAlertOpen(false)}
