@@ -66,7 +66,7 @@ const Reset_Password=()=>
                     <FaEye className="eye-icon" onClick={()=>{toggleEye(1);}}/>
                     <FaEyeSlash className="eye-icon-slash" onClick={()=>{toggleEye(1);}}/>
                 </div>
-                <button>Change</button>
+                <button>Reset Password</button>
             </form>
         </div>
         </>
