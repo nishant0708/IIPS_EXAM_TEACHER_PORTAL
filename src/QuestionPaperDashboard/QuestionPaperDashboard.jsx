@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import image1 from "../Assets/icons8-menu.svg";
 import image2 from "../Assets/iips_logo2.png";
+import defaultImage from "../Assets/no-image-420x370-1.jpg";
 import Nothing from "../Assets/nothing.svg";
 const QuestionPaperDashboard=()=>
 {
@@ -55,17 +56,15 @@ const QuestionPaperDashboard=()=>
                         Total Marks: &nbsp;
                         {
                             questions.reduce((sum,question) => (sum + question.marks),0)
-                        }
+                        }/300
                     </h2>
                 </div>
                 <div className="question-table">
                     {questions.map((question, index) => (
                         <div className="questions-table" key={index}>
                             <div className="question-table-data">
-                                <div className="compiler-marks">
-                                    <div className="compiler">Compiler: {question.compiler}</div>
-                                    <div className="marks">Marks : {question.marks}</div>
-                                </div>
+                                <div className="compiler">Compiler: {question.compiler}</div>
+                                <div className="marks">Marks : {question.marks}</div>
                                 <div className="heading-description">
                                     <h3>{question.heading}</h3>
                                     <div className="description">{question.description}</div>
@@ -78,16 +77,25 @@ const QuestionPaperDashboard=()=>
                                             <img src={question.image} alt="question image"/>
                                         </div>
                                         </>
-                                    ) : (<></>)
+                                    ) : 
+                                    (
+                                    <>
+                                        <div className="question-image">
+                                            <img src={defaultImage} alt="question image"/>
+                                        </div>
+                                    </>
+                                    )
                                 }
                             </div>
                         </div>
                     ))}
+                    <center>
+                        <button className="add-question-button2" onClick={()=> navigate("/add-question")}>
+                            <FaPlus />
+                            <p>Add Question</p>
+                        </button>
+                    </center>
                 </div>
-                <button className="add-question-button add-margin" onClick={()=> navigate("/add-question")}>
-                    <FaPlus />
-                    <p>Add Question</p>
-                </button>
                 </>
             )
             : 
