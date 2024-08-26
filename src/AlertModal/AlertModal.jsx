@@ -11,11 +11,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import './AlertModal.css'; 
+import cross from "../Assets/cross-mark.svg";
+import tick from "../Assets/accept-check-good-mark-ok-tick.svg";
 
 
 
 const AlertModal = ({ isOpen, onClose, message,iserror }) => {
-    var image = iserror?'https://www.svgrepo.com/show/401368/cross-mark.svg':"https://www.svgrepo.com/show/384403/accept-check-good-mark-ok-tick.svg" 
+    var image = iserror? cross : tick 
   return (
     <Modal
       isOpen={isOpen}
