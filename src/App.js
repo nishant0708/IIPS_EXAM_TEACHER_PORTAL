@@ -1,21 +1,72 @@
-import React from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import Login from './Login/Login'
-import TeacherDashboard from './TeacherDashboard/TeacherDashboard'
-import Papers from './papers/papers'
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+import Login from './Login/Login';
+import TeacherDashboard from './TeacherDashboard/TeacherDashboard';
+import Createpaper from './Create_paper/Createpaper';
+import SignUp from './Sign_up/SignUp';
+import VerifyOtp from './Sign_up/VerifyOtp';
+import axios from 'axios';
+import Question from './question/question';
 
 
 const App = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/teacherDashboard" element={<TeacherDashboard/>} />
-        <Route path="/papers" element={< Papers />} />
-       
-      </Routes>
-    </Router>
-  )
-}
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation(); // Get the current location
 
-export default App
+  useEffect(() => {
+    const publicRoutes = ["/sign_up", "/verify_passcode"];
+    const sessionId = localStorage.getItem("sessionId");
+
+    // If the current route is public, skip the authentication check
+    if (publicRoutes.includes(location.pathname)) {
+      return;
+    }
+
+    if (sessionId) {
+      axios
+        .post("http://localhost:5000/teacher/verify-session", { sessionId })
+        .then((response) => {
+          if (response.data.valid) {
+            setIsAuthenticated(true);
+          } else {
+            localStorage.removeItem("sessionId");
+            setIsAuthenticated(false);
+            navigate("/"); 
+          }
+        })
+        .catch(() => {
+          localStorage.removeItem("sessionId");
+          setIsAuthenticated(false);
+          navigate("/"); 
+        });
+    } else {
+      setIsAuthenticated(false);
+      navigate("/"); 
+    }
+  }, [navigate, location.pathname]);
+
+  return (
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/sign_up" element={<SignUp />} />
+      <Route path="/verify_passcode" element={<VerifyOtp />} />
+      {isAuthenticated && (
+        // All protected routes should be placed here 
+        <>
+          <Route path="/teacherDashboard" element={<TeacherDashboard />} />
+          <Route path="/create-paper" element={<Createpaper />} />
+          <Route path="/question" element={<Question />} />
+        </>
+      )}
+    </Routes>
+  );
+};
+
+const WrappedApp = () => (
+  <Router>
+    <App />
+  </Router>
+);
+
+export default WrappedApp;

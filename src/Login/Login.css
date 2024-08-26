@@ -1,8 +1,4 @@
-/* src/Login.css */
-body {
-    background-color: #1A1A1A;
-    margin: 0;
-  }
+
   
   .login-container {
     width: 100%;
@@ -23,12 +19,9 @@ body {
   }
   
   .login-container img {
- 
     width: 100px;
     height: 100px;
     margin-bottom: 20px;
-   
-    
   }
   
   .login-container h2 {
@@ -56,7 +49,7 @@ body {
     border-radius: 4px;
     margin-top: 10px;
     font-size: 16px;
-    width: 95%;
+    width: 92%;
     background-color: #4d4d4d;
     color: white;
   }
@@ -70,7 +63,28 @@ body {
     font-size: 16px;
     cursor: pointer;
   }
+  .signup_text_redirect{
+    margin-top: 5px !important;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px 10px;
+    margin: 0px;
+    color: #45a049;
+    transition: 0.3s all;
+    cursor: pointer;
+
+  }
+  .signup_text_redirect:hover{
+    text-decoration: underline;
+  }
   
   .login-container button:hover {
+
     background-color: #45a049;
+  }
+  @media (max-width:768px) {
+    .login-container{
+      width: 270px;
+    }
+    
   }

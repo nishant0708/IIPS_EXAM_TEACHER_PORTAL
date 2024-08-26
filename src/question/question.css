@@ -1,0 +1,126 @@
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 10px white;
+    border-radius: 8px;
+    background-color: #282828;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+  
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+  
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+}
+  
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: white;
+    background-color: #404040;
+    resize: vertical; /* Allows the textarea to be resized vertically */
+}
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: white;
+    background-color: #404040;
+}
+  
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+  
+button:hover {
+    background-color: #45a049;
+}
+  
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+  
+.column {
+    flex: 50%;
+    padding-right: 10px;
+}
+  
+.preview-image {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+.image-preview {
+    position: relative;
+    display: inline-block;
+}
+
+.remove-image-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    color: white;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.dropbox {
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+    background-color: #404040;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+    height: 50px;
+
+}
+
+.dropbox p {
+    margin: 0;
+}
+
+.question_cloudicon{
+    color: #45a049;
+    font-size: 48px;
+    font-weight: 400;
+}

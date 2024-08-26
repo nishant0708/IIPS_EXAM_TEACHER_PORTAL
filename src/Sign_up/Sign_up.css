@@ -1,0 +1,76 @@
+.sign_up_Box_min{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+.Sign_up_Box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    border : 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #282828 ;
+    box-shadow: 0px 0px 10px white;
+
+}
+
+.Sign_up_Box img {
+    display: grid;
+    height: 90px;
+    width: 80px;
+    /* margin-bottom: 10px; */
+    
+    
+}
+
+.Sign_up_Box h3 {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #fffcfc;
+  }
+
+.Sign_up_Box label{
+    margin-bottom: 8px;
+    color: #fffcfc;
+}
+
+.Sign_up_Box input {
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+    /* margin-left: 20px; */
+    font-size: 16px;
+    width: 95%;
+    background-color: #4d4d4d;
+    color: white;
+}
+
+.Sign_up_Box button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    background-color: #4caf50;
+    font-size: 16px;
+    cursor: pointer;
+
+    width: 100%;
+}
+
+.Sign_up_Box button:hover {
+    background-color: #45a049;
+  }
+
+  /* verify passcode */
+  .verify_passcode_form{
+    width: 100%;
+}
