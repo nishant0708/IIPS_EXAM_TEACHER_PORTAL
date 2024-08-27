@@ -87,7 +87,7 @@ function Login() {
     axios
       .post("http://localhost:5000/teacher/verify-otp", { email, otp })
       .then((response) => {
-        const { sessionId, message } = response.data;
+        const { sessionId, message, teacherId, name, email, mobileNumber } = response.data;
 
         // Set modal state first
         setModalMessage(message);
@@ -96,7 +96,13 @@ function Login() {
 
         // Navigate after a short delay to ensure modal is shown
         setTimeout(() => {
-          localStorage.setItem("sessionId", sessionId); // Store session ID in local storage
+          // Store session ID and teacher's details in local storage
+          localStorage.setItem("sessionId", sessionId);
+          localStorage.setItem("teacherId", teacherId);
+          localStorage.setItem("name", name);
+          localStorage.setItem("email", email);
+          localStorage.setItem("mobileNumber", mobileNumber);
+
           navigate("/teacherDashboard"); // Navigate to dashboard after successful login
         }, 1000); // Adjust delay as needed
       })

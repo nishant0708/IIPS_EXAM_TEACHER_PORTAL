@@ -1,34 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import "./papers.css"; 
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Papers() {
   const navigate = useNavigate();
-  const [exams] = useState([ {
-    className: "MCA 7th Sem",
-    subjectName: "computer architecture(ic-1032)",
-    duration: "3 hours",
-    maxMarks: 60,
-     scheduledOn: "30/12/24 (1:30 AM)"
-  },
-  {
-    className: "Mtech(IT) 5th sem",
-    subjectName: "java(ic-3575875)",
-    duration: "3 hours",
-    maxMarks: 60,
-     scheduledOn: "30/12/24 (1:30 AM)"
-  },
-  {
-    className: "Mtech(IT) 3rd sem",
-    subjectName: "cpp(ic-12324)",
-    duration: "3 hours",
-    maxMarks: 60,
-     scheduledOn: "30/12/24 (1:30 AM)"
-  },]);
+  const [exams, setExams] = useState([]); 
+  const teacherId = localStorage.getItem('teacherId'); // Assuming teacherId is stored in localStorage
+
+  useEffect(() => {
+    const fetchPapers = async () => {
+      try {
+        const response = await axios.post(`http://localhost:5000/paper/getPapersByTeacherId`,{ teacherId });
+        setExams(response.data);
+      } catch (error) {
+        console.error('Error fetching papers:', error);
+      }
+    };
+
+    fetchPapers();
+  }, [teacherId]);
 
   const handleCreateNew = () => {
     navigate("/create-paper");
+  };
+
+  const handleCardClick = (paperId) => {
+    navigate(`/questionPaperDashboard/${paperId}`);
   };
 
   return (
@@ -45,13 +44,17 @@ function Papers() {
           </div>
           <div className="exam-table">
             {exams.map((exam, index) => (
-              <div className="papers_table" key={index}>
-                <div className="scheduled">Scheduled on: {exam.scheduledOn}</div>
+              <div 
+                className="papers_table" 
+                key={index} 
+                onClick={() => handleCardClick(exam._id)}
+              >
+                <div className="scheduled">Scheduled on: {new Date(exam.date).toLocaleString()}</div>
                 <div className="table-data">
-                  <div className="classhead">{exam.className}</div>
-                  <div className="subname">{exam.subjectName}</div>
-                  <div>Duration : {exam.duration}</div>
-                  <div>Marks : {exam.maxMarks}</div>
+                  <div className="classhead">{exam.className} {exam.semester}</div>
+                  <div className="subname">{exam.subject} ({exam.subjectCode})</div>
+                  <div>Duration : {exam.duration.hours} hours {exam.duration.minutes} mins</div>
+                  <div>Marks : {exam.marks}</div>
                 </div>
               </div>
             ))}
