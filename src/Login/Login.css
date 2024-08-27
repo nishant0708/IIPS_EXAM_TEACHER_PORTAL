@@ -94,3 +94,17 @@
     }
     
   }
+  .eye-container
+  {
+      position: relative;
+  }
+  .eyes
+  {
+    position: absolute;
+    right: 10px;
+    top:22px;
+  }
+  .eyes:nth-child(2)
+  {
+      display: none;
+  }

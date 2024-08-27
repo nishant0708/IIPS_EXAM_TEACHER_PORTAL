@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./Sign_up.css";
 import var1 from "../Assets/iips_logo2.png";
 import { useNavigate } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
 import AlertModal from "../AlertModal/AlertModal";
 
 const SignUp = () => {
@@ -19,6 +21,49 @@ const SignUp = () => {
   const [isErrorAlert, setIsErrorAlert] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state for signup button
   const [isFirstClick, setIsFirstClick] = useState(true); // Track if it is the first click
+  const [d0,setToggle0] = useState("block");
+  const [d1,setToggle1] = useState("block");
+
+  const toggled=(index)=>
+  {
+      const input=document.getElementsByClassName("password-eye")[index];
+      const eye0=document.getElementsByClassName("eye-icon-signup")[index];
+      const eye1=document.getElementsByClassName("eye-icon-slash-signup")[index];
+      if(index==0)
+      {
+          if(d0==="block")
+          {
+              eye1.style.display="none";
+              eye0.style.display="block";
+              input.type="text";
+              setToggle0("none");
+          }
+          else
+          {
+              eye0.style.display="none";
+              eye1.style.display="block";
+              input.type="password";
+              setToggle0("block");
+          }
+      }
+      else
+      {
+        if(d1==="block")
+        {
+            eye1.style.display="none";
+            eye0.style.display="block";
+            input.type="text";
+            setToggle1("none");
+        }
+        else
+        {
+            eye0.style.display="none";
+            eye1.style.display="block";
+            input.type="password";
+            setToggle1("block");
+        }
+      }
+  }
 
   const handleChange = (e) => {
     setFormData({
@@ -138,27 +183,37 @@ const SignUp = () => {
           <div>
             <label>
               Password:
-              <input
-                type="password"
-                name="password"
-                placeholder="Enter Your Password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
+              <div className="eye-containers">
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Enter Your Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  className="password-eye"
+                />
+                <FaEye className="eyes-signup eye-icon-signup" onClick={()=> toggled(0)}/>
+                <FaEyeSlash className="eyes-signup eye-icon-slash-signup" onClick={()=> toggled(0)}/>
+              </div>
             </label>
           </div>
           <div>
             <label>
               Confirm Password:
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm Your Password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-              />
+              <div className="eye-containers">
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm Your Password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                  className="password-eye"
+                />
+                <FaEye className="eyes-signup eye-icon-signup" onClick={()=> toggled(1)}/>
+                <FaEyeSlash className="eyes-signup eye-icon-slash-signup" onClick={()=> toggled(1)}/>
+              </div>
             </label>
           </div>
 

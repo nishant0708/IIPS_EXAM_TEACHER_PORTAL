@@ -1,3 +1,17 @@
+.eye-containers
+{
+    position: relative;
+}
+.eyes-signup
+{
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+.eye-icon-signup
+{
+    display: none;
+}
 .sign_up_Box_min{
     display: flex;
     align-items: center;

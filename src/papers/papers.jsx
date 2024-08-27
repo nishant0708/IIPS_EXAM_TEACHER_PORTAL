@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import "./papers.css"; 
 import { useNavigate } from "react-router-dom";
+import Nothing from "../Assets/nothing.svg";
 
 function Papers() {
   const navigate = useNavigate();
-  const [exams] = useState([ {
+  const [exams] = useState([
+     {
     className: "MCA 7th Sem",
     subjectName: "computer architecture(ic-1032)",
     duration: "3 hours",
@@ -25,7 +27,8 @@ function Papers() {
     duration: "3 hours",
     maxMarks: 60,
      scheduledOn: "30/12/24 (1:30 AM)"
-  },]);
+  },
+]);
 
   const handleCreateNew = () => {
     navigate("/create-paper");
@@ -58,13 +61,18 @@ function Papers() {
           </div>
         </>
       ) : (
-        <div className="no-papers-container">
-          <h2>No Previous Papers Found</h2>
-          <p>It looks like you haven&apos;t created any papers yet.</p>
-          <button className="create-first-button" onClick={handleCreateNew}>
-            <FaPlus className="plus-icon" /> Create Your First Paper
-          </button>
+        <>
+        <div className="no-questions-container">
+            <center>
+            <img alt="Nothing" src={Nothing} className="nothing"/>
+            <h2>No Previous Questions Paper Found</h2>
+            <button className="add-paper-button" onClick={()=> navigate("/add-paper")}>
+                <FaPlus className="plus-icon" />
+                <p>Create New</p>
+            </button>
+            </center>
         </div>
+    </>
       )}
     </div>
   );
