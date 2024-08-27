@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
 import logo from "../Assets/iips_logo2.png";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AlertModal from "../AlertModal/AlertModal";
@@ -14,7 +16,28 @@ function Login() {
   const [modalMessage, setModalMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [t,setToggle] = useState("block");
   const navigate = useNavigate(); // Initialize useNavigate
+  const toggled=()=>
+  {
+      const input = document.getElementsByClassName("password-eye")[0];
+      const eyes1 = document.getElementsByClassName("eyes")[0];
+      const eyes2=document.getElementsByClassName("eyes")[1];
+      if(t === "none")
+      {
+          eyes1.style.display="none";
+          eyes2.style.display="block";
+          input.type="password";
+          setToggle("block");
+      }
+      else
+      {
+          eyes2.style.display="none";
+          eyes1.style.display="block";
+          input.type="text";
+          setToggle("none");
+      }
+  }
 
   useEffect(() => {
     // Check if session ID exists in local storage and is still valid
@@ -116,13 +139,18 @@ function Login() {
         <div>
           <label>
             Password:
-            <input
-              type="password"
-              placeholder="Enter Your Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="eye-container">
+              <input
+                type="password"
+                placeholder="Enter Your Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="password-eye"
+              />
+              <FaEye className="eyes" onClick={()=>toggled()}/>
+              <FaEyeSlash className="eyes" onClick={()=> toggled()}/>
+            </div>
           </label>
         </div>
         {showOtp && (
