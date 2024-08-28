@@ -1,57 +1,70 @@
 import React, { useState } from 'react';
-import './question.css'; 
-import { FaTimes } from 'react-icons/fa'; 
-import { useDropzone } from 'react-dropzone'; 
+import './question.css';
+import { FaTimes } from 'react-icons/fa';
+import { useDropzone } from 'react-dropzone';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import Navbar from '../Navbar/Navbar';
-import axios from 'axios'; 
-import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import AlertModal from '../AlertModal/AlertModal'; // Import the AlertModal component
 
 const Question = () => {
-  const { paperId } = useParams(); 
-  const [questionheading, setQuestionHeading] = useState(''); // Separate state for heading
-  const [questionDescription, setQuestionDescription] = useState(''); // Separate state for description
+  const { paperId } = useParams();
+  const location = useLocation();
+  const { remainingMarks } = location.state || {}; // Get remaining marks from props
+
+  const [questionheading, setQuestionHeading] = useState('');
+  const [questionDescription, setQuestionDescription] = useState('');
   const [compilerReq, setCompilerReq] = useState('');
   const [marks, setMarks] = useState('');
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [isError, setIsError] = useState(false);
+  const navigate=useNavigate();
 
   const handleAddQuestion = async () => {
     if (!questionheading || !questionDescription || !compilerReq || !marks) {
-      alert('Please fill in all the required fields.');
+      setModalMessage('Please fill in all the required fields.');
+      setIsError(true);
+      setModalIsOpen(true);
       return;
     }
-  
+
+    if (parseInt(marks) > remainingMarks) {
+      setModalMessage(`You can assign a maximum of ${remainingMarks} marks to this question.`);
+      setIsError(true);
+      setModalIsOpen(true);
+      return;
+    }
+
     setLoading(true);
     try {
       let imageUrl = '';
-  
+
       if (image) {
-        const reader = new FileReader();
-        reader.readAsDataURL(image);
-        reader.onloadend = async () => {
-          const base64Image = reader.result;
-          
-          // Sending the base64 image data to the backend
-          const formData = { data: base64Image };
-          const uploadResponse = await axios.post('http://localhost:5000/paper/upload', formData);
-  
-          imageUrl = uploadResponse.data.url; // Assuming the backend responds with the image URL
-  
-          // Now send the question data along with the image URL
-          await submitQuestion(imageUrl);
-        };
-      } else {
-        // If no image, just submit the question without an image URL
-        await submitQuestion('');
+        const formData = new FormData();
+        formData.append('file', image);
+        formData.append('upload_preset', 'question');
+
+        const uploadResponse = await axios.post('http://localhost:5000/paper/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+
+        imageUrl = uploadResponse.data.url; // Assuming the backend responds with the image URL
       }
+
+      await submitQuestion(imageUrl);
     } catch (error) {
       console.error('Failed to add question:', error.message);
-      alert('Failed to add question. Please try again.');
+      setModalMessage('Failed to add question. Please try again.');
+      setIsError(true);
+      setModalIsOpen(true);
       setLoading(false);
     }
   };
-  
+
   const submitQuestion = async (imageUrl) => {
     const response = await axios.post('http://localhost:5000/paper/add-question', {
       paperId,
@@ -61,17 +74,20 @@ const Question = () => {
       marks,
       image: imageUrl, // Include imageUrl even if it's an empty string
     });
-  
+
     if (response.status === 201) {
-      alert('Question added successfully!');
+      setModalMessage('Question added successfully!');
+      setIsError(false);
+      setModalIsOpen(true);
+      // Clear form
+      setQuestionHeading('');
+      setQuestionDescription('');
+      setCompilerReq('');
+      setMarks('');
+      setImage(null);
+      navigate()
+      
     }
-  
-    // Clear form
-    setQuestionHeading('');
-    setQuestionDescription('');
-    setCompilerReq('');
-    setMarks('');
-    setImage(null);
     setLoading(false);
   };
 
@@ -80,10 +96,10 @@ const Question = () => {
   };
 
   const handleRemoveImage = () => {
-    setImage(null); 
+    setImage(null);
   };
 
-  const { getRootProps, getInputProps } = useDropzone({ 
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     maxSize: 10485760, // 10MB limit
   });
@@ -136,7 +152,7 @@ const Question = () => {
               </select>
             </div>
             <div className="add_question_column">
-              <label className="add_question_label">Maximum Marks:</label>
+              <label className="add_question_label">Marks:</label>
               <input
                 type="number"
                 value={marks}
@@ -173,6 +189,14 @@ const Question = () => {
           </button>
         </div>
       </div>
+
+      {/* Alert Modal */}
+      <AlertModal 
+        isOpen={modalIsOpen} 
+        onClose={() => setModalIsOpen(false)} 
+        message={modalMessage} 
+        iserror={isError} 
+      />
     </>
   );
 };

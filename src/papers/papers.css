@@ -42,8 +42,12 @@
 .papers_table {
   position: relative;
   margin-bottom: 20px; /* Add space between items */
+  cursor: pointer;
+  
 }
-
+.table-data:hover{
+  background-color: #404040;
+}
 .table-data {
   background-color: #333333;
   margin-bottom: 10px;

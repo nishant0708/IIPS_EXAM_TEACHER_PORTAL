@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import AlertModal from '../AlertModal/AlertModal'; // Import AlertModal
 
 const Createpaper = () => {
   const [date, setDate] = useState(null);
@@ -17,8 +18,12 @@ const Createpaper = () => {
   const [semester, setSemester] = useState('');
   const [subject, setSubject] = useState('');
   const [subjectCode, setSubjectCode] = useState('');
-  const teacherId=localStorage.getItem("teacherId");
-  
+  const teacherId = localStorage.getItem("teacherId");
+
+  const [modalIsOpen, setModalIsOpen] = useState(false); // State for modal visibility
+  const [modalMessage, setModalMessage] = useState(''); // State for modal message
+  const [isError, setIsError] = useState(false); // State for error/success
+
   const navigate = useNavigate(); // Initialize navigate function from react-router-dom
 
   const handleDurationChange = (field, value) => {
@@ -28,10 +33,10 @@ const Createpaper = () => {
   };
 
   const handleMarksChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, ''); 
+    const value = e.target.value.replace(/[^0-9]/g, '');
     setMarks(value);
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -41,19 +46,23 @@ const Createpaper = () => {
       subject,
       marks,
       duration: {
-        hours:duration.hours,
-        minutes:duration.minutes,
+        hours: duration.hours,
+        minutes: duration.minutes,
       },
       subjectCode,
       time,
       date,
       testType,
-      teacherId:teacherId,
+      teacherId,
     };
 
     try {
       const response = await axios.post('http://localhost:5000/paper/create', paperData);
       console.log('Paper created successfully:', response.data);
+
+      setModalMessage('Paper created successfully!');
+      setIsError(false); // Success, so no error
+      setModalIsOpen(true); // Open the modal
 
       // Assuming the response contains the paperId
       const { paperId } = response.data;
@@ -62,6 +71,10 @@ const Createpaper = () => {
       navigate(`/questionPaperDashboard/${paperId}`);
     } catch (error) {
       console.error('Error creating paper:', error);
+
+      setModalMessage('Failed to create paper. Please try again.');
+      setIsError(true); // Error occurred
+      setModalIsOpen(true); // Open the modal
     }
   };
 
@@ -142,7 +155,7 @@ const Createpaper = () => {
               />
             </FormGroup>
 
-            <FormGroup label="Time:" className="create_paper_time">
+            <FormGroup label="Time: (24 hrs format)" className="create_paper_time">
               <input
                 type="time"
                 className="create_paper_input"
@@ -177,6 +190,14 @@ const Createpaper = () => {
           <button type="submit" className="create_paper_submit_btn">SUBMIT</button>
         </form>
       </div>
+      
+      {/* Alert Modal */}
+      <AlertModal 
+        isOpen={modalIsOpen} 
+        onClose={() => setModalIsOpen(false)} 
+        message={modalMessage} 
+        iserror={isError}
+      />
     </>
   );
 };
