@@ -7,8 +7,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #1A1A1A !important;
   color: white !important;
-  scrollbar-width: thin !important;
-  scrollbar-color: #4CAF50 #1c1c1c !important; /* Thumb color, track color */
+  scrollbar-width: thin !important;          /* Firefox */
+  scrollbar-color: #616161 #1c1c1c !important; /* Thumb color, Track color (Firefox) */
 }
 
 code {
