@@ -20,12 +20,10 @@ const Createpaper = () => {
   const [subjectCode, setSubjectCode] = useState('');
   const teacherId = localStorage.getItem("teacherId");
 
-  const [modalIsOpen, setModalIsOpen] = useState(false); // State for modal visibility
-  const [modalMessage, setModalMessage] = useState(''); // State for modal message
-  const [isError, setIsError] = useState(false); // State for error/success
-
-  const navigate = useNavigate(); // Initialize navigate function from react-router-dom
-
+  const [modalIsOpen, setModalIsOpen] = useState(false); 
+  const [modalMessage, setModalMessage] = useState('');
+  const [isError, setIsError] = useState(false); 
+  const navigate = useNavigate(); 
   const handleDurationChange = (field, value) => {
     if (value >= 0) {
       setDuration({ ...duration, [field]: value });
@@ -61,10 +59,10 @@ const Createpaper = () => {
       console.log('Paper created successfully:', response.data);
 
       setModalMessage('Paper created successfully!');
-      setIsError(false); // Success, so no error
-      setModalIsOpen(true); // Open the modal
+      setIsError(false); 
+      setModalIsOpen(true); 
 
-      // Assuming the response contains the paperId
+     
       const { paperId } = response.data;
       
       // Navigate to the QuestionPaperDashboard with the created paper's ID
@@ -73,8 +71,8 @@ const Createpaper = () => {
       console.error('Error creating paper:', error);
 
       setModalMessage('Failed to create paper. Please try again.');
-      setIsError(true); // Error occurred
-      setModalIsOpen(true); // Open the modal
+      setIsError(true); 
+      setModalIsOpen(true); 
     }
   };
 

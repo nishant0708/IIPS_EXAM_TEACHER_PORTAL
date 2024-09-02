@@ -27,7 +27,6 @@ const AlertModal = ({ isOpen, onClose, message,iserror }) => {
       overlayClassName="alert_overlay"
     >
       <div className="alert_modal-content">
-        {/* SVG Image */}
         <img 
           src={image}
           alt="Success" 
