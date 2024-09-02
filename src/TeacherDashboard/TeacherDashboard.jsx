@@ -9,6 +9,7 @@ const TeacherDashboard=()=>
         <div style={{overflowX:"hidden"}}>
             <Navbar/>
              <Papers/>
+            
         </div>
     );
 }
