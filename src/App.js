@@ -8,6 +8,8 @@ import VerifyOtp from './Sign_up/VerifyOtp';
 import Forgot_Password from './Forgot_Password/Forgot_Password';
 import Reset_Password from './Reset_Password/Reset_Password';
 import axios from 'axios';
+import Error404 from './Error404/Error404';
+
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,7 +17,7 @@ const App = () => {
   const location = useLocation(); // Get the current location
 
   useEffect(() => {
-    const publicRoutes = ["/sign_up", "/verify_passcode","/forgot_password","/reset_password"];
+    const publicRoutes = ["/sign_up", "/verify_passcode","/forgot_password","/reset_password","/Error404"];
     const sessionId = localStorage.getItem("sessionId");
 
     // If the current route is public, skip the authentication check
@@ -53,6 +55,7 @@ const App = () => {
       <Route path="/verify_passcode" element={<VerifyOtp />} />
       <Route path="/forgot_password" element={<Forgot_Password />} />
       <Route path='/reset_password' element={<Reset_Password />} />
+      <Route path='/Error404' element={<Error404 />}/>
 
       {isAuthenticated && (
         // All protected routes should be placed here 
