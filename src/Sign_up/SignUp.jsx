@@ -119,21 +119,21 @@ const SignUp = () => {
     }
 
     if (isFirstClick) {
-      setIsWarningOpen(true); // Show warning modal
-      setIsFirstClick(false); // Disable modal for subsequent clicks
+      setIsWarningOpen(true); 
+      setIsFirstClick(false); 
     } else {
-      handleSignUp(); // Proceed with the signup process directly after the first click
+      handleSignUp(); 
     }
   };
 
   const handleWarningConfirm = () => {
-    setIsWarningOpen(false); // Close warning modal
-    handleSignUp(); // Proceed with sign-up after confirming the warning
+    setIsWarningOpen(false); 
+    handleSignUp();
   };
 
   const handleAlertConfirm = () => {
-    setIsAlertOpen(false); // Close alert modal
-    navigate("/verify_passcode"); // Redirect to passcode verification after confirmation
+    setIsAlertOpen(false); 
+    navigate("/verify_passcode"); 
   };
 
   return (
@@ -240,7 +240,7 @@ const SignUp = () => {
       {/* Alert Modal for success/error messages */}
       <AlertModal
         isOpen={isAlertOpen}
-        onClose={handleAlertConfirm} // Trigger redirect and close modal when the alert is confirmed
+        onClose={handleAlertConfirm} 
         message={alertMessage}
         iserror={isErrorAlert}
       />
