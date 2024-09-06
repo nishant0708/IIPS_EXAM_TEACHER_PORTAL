@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { FaPowerOff } from "react-icons/fa";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const [activeLink, setActiveLink] = useState(null);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-
+  const location = useLocation();
   const responsive = () => {
     const sidebar = document.getElementsByClassName("navbar-sidebar")[0];
     if (!open) {
@@ -17,10 +17,6 @@ const Navbar = () => {
       sidebar.style.transform = "translateX(100%)";
       setOpen(false);
     }
-  };
-
-  const handleLinkClick = (linkName) => {
-    setActiveLink(linkName);
   };
 
   const handleLogout = () => {
@@ -42,30 +38,36 @@ const Navbar = () => {
           <div>Nishant Kaushal</div>
         </div>
         <div className="navbar-contents navbar-displayed">
-          <p
-            className={`navbar-papers navbar-links ${
-              activeLink === "navbar-papers" ? "active" : ""
+
+        <p
+            className={`navbar-links ${
+              location.pathname === `/teacherDashboard` ? "active" : ""
             }`}
-            onClick={() => {
-              handleLinkClick("navbar-papers");
-            }}
+            onClick={() => navigate(`/teacherDashboard`)}
           >
-            Papers
+          Dashboard
           </p>
           <p
-            className={`navbar-links navbar-ready ${
-              activeLink === "navbar-ready" ? "active" : ""
+            className={`navbar-links ${
+              location.pathname === `/ready_papers` ? "active" : ""
             }`}
-            onClick={() => {
-              handleLinkClick("navbar-ready");
-            }}
+            onClick={() => navigate(`/ready_papers`)}
           >
-            Ready for Evaluation
+            Ready Papers
           </p>
+          <p
+            className={`navbar-links ${
+              location.pathname === `/completed_papers` ? "active" : ""
+            }`}
+            onClick={() => navigate(`/completed_papers`)}
+          >
+        Completed Papers
+          </p>
+         
         </div>
         <div className="navbar-right-margin navbar-displayed">
           <p className="navbar-logout" onClick={handleLogout}>
-            Logout
+          <span className="logbut"> <FaPowerOff size={15}/>  Logout</span> 
           </p>
         </div>
         <div className="navbar-menu navbar-right-margin">
@@ -78,19 +80,56 @@ const Navbar = () => {
         </div>
       </div>
       <div className="navbar-sidebar">
-        <ul type="none">
-          <li>
-            <p className={`navbar-papers navbar-links`}>Papers</p>
-          </li>
-          <li>
-            <p className={`navbar-links navbar-ready`}>Ready for Evaluation</p>
+        <ul type="none" className="navbar-sidebar-ul">
+        <li>
+            <p
+              className={`navbar-links ${
+                location.pathname === `/teacherDashboard` ? "active" : ""
+              }`}
+              onClick={() => {
+                navigate(`/teacherDashboard`);
+                responsive(); // close sidebar after click
+              }}
+            >
+            Dashboard
+            </p>
           </li>
           <li>
             <p
-              className="navbar-logout navbar-logout-menu"
-              onClick={handleLogout}
+              className={`navbar-links ${
+                location.pathname === `/ready_papers` ? "active" : ""
+              }`}
+              onClick={() => {
+                navigate(`/ready_papers`);
+                responsive(); // close sidebar after click
+              }}
             >
-              Logout
+              Ready Papers
+            </p>
+          </li>
+          <li>
+            <p
+              className={`navbar-links ${
+                location.pathname === `/completed_papers` ? "active" : ""
+              }`}
+              onClick={() => {
+                navigate(`/completed_papers`);
+                responsive(); // close sidebar after click
+              }}
+            >
+          Completed Papers
+            </p>
+          </li>
+     
+          <li>
+            <p
+              className="navbar-logout navbar-logout-menu"
+              onClick={() => {
+                handleLogout();
+                responsive(); // close sidebar after logout
+              }}
+            >
+           <span className="logbut"> <FaPowerOff size={15}/>  Logout</span>
             </p>
           </li>
         </ul>

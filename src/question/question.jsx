@@ -65,6 +65,8 @@ const Question = () => {
     }
   };
 
+
+
   const submitQuestion = async (imageUrl) => {
     const response = await axios.post('http://localhost:5000/paper/add-question', {
       paperId,

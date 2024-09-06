@@ -113,15 +113,8 @@ function Papers() {
     });
   };
 
-  const handleCardClick = (paperId, exam) => {
-    navigate(`/questionPaperDashboard/${paperId}`, {
-      state: {
-        className: exam.className,
-        semester: exam.semester,
-        subject: exam.subject,
-        marks: exam.marks,
-      },
-    });
+  const handleCardClick = (paperId) => {
+    navigate(`/questionPaperDashboard/${paperId}`);
   };
 
   return (
@@ -141,7 +134,7 @@ function Papers() {
               <div
                 className="papers_table"
                 key={index}
-                onClick={() => handleCardClick(exam._id, exam)} // Passing exam data to handleCardClick
+                onClick={() => handleCardClick(exam._id)} 
               >
                 <div className="scheduled">
                   Scheduled on: {getFormattedDateTime(exam.date, exam.time)}
