@@ -14,6 +14,7 @@ const QuestionPaperDashboard = () => {
   const { className, semester, subject, marks } = state || {};
   const navigate = useNavigate();
   const { paperId } = useParams();
+  const [reload,setReload]= useState(false);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -40,7 +41,7 @@ const QuestionPaperDashboard = () => {
     };
 
     fetchQuestions();
-  }, [paperId]);
+  }, [paperId,reload]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -51,6 +52,34 @@ const QuestionPaperDashboard = () => {
     0
   );
 
+
+  const deleteQuestion=async (question)=>
+    {
+      console.log(question);
+      try
+      {
+        await axios.post('http://localhost:5000/paper/delete-question', { _id: question._id })
+        setQuestions((prevQuestions) => prevQuestions.filter(q => q._id !== question._id));
+    
+        if (questions.length === 1) {
+          setQuestions([]); 
+        }
+
+        setReload(prev => !prev);
+      }
+      catch(error)
+      {
+        console.error('Error creating paper:', error);
+      }
+    }
+
+    const duplicateQuestion= async (question)=>
+    {
+      console.log(question);
+      await axios.post(`http://localhost:5000/paper/duplicate-question`, { question})
+      setReload(prev => !prev);
+
+    }
   const handleSubmit = () => {
     // Here, you would handle the submit logic.
     // Trigger a success modal on successful submission
@@ -98,6 +127,8 @@ const QuestionPaperDashboard = () => {
                         {question.questionDescription}
                       </div>
                     </div>
+                    <button onClick={()=>duplicateQuestion(question)} style={{width:"200px"}}>Duplicate</button>
+                    <button onClick={()=>deleteQuestion(question)} style={{width:"200px"}}>Delete</button>
                     {question.image ? (
                       <div className="question-image">
                         <img src={question.image} alt="question" />
