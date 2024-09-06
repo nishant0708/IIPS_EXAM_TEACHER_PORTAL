@@ -8,6 +8,8 @@ import Nothing from "../Assets/nothing.svg";
 function Papers() {
   const navigate = useNavigate();
   const [exams, setExams] = useState([]);
+  const [reload,setReload]= useState(false);
+
   const teacherId = localStorage.getItem("teacherId"); // Assuming teacherId is stored in localStorage
 
   useEffect(() => {
@@ -24,11 +26,62 @@ function Papers() {
     };
 
     fetchPapers();
-  }, [teacherId]);
+  }, [teacherId,reload]);
 
   const handleCreateNew = () => {
     navigate("/create-paper");
   };
+
+  const handleEditNew=(exam)=>
+  {
+    navigate(
+      "/edit-paper",
+      {
+        state:
+        {
+          _id:exam._id,
+          className:exam.className,
+          semester:exam.semester,
+          subject:exam.subject,
+          subjectCode:exam.subjectCode,
+          date:exam.date,
+          duration:exam.duration,
+          testType:exam.testType,
+          marks:exam.marks,
+          time:exam.time
+        }
+      }
+    );
+  }
+
+
+  const deletePaper=async (paper)=>
+  {
+
+    try
+    {
+      await axios.post('http://localhost:5000/paper/delete-paper', { _id: paper._id })
+      setExams((prevQuestions) => prevQuestions.filter(q => q._id !== paper._id));
+    
+      if (paper.length === 1) {
+        setExams([]); 
+      }
+
+      setReload(prev => !prev);
+  
+    }
+    catch(error)
+    {
+      console.error('Error creating paper:', error);
+    }
+  }
+
+  const duplicatePaper = async (paper)=>
+  {
+    await axios.post("http://localhost:5000/paper/duplicate-paper",paper);
+    setReload(prev => !prev);
+  }
+
 
   const getFormattedDateTime = (date, time) => {
     const [hours, minutes] = time.split(":").map(Number);
@@ -90,6 +143,30 @@ function Papers() {
                     {exam.duration.minutes} mins
                   </div>
                   <div>Marks : {exam.marks}</div>
+                  <button style={{width:"300px"}} onClick={(e)=>
+                    {
+                      e.stopPropagation();
+                      handleEditNew(exam);
+                    }}>
+                      Edit
+                  </button>
+                  <button style={{width:"300px"}} onClick={
+                    (e)=>
+                    {
+                      e.stopPropagation();
+                      deletePaper(exam);
+                    }
+                  }>
+                    Delete
+                  </button>
+                  <button onClick={(e)=>
+                    {
+                      e.stopPropagation();
+                      duplicatePaper(exam);
+
+                    }} style={{width:"300px"}}>
+                    Duplicate
+                  </button>
                 </div>
               </div>
             ))}
