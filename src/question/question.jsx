@@ -101,7 +101,8 @@ const Question = () => {
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    maxSize: 10485760, // 10MB limit
+    maxSize: 10485760, // 10MB limit,
+   
   });
 
   return (
