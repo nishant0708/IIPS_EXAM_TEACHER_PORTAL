@@ -11,6 +11,7 @@ import axios from 'axios';
 import Question from './question/question';
 import QuestionPaperDashboard from './QuestionPaperDashboard/QuestionPaperDashboard';
 import Editpaper from './Edit_paper/Editpaper';
+import Error404 from './error/Error404';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -66,6 +67,7 @@ const App = () => {
           <Route path="/add-question/:paperId" element={<Question />} />
           <Route path="/edit-question/:paperId/:questionId" element={<Question/>} />
           <Route path="/questionPaperDashboard/:paperId" element={<QuestionPaperDashboard />}/>
+          <Route path="/error404" element={<Error404/>}/>
         </>
       )}
     </Routes>
