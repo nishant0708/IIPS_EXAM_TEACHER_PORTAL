@@ -13,6 +13,9 @@ import QuestionPaperDashboard from './QuestionPaperDashboard/QuestionPaperDashbo
 import Editpaper from './Edit_paper/Editpaper';
 import ReadyPaperDashboard from './ReadyPaperDashboard/ReadyPaperDashboard';
 
+import Error404 from './error/error404';
+
+
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
@@ -67,7 +70,11 @@ const App = () => {
           <Route path="/add-question/:paperId" element={<Question />} />
           <Route path="/edit-question/:paperId/:questionId" element={<Question/>} />
           <Route path="/questionPaperDashboard/:paperId" element={<QuestionPaperDashboard />}/>
+
+          <Route path="/error404" element={<Error404/>}/>
+
           <Route path="/ready_papers" element={<ReadyPaperDashboard />}/>
+
         </>
       )}
     </Routes>
