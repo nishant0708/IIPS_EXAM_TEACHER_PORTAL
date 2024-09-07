@@ -15,7 +15,7 @@ import './AlertModal.css';
 import cross from "../Assets/cross-mark.svg";
 import tick from "../Assets/accept-check-good-mark-ok-tick.svg";
 
-const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror }) => {
+const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror, isAlert }) => {
   var image = iserror ? cross : tick;
 
   const handleClose = () => {
@@ -51,6 +51,7 @@ const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror }) => {
 
 // Define prop types
 AlertModal.propTypes = {
+  isAlert: PropTypes.bool.isRequired,
   isOpen: PropTypes.bool.isRequired,  // isOpen should be a boolean
   onClose: PropTypes.func.isRequired, // onClose should be a function
   message: PropTypes.string.isRequired, // message should be a string
