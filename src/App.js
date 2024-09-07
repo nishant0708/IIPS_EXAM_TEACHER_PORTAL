@@ -11,7 +11,9 @@ import axios from 'axios';
 import Question from './question/question';
 import QuestionPaperDashboard from './QuestionPaperDashboard/QuestionPaperDashboard';
 import Editpaper from './Edit_paper/Editpaper';
-import Error404 from './error/Error404';
+
+import Error404 from './error/error404';
+
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
