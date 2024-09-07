@@ -4,11 +4,18 @@ import "./papers.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Nothing from "../Assets/nothing.svg";
+import AlertModal from "../AlertModal/AlertModal";
+
 
 function Papers() {
   const navigate = useNavigate();
   const [exams, setExams] = useState([]);
-  const teacherId = localStorage.getItem("teacherId"); // Assuming teacherId is stored in localStorage
+  const [reload, setReload] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [isError, setIsError] = useState(false); 
+  
+  const teacherId = localStorage.getItem("teacherId"); 
 
   useEffect(() => {
     const fetchPapers = async () => {
@@ -24,10 +31,71 @@ function Papers() {
     };
 
     fetchPapers();
-  }, [teacherId]);
+  }, [teacherId, reload]);
 
   const handleCreateNew = () => {
     navigate("/create-paper");
+  };
+
+  const handleEditNew = (exam) => {
+    navigate(
+      "/edit-paper",
+      {
+        state: {
+          _id: exam._id,
+          className: exam.className,
+          semester: exam.semester,
+          subject: exam.subject,
+          subjectCode: exam.subjectCode,
+          date: exam.date,
+          duration: exam.duration,
+          testType: exam.testType,
+          marks: exam.marks,
+          time: exam.time,
+        },
+      }
+    );
+  };
+
+  const deletePaper = async (paper) => {
+    try {
+      await axios.post("http://localhost:5000/paper/delete-paper", { _id: paper._id });
+      setExams((prevQuestions) => prevQuestions.filter(q => q._id !== paper._id));
+    
+      if (paper.length === 1) {
+        setExams([]);
+      }
+      setReload((prev) => !prev);
+
+      // Show success modal
+      setModalMessage("Paper deleted successfully.");
+      setIsError(false);
+      setModalIsOpen(true);
+    } catch (error) {
+      console.error("Error deleting paper:", error);
+      // Show error modal
+      setModalMessage("Failed to delete paper.");
+      setIsError(true);
+      setModalIsOpen(true);
+    }
+  };
+
+  const duplicatePaper = async (paper) => {
+    try {
+      await axios.post("http://localhost:5000/paper/duplicate-paper", paper);
+      setReload((prev) => !prev);
+
+      // Show success modal
+      setModalMessage("Paper duplicated successfully.");
+      setIsError(false);
+      setModalIsOpen(true);
+    } catch (error) {
+      console.error("Error duplicating paper:", error);
+      // Show error modal
+      setModalMessage("Failed to duplicate paper.");
+      setIsError(true);
+      setModalIsOpen(true);
+    }
   };
 
   const getFormattedDateTime = (date, time) => {
@@ -45,15 +113,8 @@ function Papers() {
     });
   };
 
-  const handleCardClick = (paperId, exam) => {
-    navigate(`/questionPaperDashboard/${paperId}`, {
-      state: {
-        className: exam.className,
-        semester: exam.semester,
-        subject: exam.subject,
-        marks: exam.marks,
-      },
-    });
+  const handleCardClick = (paperId) => {
+    navigate(`/questionPaperDashboard/${paperId}`);
   };
 
   return (
@@ -73,7 +134,7 @@ function Papers() {
               <div
                 className="papers_table"
                 key={index}
-                onClick={() => handleCardClick(exam._id, exam)} // Passing exam data to handleCardClick
+                onClick={() => handleCardClick(exam._id)} 
               >
                 <div className="scheduled">
                   Scheduled on: {getFormattedDateTime(exam.date, exam.time)}
@@ -90,6 +151,24 @@ function Papers() {
                     {exam.duration.minutes} mins
                   </div>
                   <div>Marks : {exam.marks}</div>
+                  <button style={{width:"300px"}} onClick={(e) => {
+                    e.stopPropagation();
+                    handleEditNew(exam);
+                  }}>
+                    Edit
+                  </button>
+                  <button style={{width:"300px"}} onClick={(e) => {
+                    e.stopPropagation();
+                    deletePaper(exam);
+                  }}>
+                    Delete
+                  </button>
+                  <button onClick={(e) => {
+                    e.stopPropagation();
+                    duplicatePaper(exam);
+                  }} style={{width:"300px"}}>
+                    Duplicate
+                  </button>
                 </div>
               </div>
             ))}
@@ -97,19 +176,23 @@ function Papers() {
         </>
       ) : (
         <div className="no-questions-container">
-              <center>
-                <img alt="Nothing" src={Nothing} className="nothing" />
-                <h2>No Paper&apos;s Found</h2>
-                <button
-                  className="add-question-button"
-                  onClick={handleCreateNew}
-                >
-                  <FaPlus />
-                  <p>Create Your First Paper</p>
-                </button>
-              </center>
-            </div>
+          <center>
+            <img alt="Nothing" src={Nothing} className="nothing" />
+            <h2>No Paper&apos;s Found</h2>
+            <button className="add-question-button" onClick={handleCreateNew}>
+              <FaPlus />
+              <p>Create Your First Paper</p>
+            </button>
+          </center>
+        </div>
       )}
+    
+      <AlertModal
+        isOpen={modalIsOpen} 
+        onClose={() => setModalIsOpen(false)} 
+        message={modalMessage} 
+        iserror={isError} 
+      />
     </div>
   );
 }

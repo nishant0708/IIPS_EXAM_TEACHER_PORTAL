@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./QuestionPaperDashboard.css";
 import Navbar from "../Navbar/Navbar";
 import { FaPlus } from "react-icons/fa";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import defaultImage from "../Assets/no-image-420x370-1.jpg";
 import Nothing from "../Assets/nothing.svg";
@@ -10,12 +10,14 @@ import AlertModal from "../AlertModal/AlertModal";
 
 
 const QuestionPaperDashboard = () => {
-  const { state } = useLocation();
-  const { className, semester, subject, marks } = state || {};
+
+
   const navigate = useNavigate();
   const { paperId } = useParams();
+  const [reload,setReload]= useState(false);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [paperdetails,setpaperdetails]=useState([]);
   
   // State for the modal
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -38,9 +40,24 @@ const QuestionPaperDashboard = () => {
         setLoading(false);
       }
     };
-
+    const fetchpaperdetails = async () => {
+      try {
+        const res = await axios.post(
+          "http://localhost:5000/paper/getPapersdetails",
+          { paperId }
+        );
+        setpaperdetails(res.data[0]);
+      } catch (error) {
+        console.error("Failed to fetch paperdetails:", error);
+       
+       
+      } finally {
+        setLoading(false);
+      }
+    };
+  fetchpaperdetails();
     fetchQuestions();
-  }, [paperId]);
+  }, [paperId,reload]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -51,13 +68,64 @@ const QuestionPaperDashboard = () => {
     0
   );
 
-  const handleSubmit = () => {
-    // Here, you would handle the submit logic.
-    // Trigger a success modal on successful submission
-    setModalMessage("Your question paper has been submitted successfully!");
-    setIsError(false);
-    setModalIsOpen(true);
-  };
+
+  const deleteQuestion=async (question)=>
+    {
+      console.log(question);
+      try
+      {
+        await axios.post('http://localhost:5000/paper/delete-question', { _id: question._id })
+        setQuestions((prevQuestions) => prevQuestions.filter(q => q._id !== question._id));
+    
+        if (questions.length === 1) {
+          setQuestions([]); 
+        }
+
+        setReload(prev => !prev);
+      }
+      catch(error)
+      {
+        console.error('Error creating paper:', error);
+      }
+    }
+
+    const duplicateQuestion= async (question)=>
+    {
+      console.log(question);
+      await axios.post(`http://localhost:5000/paper/duplicate-question`, { question})
+      setReload(prev => !prev);
+
+    }
+    const handleSubmit = async () => {
+      try {
+    
+        const response = await axios.post("http://localhost:5000/paper/submitpaper", { paperId });
+    
+
+        if (response.data.success) {
+          setModalMessage("Your question paper has been submitted successfully!");
+          setIsError(false);
+          setTimeout(() => {
+            navigate("/ready_papers");
+          }, 2000);
+        } else {
+          setModalMessage(response.data.message || "Failed to submit the paper.");
+          setIsError(true);
+        }
+      } catch (error) {
+        const errorMessage =
+          error.response && error.response.data && error.response.data.message
+            ? error.response.data.message
+            : "Failed to submit the paper.";
+    
+        setModalMessage(errorMessage);
+        setIsError(true);
+      } finally {
+        // Open the modal regardless of the outcome
+        setModalIsOpen(true);
+      }
+    };
+    
 
   return (
     <>
@@ -67,17 +135,17 @@ const QuestionPaperDashboard = () => {
           <>
             <div className="question-header">
               <h2 className="question-subject">
-                {className} {semester} ({subject})
+                {paperdetails.className} {paperdetails.semester} ({paperdetails.subject})
               </h2>
               <h2 className="question-total-marks">
-                Total Marks: &nbsp;{totalMarks}/{marks}
+                Total Marks: &nbsp;{totalMarks}/{paperdetails.marks}
               </h2>
             </div>
-            {totalMarks > marks && (
+            {totalMarks > paperdetails.marks && (
               <div className="error_message_questionDashboard">
                 <p>
                   The total marks ({totalMarks}) exceed the allowed marks (
-                  {marks}). Please remove <strong>{totalMarks - marks}</strong>{" "}
+                  {paperdetails.marks}). Please remove <strong>{totalMarks - paperdetails.marks}</strong>{" "}
                   marks to submit the paper.
                 </p>
               </div>
@@ -98,6 +166,8 @@ const QuestionPaperDashboard = () => {
                         {question.questionDescription}
                       </div>
                     </div>
+                    <button onClick={()=>duplicateQuestion(question)} style={{width:"200px"}}>Duplicate</button>
+                    <button onClick={()=>deleteQuestion(question)} style={{width:"200px"}}>Delete</button>
                     {question.image ? (
                       <div className="question-image">
                         <img src={question.image} alt="question" />
@@ -112,12 +182,12 @@ const QuestionPaperDashboard = () => {
               ))}
 
               <center>
-                {totalMarks < marks && (
+                {totalMarks < paperdetails.marks && (
                   <button
                     className="add-question-button2"
                     onClick={() =>
                       navigate(`/add-question/${paperId}`, {
-                        state: { remainingMarks: marks - totalMarks },
+                        state: { remainingMarks: paperdetails.marks - totalMarks },
                       })
                     }
                   >
@@ -125,7 +195,7 @@ const QuestionPaperDashboard = () => {
                     <p>Add Question</p>
                   </button>
                 )}
-                {totalMarks === marks && (
+                {totalMarks === paperdetails.marks && (
                   <button
                     className="question_submit-button"
                     style={{ backgroundColor: "green", color: "white" }}
@@ -147,7 +217,7 @@ const QuestionPaperDashboard = () => {
                   className="add-question-button"
                   onClick={() =>
                     navigate(`/add-question/${paperId}`, {
-                      state: { remainingMarks: marks - totalMarks },
+                      state: { remainingMarks: paperdetails.marks - totalMarks },
                     })
                   }
                 >

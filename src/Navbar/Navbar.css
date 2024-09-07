@@ -32,7 +32,7 @@
 
 .navbar-links,
 .navbar-logout {
-    width: 100px;
+    width: 160px;
     height: 40px;
     display: flex;
     align-items: center;
@@ -50,21 +50,24 @@
 
 .navbar-links.active {
     background-color: #4caf50;
-    border-radius: 10px;
-    border: 2px solid white;
+    padding: 0px 0px 0px 5px;
     color: #000000;
 }
 
 .navbar-logout {
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
     margin-top: 10px;
-    background-color: #282828;
+    background-color: #1a1a1a;
+    transition: 0.3s all;
 }
 
 .navbar-logout:hover {
-    border-radius: 10px;
-    background-color: red;
-    border: 2px solid #1a1a1a;
-    transition: all 1s;
+    background-color: #181818;
+    color: red;
 }
 
 .navbar-menu {
@@ -109,7 +112,12 @@
     .navbar-displayed {
         display: none;
     }
+    
 
+.navbar-sidebar-ul{
+    margin: 0px;
+    padding: 0px 20px;
+}
     .navbar-logout-menu,
     .navbar-links {
         background-color: #313030;
@@ -118,7 +126,7 @@
         border: none;
         border-radius: 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.253);
-        margin-left: -15px;
+
     }
 
     .navbar-logout-menu {

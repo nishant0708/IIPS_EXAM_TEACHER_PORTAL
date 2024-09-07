@@ -10,6 +10,8 @@ import Reset_Password from './Reset_Password/Reset_Password';
 import axios from 'axios';
 import Question from './question/question';
 import QuestionPaperDashboard from './QuestionPaperDashboard/QuestionPaperDashboard';
+import Editpaper from './Edit_paper/Editpaper';
+import ReadyPaperDashboard from './ReadyPaperDashboard/ReadyPaperDashboard';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -61,8 +63,11 @@ const App = () => {
         <>
           <Route path="/teacherDashboard" element={<TeacherDashboard />} />
           <Route path="/create-paper" element={<Createpaper />} />
+          <Route path="/edit-paper" element={<Editpaper/>} />
           <Route path="/add-question/:paperId" element={<Question />} />
+          <Route path="/edit-question/:paperId/:questionId" element={<Question/>} />
           <Route path="/questionPaperDashboard/:paperId" element={<QuestionPaperDashboard />}/>
+          <Route path="/ready_papers" element={<ReadyPaperDashboard />}/>
         </>
       )}
     </Routes>
