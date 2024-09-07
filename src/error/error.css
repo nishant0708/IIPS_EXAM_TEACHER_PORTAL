@@ -4,7 +4,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
   text-align: center;
   color: white;
 }
@@ -16,8 +15,9 @@
 }
 
 .panda-image {
-  width: 450px;
+  width: 500px;
   margin-bottom: 0px;
+  margin-top: -80px;
 }
 
 .error404-text {
@@ -37,4 +37,12 @@
 
 .go-back-button:hover {
   background-color: #e6e6e6;
+}
+@media (max-width:768px) {
+  .panda-image{
+    width: 300px;
+  }
+  .error-container{
+    height: 100vh;
+  }
 }
