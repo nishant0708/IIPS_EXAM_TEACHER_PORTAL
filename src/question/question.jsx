@@ -65,6 +65,8 @@ const Question = () => {
     }
   };
 
+
+
   const submitQuestion = async (imageUrl) => {
     const response = await axios.post('http://localhost:5000/paper/add-question', {
       paperId,
@@ -101,7 +103,8 @@ const Question = () => {
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    maxSize: 10485760, // 10MB limit
+    maxSize: 10485760, // 10MB limit,
+   
   });
 
   return (

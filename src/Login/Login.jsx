@@ -59,7 +59,7 @@ function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    setIsLoading(true); // Start loading
+    setIsLoading(true); 
 
     axios
       .post("http://localhost:5000/teacher/login", { email, password })
