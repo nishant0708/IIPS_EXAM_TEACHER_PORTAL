@@ -48,7 +48,7 @@
     border: none;
     position: relative;
     gap: 4px;
-    height: 200px;
+    height: 125px;
 }
 .questions-table
 {
@@ -64,9 +64,8 @@
 {
     color: rgb(4, 231, 4);
 }
-.heading-description
-{
-    margin-bottom: 50px;
+.question_paper_h3{
+    margin: 0px;
 }
 .description
 {
@@ -81,19 +80,20 @@
 .question-image
 {
     position: absolute;
-    bottom: 5px;
+   
     right: 10px;
 }
 .question-image img
 {
-    width: 200px;
-    height: 175px;
+    width: 250px;
+    height: 125px;
 }
 .add-question-button
 {
     display: flex;
     gap: 5px;
     align-items: center;
+    padding: 0px 10px;
     border-radius: 10px;
     background-color: #282828;
     color: white;
@@ -131,6 +131,13 @@
 {
     width: 100%;
 }
+.question_submit-button{
+width: 200px;
+height: 50px;
+border-radius: 5px;
+border:1px solid rgb(0, 0, 0);
+font-size: 18px;
+}
 @media(max-width : 1000px)
 {
     .description
@@ -163,4 +170,8 @@
         width: 100px;
         height: 100px;
     }
+}
+.error_message_questionDashboard{
+    text-align: center;
+    color: red;
 }

@@ -1,34 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
-import "./papers.css"; 
+import "./papers.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Nothing from "../Assets/nothing.svg";
 
 function Papers() {
   const navigate = useNavigate();
-  const [exams] = useState([ {
-    className: "MCA 7th Sem",
-    subjectName: "computer architecture(ic-1032)",
-    duration: "3 hours",
-    maxMarks: 60,
-     scheduledOn: "30/12/24 (1:30 AM)"
-  },
-  {
-    className: "Mtech(IT) 5th sem",
-    subjectName: "java(ic-3575875)",
-    duration: "3 hours",
-    maxMarks: 60,
-     scheduledOn: "30/12/24 (1:30 AM)"
-  },
-  {
-    className: "Mtech(IT) 3rd sem",
-    subjectName: "cpp(ic-12324)",
-    duration: "3 hours",
-    maxMarks: 60,
-     scheduledOn: "30/12/24 (1:30 AM)"
-  },]);
+  const [exams, setExams] = useState([]);
+  const teacherId = localStorage.getItem("teacherId"); // Assuming teacherId is stored in localStorage
+
+  useEffect(() => {
+    const fetchPapers = async () => {
+      try {
+        const response = await axios.post(
+          `http://localhost:5000/paper/getPapersByTeacherId`,
+          { teacherId }
+        );
+        setExams(response.data);
+      } catch (error) {
+        console.error("Error fetching papers:", error);
+      }
+    };
+
+    fetchPapers();
+  }, [teacherId]);
 
   const handleCreateNew = () => {
     navigate("/create-paper");
+  };
+
+  const getFormattedDateTime = (date, time) => {
+    const [hours, minutes] = time.split(":").map(Number);
+    const dateTime = new Date(date);
+    dateTime.setHours(hours, minutes);
+
+    return dateTime.toLocaleString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+  };
+
+  const handleCardClick = (paperId, exam) => {
+    navigate(`/questionPaperDashboard/${paperId}`, {
+      state: {
+        className: exam.className,
+        semester: exam.semester,
+        subject: exam.subject,
+        marks: exam.marks,
+      },
+    });
   };
 
   return (
@@ -45,26 +70,45 @@ function Papers() {
           </div>
           <div className="exam-table">
             {exams.map((exam, index) => (
-              <div className="papers_table" key={index}>
-                <div className="scheduled">Scheduled on: {exam.scheduledOn}</div>
+              <div
+                className="papers_table"
+                key={index}
+                onClick={() => handleCardClick(exam._id, exam)} // Passing exam data to handleCardClick
+              >
+                <div className="scheduled">
+                  Scheduled on: {getFormattedDateTime(exam.date, exam.time)}
+                </div>
                 <div className="table-data">
-                  <div className="classhead">{exam.className}</div>
-                  <div className="subname">{exam.subjectName}</div>
-                  <div>Duration : {exam.duration}</div>
-                  <div>Marks : {exam.maxMarks}</div>
+                  <div className="classhead">
+                    {exam.className} {exam.semester}
+                  </div>
+                  <div className="subname">
+                    {exam.subject} ({exam.subjectCode})
+                  </div>
+                  <div>
+                    Duration : {exam.duration.hours} hours{" "}
+                    {exam.duration.minutes} mins
+                  </div>
+                  <div>Marks : {exam.marks}</div>
                 </div>
               </div>
             ))}
           </div>
         </>
       ) : (
-        <div className="no-papers-container">
-          <h2>No Previous Papers Found</h2>
-          <p>It looks like you haven&apos;t created any papers yet.</p>
-          <button className="create-first-button" onClick={handleCreateNew}>
-            <FaPlus className="plus-icon" /> Create Your First Paper
-          </button>
-        </div>
+        <div className="no-questions-container">
+              <center>
+                <img alt="Nothing" src={Nothing} className="nothing" />
+                <h2>No Paper&apos;s Found</h2>
+                <button
+                  className="add-question-button"
+                  onClick={handleCreateNew}
+                >
+                  <FaPlus />
+                  <p>Create Your First Paper</p>
+                </button>
+              </center>
+            </div>
       )}
     </div>
   );

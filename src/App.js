@@ -11,8 +11,7 @@ import axios from 'axios';
 import Question from './question/question';
 import QuestionPaperDashboard from './QuestionPaperDashboard/QuestionPaperDashboard';
 
-import Papers from './papers/papers'
-import Question from './question/question'
+import Papers from './papers/papers';
 
 
 
@@ -66,8 +65,8 @@ const App = () => {
         <>
           <Route path="/teacherDashboard" element={<TeacherDashboard />} />
           <Route path="/create-paper" element={<Createpaper />} />
-          <Route path="/add-question" element={<Question />} />
-          <Route path="/questionPaperDashboard" element={<QuestionPaperDashboard />}/>
+          <Route path="/add-question/:paperId" element={<Question />} />
+          <Route path="/questionPaperDashboard/:paperId" element={<QuestionPaperDashboard />}/>
         </>
       )}
         <Route path="/papers" element={< Papers />} />
