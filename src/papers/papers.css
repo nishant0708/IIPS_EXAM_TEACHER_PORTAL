@@ -33,7 +33,7 @@
 }
 
 .exam-table {
-  margin-top: 50px;
+  margin-top: 60px;
   width: 100%;
   height: auto;
   margin-bottom: 20px;
@@ -41,9 +41,48 @@
 
 .papers_table {
   position: relative;
-  margin-bottom: 20px; /* Add space between items */
+  margin-bottom: 50px; /* Add space between items */
   cursor: pointer;
-  
+  transition: all 0.3s ease-in;
+}
+.flex-class
+{
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+.hovered-buttons
+{
+    display: flex;
+    position: absolute;
+    right: 0;
+    top: -40px;
+    z-index: 1;
+    gap: 5px;
+}
+.hovered-buttons button
+{
+  width: 100px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #282828;
+  color: white;
+  font-size: large;
+  border: 2px solid #282828;
+}
+.hovered-buttons button:hover
+{
+  cursor: pointer;
+  background-color: #28282880;
+}
+.hovered-buttons #delete
+{
+  color: red;
+}
+ #duplicate
+{
+  width: 150px;
 }
 .table-data:hover{
   background-color: #404040;
