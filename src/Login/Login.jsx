@@ -16,27 +16,24 @@ function Login() {
   const [modalMessage, setModalMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Loading state
-  const [t,setToggle] = useState("block");
+  const [t, setToggle] = useState("block");
   const navigate = useNavigate(); // Initialize useNavigate
-  const toggled=()=>
-  {
-      const input = document.getElementsByClassName("password-eye")[0];
-      const eyes1 = document.getElementsByClassName("eyes")[0];
-      const eyes2=document.getElementsByClassName("eyes")[1];
-      if(t === "none")
-      {
-          eyes1.style.display="none";
-          eyes2.style.display="block";
-          input.type="password";
-          setToggle("block");
-      }
-      else
-      {
-          eyes2.style.display="none";
-          eyes1.style.display="block";
-          input.type="text";
-          setToggle("none");
-      }
+  const toggled = () => {
+    const input = document.getElementsByClassName("password-eye")[0];
+    const eyes1 = document.getElementsByClassName("eyes")[0];
+    const eyes2 = document.getElementsByClassName("eyes")[1];
+    if (t === "none") {
+      eyes1.style.display = "none";
+      eyes2.style.display = "block";
+      input.type = "password";
+      setToggle("block");
+    }
+    else {
+      eyes2.style.display = "none";
+      eyes1.style.display = "block";
+      input.type = "text";
+      setToggle("none");
+    }
   }
 
   useEffect(() => {
@@ -131,38 +128,39 @@ function Login() {
       <h2>Teacher : Login</h2>
       <form onSubmit={showOtp ? handleSubmit : handleLogin}>
         <div>
-          <label>
-            Email:
+          <label>Email:</label>
+          <div>
             <input
               type="email"
               value={email}
               placeholder="Enter your Email"
               onChange={(e) => setEmail(e.target.value)}
+              disabled = {showOtp}
               required
             />
-          </label>
+          </div>
         </div>
+
         <div>
-          <label>
-            Password:
-            <div className="eye-container">
-              <input
-                type="password"
-                placeholder="Enter Your Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="password-eye"
-              />
-              <FaEye className="eyes" onClick={()=>toggled()}/>
-              <FaEyeSlash className="eyes" onClick={()=> toggled()}/>
-            </div>
-          </label>
+          <label>Password:</label>
+          <div className="eye-container">
+            <input
+              type="password"
+              placeholder="Enter Your Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled = {showOtp}
+              required
+              className="password-eye"
+            />
+            <FaEye className="eyes" onClick={() => toggled()} />
+            <FaEyeSlash className="eyes" onClick={() => toggled()} />
+          </div>
         </div>
         {showOtp && (
           <div>
-            <label>
-              OTP:
+            <label>OTP:</label>
+            <div>
               <input
                 type="text"
                 placeholder="Enter OTP"
@@ -170,7 +168,7 @@ function Login() {
                 onChange={(e) => setOtp(e.target.value)}
                 required
               />
-            </label>
+            </div>
           </div>
         )}
         <p className="login_forgot_password" onClick={() => navigate("/forgot_password")}>Forgot Password?</p>
