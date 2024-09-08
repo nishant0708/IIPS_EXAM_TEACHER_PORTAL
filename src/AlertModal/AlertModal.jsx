@@ -15,7 +15,7 @@ import './AlertModal.css';
 import cross from "../Assets/cross-mark.svg";
 import tick from "../Assets/accept-check-good-mark-ok-tick.svg";
 
-const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror, isAlert }) => {
+const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror }) => {
   var image = iserror ? cross : tick;
 
   const handleClose = () => {

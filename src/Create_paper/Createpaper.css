@@ -82,3 +82,56 @@
         font-size: 12px;
       }
   }
+ .create_paper_time .react-time-picker__button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    display: none;
+}
+  /* Custom CSS for react-time-picker */
+.create_paper_time .react-time-picker {
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  color: #fff; /* Change text color to white for better visibility */
+}
+
+.create_paper_time .react-time-picker__wrapper {
+  border: none; /* Remove the default border */
+  background-color: transparent; /* Make wrapper background transparent */
+}
+
+.create_paper_time .react-time-picker__inputGroup {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.create_paper_time .react-time-picker__inputGroup__input {
+  width: 50px !important; /* Adjust width for better spacing */
+  text-align: center;
+  background-color: #1a1a1a; /* Input field background */
+  color: #fff; /* Input field text color */
+  border: 1px solid #555; /* Input field border */
+  border-radius: 4px;
+}
+.react-time-picker__clock-button .react-time-picker__button{
+  display: none;
+}
+.create_paper_time .react-time-picker__clock {
+  display: none !important; /* Hide the clock icon */
+}
+.react-time-picker__inputGroup__leadingZero{
+  display: none;
+}
+.create_paper_time .react-time-picker__clear-button {
+  display: none; /* Hide the clear button */
+}
+
+.create_paper_time .react-time-picker__button:disabled {
+  display: none; /* Hide disabled buttons */
+}
+
+.create_paper_time .react-time-picker__inputGroup__divider {
+  color: #ccc; /* Divider color */
+}

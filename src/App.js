@@ -70,15 +70,14 @@ const App = () => {
           <Route path="/add-question/:paperId" element={<Question />} />
           <Route path="/edit-question/:paperId/:questionId" element={<Question/>} />
           <Route path="/questionPaperDashboard/:paperId" element={<QuestionPaperDashboard />}/>
-
-          <Route path="/error404" element={<Error404/>}/>
-
           <Route path="/ready_papers" element={<ReadyPaperDashboard />}/>
-
         </>
       )}
-    
-        <Route path="/question" element={< Question />} />
+
+      
+
+      {/* Error404 Route */}
+      <Route path="/*" element={<Error404/>}/> 
     </Routes>
   );
 };

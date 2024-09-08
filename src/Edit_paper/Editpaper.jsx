@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import '../papers/papers.css';
+import TimePicker from 'react-time-picker'; // Import TimePicker
+import '../Create_paper/Createpaper.css'; // Ensure the same styles as Createpaper are applied
 import PropTypes from 'prop-types';
 import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AlertModal from '../AlertModal/AlertModal'; // Import AlertModal
 
 const Editpaper = () => {
   const location = useLocation();  // Taking Current Values
   const current_values = location.state;
   
-  const [date, setDate] = useState(current_values.date);
+  const [date, setDate] = useState(new Date(current_values.date));  // Ensure date is in Date format
   const [time, setTime] = useState(current_values.time);
   const [duration, setDuration] = useState({ hours: current_values.duration.hours, minutes: current_values.duration.minutes });
   const [marks, setMarks] = useState(current_values.marks);
@@ -26,7 +27,8 @@ const Editpaper = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false); 
   const [modalMessage, setModalMessage] = useState('');
   const [isError, setIsError] = useState(false); 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+
   const handleDurationChange = (field, value) => {
     if (value >= 0) {
       setDuration({ ...duration, [field]: value });
@@ -42,7 +44,7 @@ const Editpaper = () => {
     e.preventDefault();
 
     const paperData = {
-      _id:current_values._id,
+      _id: current_values._id,
       className,
       semester,
       subject,
@@ -60,21 +62,17 @@ const Editpaper = () => {
 
     try {
       await axios.post('http://localhost:5000/paper/edit-paper', paperData);
-    //   console.log('Paper created successfully:', response.data);
 
       setModalMessage('Paper edited successfully!');
       setIsError(false); 
       setModalIsOpen(true); 
 
-     
-    //   const { paperId } = response.data;
-      
-      // Navigate to the QuestionPaperDashboard with the created paper's ID
+      // Navigate to the TeacherDashboard after successful edit
       navigate(`/teacherDashboard`);
     } catch (error) {
-      console.error('Error creating paper:', error);
+      console.error('Error editing paper:', error);
 
-      setModalMessage('Failed to create paper. Please try again.');
+      setModalMessage('Failed to edit paper. Please try again.');
       setIsError(true); 
       setModalIsOpen(true); 
     }
@@ -155,16 +153,14 @@ const Editpaper = () => {
                 value={subjectCode}
                 onChange={(e) => setSubjectCode(e.target.value)}
               />
-
-              
             </FormGroup>
 
-            <FormGroup label="Time: (24 hrs format)" className="create_paper_time">
-              <input
-                type="time"
-                className="create_paper_input"
+            <FormGroup label="Time: (12 hrs format)" className="create_paper_time">
+              <TimePicker
+                onChange={setTime}
                 value={time}
-                onChange={(e) => setTime(e.target.value)}
+                format="h:mm a" // 12-hour format with AM/PM
+                className="create_paper_input"
               />
             </FormGroup>
           </div>
