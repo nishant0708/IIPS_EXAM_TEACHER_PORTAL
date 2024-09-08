@@ -4,11 +4,21 @@ import "./papers.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Nothing from "../Assets/nothing.svg";
+import { CiEdit } from "react-icons/ci";
+import { HiDocumentDuplicate } from "react-icons/hi2";
+import { MdDelete } from "react-icons/md";
+import AlertModal from "../AlertModal/AlertModal";
 
 function Papers() {
   const navigate = useNavigate();
   const [exams, setExams] = useState([]);
-  const teacherId = localStorage.getItem("teacherId"); // Assuming teacherId is stored in localStorage
+  const [reload, setReload] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null);
+
+  const teacherId = localStorage.getItem("teacherId");
 
   useEffect(() => {
     const fetchPapers = async () => {
@@ -24,17 +34,53 @@ function Papers() {
     };
 
     fetchPapers();
-  }, [teacherId]);
+  }, [teacherId, reload]);
 
   const handleCreateNew = () => {
     navigate("/create-paper");
+  };
+
+  const handleEditNew = (exam) => {
+    navigate("/edit-paper", {
+      state: { ...exam },
+    });
+  };
+
+  const deletePaper = async (paper) => {
+    try {
+      await axios.post("http://localhost:5000/paper/delete-paper", { _id: paper._id });
+      setExams((prevQuestions) => prevQuestions.filter((q) => q._id !== paper._id));
+      setReload((prev) => !prev);
+      setModalMessage("Paper deleted successfully.");
+      setIsError(false);
+      setModalIsOpen(true);
+    } catch (error) {
+      console.error("Error deleting paper:", error);
+      setModalMessage("Failed to delete paper.");
+      setIsError(true);
+      setModalIsOpen(true);
+    }
+  };
+
+  const duplicatePaper = async (paper) => {
+    try {
+      await axios.post("http://localhost:5000/paper/duplicate-paper", paper);
+      setReload((prev) => !prev);
+      setModalMessage("Paper duplicated successfully.");
+      setIsError(false);
+      setModalIsOpen(true);
+    } catch (error) {
+      console.error("Error duplicating paper:", error);
+      setModalMessage("Failed to duplicate paper.");
+      setIsError(true);
+      setModalIsOpen(true);
+    }
   };
 
   const getFormattedDateTime = (date, time) => {
     const [hours, minutes] = time.split(":").map(Number);
     const dateTime = new Date(date);
     dateTime.setHours(hours, minutes);
-
     return dateTime.toLocaleString("en-US", {
       year: "numeric",
       month: "long",
@@ -45,15 +91,8 @@ function Papers() {
     });
   };
 
-  const handleCardClick = (paperId, exam) => {
-    navigate(`/questionPaperDashboard/${paperId}`, {
-      state: {
-        className: exam.className,
-        semester: exam.semester,
-        subject: exam.subject,
-        marks: exam.marks,
-      },
-    });
+  const handleCardClick = (paperId) => {
+    navigate(`/questionPaperDashboard/${paperId}`);
   };
 
   return (
@@ -69,12 +108,45 @@ function Papers() {
             </div>
           </div>
           <div className="exam-table">
-            {exams.map((exam, index) => (
+            {exams.map((exam) => (
               <div
                 className="papers_table"
-                key={index}
-                onClick={() => handleCardClick(exam._id, exam)} // Passing exam data to handleCardClick
+                key={exam._id}
+                onMouseEnter={() => setHoveredItem(exam._id)}
+                onMouseLeave={() => setHoveredItem(null)}
+                onClick={() => handleCardClick(exam._id)}
               >
+                {hoveredItem === exam._id && (
+                  <div className="hovered-buttons">
+                    <button onClick={(e) => {
+                      e.stopPropagation();
+                      handleEditNew(exam);
+                    }}>
+                      <div className="flex-class">
+                        <CiEdit />
+                        <div>Edit</div>
+                      </div>
+                    </button>
+                    <button id="duplicate" onClick={(e) => {
+                      e.stopPropagation();
+                      duplicatePaper(exam);
+                    }}>
+                      <div className="flex-class">
+                        <HiDocumentDuplicate />
+                        <div>Duplicate</div>
+                      </div>
+                    </button>
+                    <button id="delete" onClick={(e) => {
+                      e.stopPropagation();
+                      deletePaper(exam);
+                    }}>
+                      <div className="flex-class">
+                        <MdDelete />
+                        <div>Delete</div>
+                      </div>
+                      </button>
+                  </div>
+                )}
                 <div className="scheduled">
                   Scheduled on: {getFormattedDateTime(exam.date, exam.time)}
                 </div>
@@ -86,8 +158,7 @@ function Papers() {
                     {exam.subject} ({exam.subjectCode})
                   </div>
                   <div>
-                    Duration : {exam.duration.hours} hours{" "}
-                    {exam.duration.minutes} mins
+                    Duration : {exam.duration.hours} hours {exam.duration.minutes} mins
                   </div>
                   <div>Marks : {exam.marks}</div>
                 </div>
@@ -97,19 +168,22 @@ function Papers() {
         </>
       ) : (
         <div className="no-questions-container">
-              <center>
-                <img alt="Nothing" src={Nothing} className="nothing" />
-                <h2>No Paper&apos;s Found</h2>
-                <button
-                  className="add-question-button"
-                  onClick={handleCreateNew}
-                >
-                  <FaPlus />
-                  <p>Create Your First Paper</p>
-                </button>
-              </center>
-            </div>
+          <center>
+            <img alt="Nothing" src={Nothing} className="nothing" />
+            <h2>No Paper&apos;s Found</h2>
+            <button className="add-question-button" onClick={handleCreateNew}>
+              <FaPlus />
+              <p>Create Your First Paper</p>
+            </button>
+          </center>
+        </div>
       )}
+      <AlertModal
+        isOpen={modalIsOpen}
+        onClose={() => setModalIsOpen(false)}
+        message={modalMessage}
+        iserror={isError}
+      />
     </div>
   );
 }

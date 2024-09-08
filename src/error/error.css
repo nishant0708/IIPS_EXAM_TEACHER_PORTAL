@@ -1,0 +1,40 @@
+.error-container {
+  background-color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  color: white;
+}
+
+.error404-heading {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  color: rgb(14, 88, 14); /* Moved the color to the class */
+}
+
+.panda-image {
+  width: 450px;
+  margin-bottom: 0px;
+}
+
+.error404-text {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.go-back-button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  background-color: white;
+  color: green;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.go-back-button:hover {
+  background-color: #e6e6e6;
+}

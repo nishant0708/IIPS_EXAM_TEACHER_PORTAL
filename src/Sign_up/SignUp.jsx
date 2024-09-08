@@ -72,9 +72,7 @@ const SignUp = () => {
     });
   };
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
-
+  const handleSignUp = async () => {
     setLoading(true); // Set loading state
     try {
       const response = await fetch("http://localhost:5000/teacher/signup", {
@@ -96,7 +94,6 @@ const SignUp = () => {
         setAlertMessage("Your account has been created successfully.");
         setIsErrorAlert(false);
         setIsAlertOpen(true);
-        setTimeout(() => navigate("/verify_passcode"), 2000); // Redirect after showing success message
       } else {
         setAlertMessage(data.error || "Failed to sign up");
         setIsErrorAlert(true);
@@ -122,16 +119,21 @@ const SignUp = () => {
     }
 
     if (isFirstClick) {
-      setIsWarningOpen(true);
-      setIsFirstClick(false); // Disable modal for subsequent clicks
+      setIsWarningOpen(true); 
+      setIsFirstClick(false); 
     } else {
-      handleSignUp(e); // Proceed with the signup process directly after the first click
+      handleSignUp(); 
     }
   };
 
   const handleWarningConfirm = () => {
-    setIsWarningOpen(false);
-    handleSignUp(); // Proceed with sign-up after confirming the warning
+    setIsWarningOpen(false); 
+    handleSignUp();
+  };
+
+  const handleAlertConfirm = () => {
+    setIsAlertOpen(false); 
+    navigate("/verify_passcode"); 
   };
 
   return (
@@ -238,7 +240,7 @@ const SignUp = () => {
       {/* Alert Modal for success/error messages */}
       <AlertModal
         isOpen={isAlertOpen}
-        onClose={() => setIsAlertOpen(false)}
+        onClose={handleAlertConfirm} 
         message={alertMessage}
         iserror={isErrorAlert}
       />
