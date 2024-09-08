@@ -130,6 +130,7 @@ const QuestionPaperDashboard = () => {
   return (
     <>
       <Navbar />
+      <div className="question-list-container-main">
       <div className="question-list-container">
         {questions.length > 0 ? (
           <>
@@ -229,7 +230,7 @@ const QuestionPaperDashboard = () => {
           </>
         )}
       </div>
-
+      </div>
       {/* Alert Modal */}
       < AlertModal
         isOpen={modalIsOpen} 

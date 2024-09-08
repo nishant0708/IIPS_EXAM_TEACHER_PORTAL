@@ -9,6 +9,7 @@ import Navbar from '../Navbar/Navbar';
 return (
     <>
       <Navbar />
+
       <div className='add_question_container_main'>
         <div className="add_question_container">
           <h2 className="add_question_heading">Add Question</h2>
@@ -101,6 +102,6 @@ return (
       />
     </>
   );
-};
+
 
 export default Question;
