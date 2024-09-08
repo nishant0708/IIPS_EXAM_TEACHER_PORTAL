@@ -83,6 +83,7 @@ const Reset_Password = () => {
     };
 
     return (
+        <div className="reset-container-main">
         <div className="reset-container">
             <img alt="logo" src={Logo} />
             <h2>Teacher: Reset Password</h2>
@@ -123,6 +124,7 @@ const Reset_Password = () => {
                 message={message} 
                 iserror={isError} 
             />
+        </div>
         </div>
     );
 };

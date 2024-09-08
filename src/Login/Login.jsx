@@ -123,6 +123,7 @@ function Login() {
   };
 
   return (
+    <div className="lpgin-container-main">
     <div className="login-container">
       <img src={logo} alt="Logo" />
       <h2>Teacher : Login</h2>
@@ -183,6 +184,7 @@ function Login() {
         message={modalMessage}
         iserror={isError}
       />
+    </div>
     </div>
   );
 }

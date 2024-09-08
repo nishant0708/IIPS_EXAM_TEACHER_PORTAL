@@ -77,9 +77,10 @@ const Createpaper = () => {
     }
   };
 
-  return (
-    <>
-      <Navbar />
+  return (<>
+    <Navbar />
+    <div className='create_paper_container_main'>
+   
       <div className="create_paper_container">
         <form className="create_paper_form" onSubmit={handleSubmit}>
           <div className='create_paper_row'>
@@ -197,6 +198,7 @@ const Createpaper = () => {
         message={modalMessage} 
         iserror={isError}
       />
+    </div>
     </>
   );
 };

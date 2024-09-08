@@ -32,6 +32,7 @@ const ForgotPassword = () => {
     };
 
     return (
+        <div className="forgot-container-main">
         <div className="forgot-container">
             <img alt="Logo" src={Logo} />
             <h2>Forgot Your Password?</h2>
@@ -55,6 +56,7 @@ const ForgotPassword = () => {
                 message={message} 
                 iserror={isError} 
             />
+        </div>
         </div>
     );
 };
