@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import TimePicker from 'react-time-picker'; // Import TimePicker
 import './Createpaper.css';
 import PropTypes from 'prop-types';
 import Navbar from '../Navbar/Navbar';
@@ -24,6 +25,7 @@ const Createpaper = () => {
   const [modalMessage, setModalMessage] = useState('');
   const [isError, setIsError] = useState(false); 
   const navigate = useNavigate(); 
+
   const handleDurationChange = (field, value) => {
     if (value >= 0) {
       setDuration({ ...duration, [field]: value });
@@ -48,7 +50,7 @@ const Createpaper = () => {
         minutes: duration.minutes,
       },
       subjectCode,
-      time,
+      time, // No conversion needed, time is already in 12-hour format
       date,
       testType,
       teacherId,
@@ -62,7 +64,6 @@ const Createpaper = () => {
       setIsError(false); 
       setModalIsOpen(true); 
 
-     
       const { paperId } = response.data;
       
       // Navigate to the QuestionPaperDashboard with the created paper's ID
@@ -151,16 +152,14 @@ const Createpaper = () => {
                 value={subjectCode}
                 onChange={(e) => setSubjectCode(e.target.value)}
               />
-
-              
             </FormGroup>
 
-            <FormGroup label="Time: (24 hrs format)" className="create_paper_time">
-              <input
-                type="time"
-                className="create_paper_input"
+            <FormGroup label="Time: (12 hrs format)" className="create_paper_time">
+              <TimePicker
+                onChange={setTime}
                 value={time}
-                onChange={(e) => setTime(e.target.value)}
+                format="h:mm a" // 12-hour format with AM/PM
+                className="create_paper_input"
               />
             </FormGroup>
           </div>

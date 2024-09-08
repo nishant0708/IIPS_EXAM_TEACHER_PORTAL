@@ -10,6 +10,19 @@ const ReadyPaperDashboard = () => {
   const [exams, setExams] = useState([]);
   
   const teacherId = localStorage.getItem("teacherId");
+  const getFormattedDateTime = (date, time) => {
+    const [hours, minutes] = time.split(":").map(Number);
+    const dateTime = new Date(date);
+    dateTime.setHours(hours, minutes);
+    return dateTime.toLocaleString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+  };
 
   useEffect(() => {
     const fetchPapers = async () => {
@@ -48,14 +61,7 @@ const ReadyPaperDashboard = () => {
                   onClick={() => handleCardClick(exam._id)} 
                 >
                   <div className="scheduled">
-                    Scheduled on: {new Date(exam.date).toLocaleString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    })}
+                  Scheduled on: {getFormattedDateTime(exam.date, exam.time)}
                   </div>
                   <div className="table-data">
                     <div className="classhead">
