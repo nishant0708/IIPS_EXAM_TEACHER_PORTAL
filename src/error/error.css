@@ -23,6 +23,7 @@
 .error404-text {
   font-size: 1.5rem;
   margin-bottom: 20px;
+  margin-top: -20px;
 }
 
 .go-back-button {
@@ -42,7 +43,5 @@
   .panda-image{
     width: 300px;
   }
-  .error-container{
-    height: 100vh;
-  }
+  
 }

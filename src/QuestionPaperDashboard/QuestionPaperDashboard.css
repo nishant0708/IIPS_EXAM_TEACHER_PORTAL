@@ -42,7 +42,8 @@
     z-index: 0;
     display: flex;
     justify-content: center;
-    padding: 35px;
+    padding: 20px;
+    cursor: pointer;
     color: white;
     text-align: left;
     border-bottom: 1px solid #ddd;
@@ -52,11 +53,14 @@
     gap: 4px;
     height: 125px;
 }
+.question-table-data:hover{
+    background-color: #404040;
+}
 .questions-table
 {
     position: relative;
     margin: 20px;
-    margin-bottom: 60px;
+    margin-bottom: 50px;
     font-size: large;
 }
 .compiler
@@ -88,6 +92,7 @@
 }
 .question-image img
 {
+    object-fit: contain;
     width: 250px;
     height: 125px;
 }

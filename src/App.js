@@ -14,7 +14,8 @@ import Editpaper from './Edit_paper/Editpaper';
 import ReadyPaperDashboard from './ReadyPaperDashboard/ReadyPaperDashboard';
 
 import Error404 from './error/error404';
-import EditQuestion from './Edit_question/edit_question';
+import EditQuestion from './edit_question/EditQuestion';
+
 
 
 const App = () => {
@@ -75,7 +76,7 @@ const App = () => {
         </>
       )}
 
-      
+
 
       {/* Error404 Route */}
       <Route path="/*" element={<Error404/>}/> 

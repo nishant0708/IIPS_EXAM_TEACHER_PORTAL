@@ -22,7 +22,7 @@ const Question = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [isError, setIsError] = useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const handleAddQuestion = async () => {
     if (!questionheading || !questionDescription || !compilerReq || !marks) {
@@ -65,8 +65,6 @@ const Question = () => {
     }
   };
 
-
-
   const submitQuestion = async (imageUrl) => {
     const response = await axios.post('http://localhost:5000/paper/add-question', {
       paperId,
@@ -81,14 +79,20 @@ const Question = () => {
       setModalMessage('Question added successfully!');
       setIsError(false);
       setModalIsOpen(true);
-      // Clear form
-      setQuestionHeading('');
-      setQuestionDescription('');
-      setCompilerReq('');
-      setMarks('');
-      setImage(null);
-      navigate()
-      
+
+      // If remaining marks are 0, navigate to the QuestionPaperDashboard
+      if (remainingMarks - parseInt(marks) === 0) {
+        setTimeout(() => {
+          navigate(`/questionPaperDashboard/${paperId}`);
+        }, 2000); // Wait for 2 seconds before navigating
+      } else {
+        // Clear form if there are remaining marks
+        setQuestionHeading('');
+        setQuestionDescription('');
+        setCompilerReq('');
+        setMarks('');
+        setImage(null);
+      }
     }
     setLoading(false);
   };
@@ -103,8 +107,7 @@ const Question = () => {
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    maxSize: 10485760, // 10MB limit,
-   
+    maxSize: 10485760, // 10MB limit
   });
 
   return (

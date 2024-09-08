@@ -121,10 +121,15 @@ const QuestionPaperDashboard = () => {
       setReload(prev => !prev);
     }
 
-    const editQuestion =(question)=>
-    {
-      navigate(`/edit-question/${question.paperId}/${question._id}`,{state:question});
-    }
+    const editQuestion = (question) => {
+      const remainingMarks = paperdetails.marks - totalMarks + question.marks; // Calculate remaining marks considering the current question's marks
+      navigate(`/edit-question/${question.paperId}/${question._id}`, {
+        state: {
+          ...question,
+          remainingMarks,  // Pass remaining marks to the EditQuestion component
+        }
+      });
+    };
     const handleSubmit = async () => {
       try {
     
@@ -223,17 +228,11 @@ const QuestionPaperDashboard = () => {
                         {question.questionDescription}
                       </div>
                     </div>
-                    {/* <button onClick={()=>editQuestion(question)} >Edit</button>
-                    <button onClick={()=>duplicateQuestion(question)}>Duplicate</button>
-                    <button onClick={()=>deleteQuestion(question)}>Delete</button> */}
                     {question.image ? (
                       <div className="question-image">
                         <img src={question.image} alt="question" />
                       </div>
                     ) : (
-                      // <div className="question-image">
-                      //   <img src={defaultImage} alt="question" />
-                      // </div>
                       <></>
                     )}
                   </div>

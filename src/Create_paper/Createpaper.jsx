@@ -39,7 +39,7 @@ const Createpaper = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const minutes = duration.minutes === '' ? 0 : duration.minutes;
     const paperData = {
       className,
       semester,
@@ -47,10 +47,10 @@ const Createpaper = () => {
       marks,
       duration: {
         hours: duration.hours,
-        minutes: duration.minutes,
+        minutes: minutes,
       },
       subjectCode,
-      time, // No conversion needed, time is already in 12-hour format
+      time, 
       date,
       testType,
       teacherId,

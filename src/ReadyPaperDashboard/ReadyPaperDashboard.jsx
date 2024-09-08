@@ -53,6 +53,9 @@ const ReadyPaperDashboard = () => {
             <div className="header">
               <h2>Ready Papers:</h2>
             </div>
+            <center>
+            <p className="readyDasboardwarning">The papers displayed here are ready for testing and are scheduled for the test. If you want to edit a paper, please move it to the Dashboard and resubmit it.</p>
+            </center>
             <div className="exam-table">
               {exams.map((exam, index) => (
                 <div

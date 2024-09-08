@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import AlertModal from '../AlertModal/AlertModal'; // Import the AlertModal component
 
 const EditQuestion = () => {
@@ -22,7 +22,7 @@ const EditQuestion = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [isError, setIsError] = useState(false);
-  // const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const handleEditQuestion = async () => {
     if (!questionheading || !questionDescription || !compilerReq || !marks) {
@@ -65,8 +65,6 @@ const EditQuestion = () => {
     }
   };
 
-
-
   const editQuestion = async (imageUrl) => {
     const response = await axios.post('http://localhost:5000/paper/edit-question', {
       _id: location.state._id,
@@ -81,13 +79,15 @@ const EditQuestion = () => {
     if (response.status === 200) {
       setModalMessage('Question Edited successfully!');
       setIsError(false);
-      setModalIsOpen(true);      
-    }
-    else
-    {
+      setModalIsOpen(true);
+
+      setTimeout(() => {
+        navigate(`/questionPaperDashboard/${paperId}`);
+      }, 2000);
+    } else {
       setModalMessage('Question Edit Failed!');
       setIsError(true);
-      setModalIsOpen(true);  
+      setModalIsOpen(true);
     }
     setLoading(false);
   };
@@ -102,8 +102,7 @@ const EditQuestion = () => {
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    maxSize: 10485760, // 10MB limit,
-   
+    maxSize: 10485760, // 10MB limit
   });
 
   return (
@@ -187,7 +186,7 @@ const EditQuestion = () => {
           </div>
 
           <button onClick={handleEditQuestion} className="add_question_button" disabled={loading}>
-            {loading ? 'Adding...' : 'Edit Question'}
+            {loading ? 'Editing...' : 'Edit Question'}
           </button>
         </div>
       </div>
