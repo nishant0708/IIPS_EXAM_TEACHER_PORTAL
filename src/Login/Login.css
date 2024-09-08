@@ -1,6 +1,6 @@
 
   .lpgin-container-main{
- background-color: #282828;
+ background-color: #1a1a1a;
  display: flex;
  align-items: center;
  justify-content: center;
@@ -17,7 +17,7 @@ min-height: 100vh;
     border: 1px solid #ccc;
     box-shadow: 0px 0px 10px white;
     border-radius: 8px;
- 
+  background-color: #282828;
    
   }
   

@@ -1,10 +1,4 @@
-.question-list-container-main{
-    background-color: #282828;
- display: flex;
- align-items: center;
- justify-content: center;
- min-height: 100vh;
-}
+
 .question-list-container
 {
     width: 100%;
