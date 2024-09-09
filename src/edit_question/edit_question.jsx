@@ -1,18 +1,117 @@
 import React, { useState } from 'react';
-import './question.css';
+import '../question/question.css';
 import { FaTimes } from 'react-icons/fa';
 import { useDropzone } from 'react-dropzone';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import Navbar from '../Navbar/Navbar';
+import axios from 'axios';
+import { useParams, useLocation } from 'react-router-dom';
+import AlertModal from '../AlertModal/AlertModal'; // Import the AlertModal component
+
+const EditQuestion = () => {
+  const { paperId } = useParams();
+  const location = useLocation();
+
+  const { remainingMarks } = location.state || {}; // Get remaining marks from props
+  const [questionheading, setQuestionHeading] = useState(location.state.questionheading);
+  const [questionDescription, setQuestionDescription] = useState(location.state.questionDescription);
+  const [compilerReq, setCompilerReq] = useState(location.state.compilerReq);
+  const [marks, setMarks] = useState(location.state.marks);
+  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [isError, setIsError] = useState(false);
+  // const navigate=useNavigate();
+
+  const handleEditQuestion = async () => {
+    if (!questionheading || !questionDescription || !compilerReq || !marks) {
+      setModalMessage('Please fill in all the required fields.');
+      setIsError(true);
+      setModalIsOpen(true);
+      return;
+    }
+
+    if (parseInt(marks) > remainingMarks) {
+      setModalMessage(`You can assign a maximum of ${remainingMarks} marks to this question.`);
+      setIsError(true);
+      setModalIsOpen(true);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      let imageUrl = '';
+
+      if (image) {
+        const formData = new FormData();
+        formData.append('file', image);
+        formData.append('upload_preset', 'question');
+
+        const uploadResponse = await axios.post('http://localhost:5000/paper/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+
+        imageUrl = uploadResponse.data.url; // Assuming the backend responds with the image URL
+      }
+
+      await editQuestion(imageUrl);
+    } catch (error) {
+      console.error('Failed to add question:', error.message);
+      setModalMessage('Failed to add question. Please try again.');
+      setIsError(true);
+      setModalIsOpen(true);
+      setLoading(false);
+    }
+  };
 
 
-return (
+
+  const editQuestion = async (imageUrl) => {
+    const response = await axios.post('http://localhost:5000/paper/edit-question', {
+      _id: location.state._id,
+      paperId,
+      questionheading,
+      questionDescription,
+      compilerReq,
+      marks,
+      image: imageUrl, // Include imageUrl even if it's an empty string
+    });
+
+    if (response.status === 200) {
+      setModalMessage('Question Edited successfully!');
+      setIsError(false);
+      setModalIsOpen(true);      
+    }
+    else
+    {
+      setModalMessage('Question Edit Failed!');
+      setIsError(true);
+      setModalIsOpen(true);  
+    }
+    setLoading(false);
+  };
+
+  const onDrop = (acceptedFiles) => {
+    setImage(acceptedFiles[0]);
+  };
+
+  const handleRemoveImage = () => {
+    setImage(null);
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    maxSize: 10485760, // 10MB limit,
+   
+  });
+
+  return (
     <>
       <Navbar />
-
       <div className='add_question_container_main'>
         <div className="add_question_container">
-          <h2 className="add_question_heading">Add Question</h2>
+          <h2 className="add_question_heading">Edit Question</h2>
 
           <div>
             <label className="add_question_label">Question Heading:</label>
@@ -87,8 +186,8 @@ return (
             </div>
           </div>
 
-          <button onClick={handleAddQuestion} className="add_question_button" disabled={loading}>
-            {loading ? 'Adding...' : 'Add Question'}
+          <button onClick={handleEditQuestion} className="add_question_button" disabled={loading}>
+            {loading ? 'Adding...' : 'Edit Question'}
           </button>
         </div>
       </div>
@@ -102,6 +201,6 @@ return (
       />
     </>
   );
+};
 
-
-export default Question;
+export default EditQuestion;
