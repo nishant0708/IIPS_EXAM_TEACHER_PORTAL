@@ -9,6 +9,7 @@
 }
 
 .error404-heading {
+  margin-top: 10px;
   font-size: 4rem;
   margin-bottom: 20px;
   color: rgb(14, 88, 14); /* Moved the color to the class */
