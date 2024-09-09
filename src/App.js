@@ -12,6 +12,7 @@ import Question from './question/question';
 import QuestionPaperDashboard from './QuestionPaperDashboard/QuestionPaperDashboard';
 import Editpaper from './Edit_paper/Editpaper';
 import ReadyPaperDashboard from './ReadyPaperDashboard/ReadyPaperDashboard';
+import ReadyQuestionPaperDashboard from './ReadyQuestionPaperDashboard/ReadyQuestionPaperDashboard';
 
 import Error404 from './error/error404';
 import EditQuestion from './Edit_question/edit_question';
@@ -72,6 +73,7 @@ const App = () => {
           <Route path="/edit-question/:paperId/:questionId" element={<EditQuestion/>} />
           <Route path="/questionPaperDashboard/:paperId" element={<QuestionPaperDashboard />}/>
           <Route path="/ready_papers" element={<ReadyPaperDashboard />}/>
+          <Route path="/ready_questions/:paperId" element={<ReadyQuestionPaperDashboard />} />
         </>
       )}
 

@@ -257,7 +257,6 @@ const QuestionPaperDashboard = () => {
                 {totalMarks === paperdetails.marks && (
                   <button
                     className="question_submit-button"
-                    style={{ backgroundColor: "green", color: "white" }}
                     onClick={handleSubmit}
                   >
                     Submit
