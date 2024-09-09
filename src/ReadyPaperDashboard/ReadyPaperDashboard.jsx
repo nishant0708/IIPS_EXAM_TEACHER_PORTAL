@@ -5,9 +5,8 @@ import axios from "axios";
 import Nothing from "../Assets/nothing.svg";
 import Navbar from "../Navbar/Navbar";
 import { MdDelete } from "react-icons/md";
-import { HiDocumentDuplicate } from "react-icons/hi2";
 import AlertModal from "../AlertModal/AlertModal";
-
+import { MdOutlineDriveFileMoveRtl } from "react-icons/md";
 const ReadyPaperDashboard = () => {
   const navigate = useNavigate();
   const [exams, setExams] = useState([]);
@@ -125,10 +124,10 @@ const ReadyPaperDashboard = () => {
                 {hoveredItem === exam._id && (
                   <div className="hovered-buttons">
 
-                    <button id="duplicate" onClick={(e)=>{e.stopPropagation();moveToDashboard(exam)}}>
+                    <button id="move_to_dashboard" onClick={(e)=>{e.stopPropagation();moveToDashboard(exam)}}>
                       <div className="flex-class">
-                        <HiDocumentDuplicate />
-                        <div>Revert</div>
+                         <MdOutlineDriveFileMoveRtl  size={22}/>
+                        <div>Move back to Dashboard</div>
                       </div>
                     </button>
                     <button id="delete" onClick={(e)=>{e.stopPropagation();deleteReadyPaper(exam)}}>

@@ -82,7 +82,16 @@
 }
  #duplicate
 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 150px;
+}
+#move_to_dashboard{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 275px;
 }
 .table-data:hover{
   background-color: #404040;
