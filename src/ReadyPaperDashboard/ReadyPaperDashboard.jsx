@@ -41,7 +41,7 @@ const ReadyPaperDashboard = () => {
   }, [teacherId]);
 
   const handleCardClick = (paperId) => {
-    navigate(`/questionPaperDashboard/${paperId}`);
+    navigate(`/ready_questions/${paperId}`);
   };
 
   return (
