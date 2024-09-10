@@ -94,8 +94,8 @@ const Createpaper = () => {
             <FormGroup label="Class:" className="create_paper_class">
               <select className="create_paper_input" value={className} onChange={(e) => setClassName(e.target.value)}>
                 <option value="">Select Class</option>
-                <option value="Mtech">Mtech</option>
-                <option value="Mca">Mca</option>
+                <option value="MTECH">Mtech</option>
+                <option value="MCA">Mca</option>
               </select>
             </FormGroup>
 
