@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Sign_up.css";
 import var1 from "../Assets/iips_logo2.png";
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import AlertModal from "../AlertModal/AlertModal";
+import Loader from "../Loader/Loader";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -20,9 +21,12 @@ const SignUp = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [isErrorAlert, setIsErrorAlert] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state for signup button
+  const [loadingSpinner,setLoadingSpinner] = useState(true);
   const [isFirstClick, setIsFirstClick] = useState(true); // Track if it is the first click
   const [d0,setToggle0] = useState("block");
   const [d1,setToggle1] = useState("block");
+
+  useEffect(()=>{setTimeout(()=>{setLoadingSpinner(false);},1000);},[]);
 
   const toggled=(index)=>
   {
@@ -138,7 +142,8 @@ const SignUp = () => {
 
   return (
     <div className="sign_up_Box_min">
-      <div className="Sign_up_Box">
+      {loadingSpinner ? (<Loader />) : (<>
+        <div className="Sign_up_Box">
         <img src={var1} alt="" />
         <h3>Teacher : Sign Up</h3>
         <form onSubmit={handleFormSubmit}>
@@ -227,6 +232,7 @@ const SignUp = () => {
           Already Have passcode?
         </p>
       </div>
+      </>)}
 
       {/* Warning Modal for OTP */}
       <AlertModal

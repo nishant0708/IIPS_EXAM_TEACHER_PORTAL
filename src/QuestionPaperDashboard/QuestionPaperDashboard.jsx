@@ -10,6 +10,7 @@ import AlertModal from "../AlertModal/AlertModal";
 import { CiEdit } from "react-icons/ci";
 import { HiDocumentDuplicate } from "react-icons/hi2";
 import { MdDelete } from "react-icons/md";
+import Skeleton from "../Skeleton/Skeleton";
 
 
 const QuestionPaperDashboard = () => {
@@ -42,7 +43,7 @@ const QuestionPaperDashboard = () => {
        
        
       } finally {
-        setLoading(false);
+        setTimeout(()=>{setLoading(false)},1000);
       }
     };
     const fetchpaperdetails = async () => {
@@ -57,16 +58,12 @@ const QuestionPaperDashboard = () => {
        
        
       } finally {
-        setLoading(false);
+        setTimeout(()=>{setLoading(false)},1000);
       }
     };
   fetchpaperdetails();
     fetchQuestions();
   }, [paperId,reload]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   const totalMarks = questions.reduce(
     (sum, question) => sum + question.marks,
@@ -166,7 +163,8 @@ const QuestionPaperDashboard = () => {
       <Navbar />
       
       <div className="question-list-container">
-        {questions.length > 0 ? (
+        { 
+        questions.length > 0 ? (
           <>
             <div className="question-header">
               <h2 className="question-subject">
@@ -186,7 +184,8 @@ const QuestionPaperDashboard = () => {
               </div>
             )}
             <div className="question-table">
-              {questions.map((question) => (
+              {loading ? <Skeleton exams={questions}/>
+        : questions.map((question) => (
 
                 <div className="questions-table" key={question._id}
                 onMouseEnter={() => setHoveredItem(question._id)}

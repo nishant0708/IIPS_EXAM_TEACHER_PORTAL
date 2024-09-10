@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import '../question/question.css';
 import { FaTimes } from 'react-icons/fa';
 import { useDropzone } from 'react-dropzone';
@@ -7,6 +7,7 @@ import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import AlertModal from '../AlertModal/AlertModal'; // Import the AlertModal component
+import Loader from '../Loader/Loader';
 
 const EditQuestion = () => {
   const { paperId } = useParams();
@@ -19,10 +20,13 @@ const EditQuestion = () => {
   const [marks, setMarks] = useState(location.state.marks);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadingSpinner,setLoadingSpinner] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(()=>{setTimeout(()=>{setLoadingSpinner(false)},1000);},[]);
 
   const handleEditQuestion = async () => {
     if (!questionheading || !questionDescription || !compilerReq || !marks) {
@@ -109,7 +113,8 @@ const EditQuestion = () => {
     <>
       <Navbar />
       <div className='add_question_container_main'>
-        <div className="add_question_container">
+        {loadingSpinner ? (<Loader />) : (<>
+          <div className="add_question_container">
           <h2 className="add_question_heading">Edit Question</h2>
 
           <div>
@@ -189,6 +194,7 @@ const EditQuestion = () => {
             {loading ? 'Editing...' : 'Edit Question'}
           </button>
         </div>
+        </>)}
       </div>
 
       {/* Alert Modal */}

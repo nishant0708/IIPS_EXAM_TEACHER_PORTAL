@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TimePicker from 'react-time-picker'; // Import TimePicker
@@ -8,6 +8,7 @@ import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from '../AlertModal/AlertModal'; // Import AlertModal
+import Loader from '../Loader/Loader';
 
 const Createpaper = () => {
   const [date, setDate] = useState(null);
@@ -20,11 +21,17 @@ const Createpaper = () => {
   const [subject, setSubject] = useState('');
   const [subjectCode, setSubjectCode] = useState('');
   const teacherId = localStorage.getItem("teacherId");
+  const [loading,setLoading] = useState(true);
 
   const [modalIsOpen, setModalIsOpen] = useState(false); 
   const [modalMessage, setModalMessage] = useState('');
   const [isError, setIsError] = useState(false); 
   const navigate = useNavigate(); 
+
+  useEffect(()=>
+  {
+    setTimeout(()=>{setLoading(false)},1000);
+  },[]);
 
   const handleDurationChange = (field, value) => {
     if (value >= 0) {
@@ -80,8 +87,8 @@ const Createpaper = () => {
   return (<>
     <Navbar />
     <div className='create_paper_container_main'>
-   
-      <div className="create_paper_container">
+      {loading ? (<Loader />): (<>
+        <div className="create_paper_container">
         <form className="create_paper_form" onSubmit={handleSubmit}>
           <div className='create_paper_row'>
             <FormGroup label="Class:" className="create_paper_class">
@@ -190,6 +197,7 @@ const Createpaper = () => {
           <button type="submit" className="create_paper_submit_btn">SUBMIT</button>
         </form>
       </div>
+      </>)}
       
       {/* Alert Modal */}
       <AlertModal 

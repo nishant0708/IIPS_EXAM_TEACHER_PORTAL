@@ -7,10 +7,14 @@ import Navbar from "../Navbar/Navbar";
 import { MdDelete } from "react-icons/md";
 import AlertModal from "../AlertModal/AlertModal";
 import { MdOutlineDriveFileMoveRtl } from "react-icons/md";
+import Skeleton from "../Skeleton/Skeleton";
+
 const ReadyPaperDashboard = () => {
   const navigate = useNavigate();
   const [exams, setExams] = useState([]);
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const teacherId = localStorage.getItem("teacherId");
   const [reload,setReload]= useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -40,6 +44,8 @@ const ReadyPaperDashboard = () => {
         setExams(response.data);
       } catch (error) {
         console.error("Error fetching papers:", error);
+      } finally {
+        setTimeout(()=>{setLoading(false)},1000);
       }
     };
 
@@ -103,13 +109,17 @@ const ReadyPaperDashboard = () => {
     <>
       <Navbar />
       <div className="exam-list-container">
-        {exams.length > 0 ? (
+        {loading ? (
+          <Skeleton exams={exams}/> // Display skeleton loader when loading
+        ) : exams.length > 0 ? (
           <>
             <div className="header">
               <h2>Ready Papers:</h2>
             </div>
             <center>
-            <p className="readyDasboardwarning">The papers displayed here are ready for testing and are scheduled for the test. If you want to edit a paper, please move it to the Dashboard and resubmit it.</p>
+              <p className="readyDasboardwarning">
+                The papers displayed here are ready for testing and are scheduled for the test. If you want to edit a paper, please move it to the Dashboard and resubmit it.
+              </p>
             </center>
             <div className="exam-table">
               {exams.map((exam, index) => (
@@ -139,7 +149,7 @@ const ReadyPaperDashboard = () => {
                   </div>
                 )}
                   <div className="scheduled">
-                  Scheduled on: {getFormattedDateTime(exam.date, exam.time)}
+                    Scheduled on: {getFormattedDateTime(exam.date, exam.time)}
                   </div>
                   <div className="table-data">
                     <div className="classhead">
@@ -175,6 +185,6 @@ const ReadyPaperDashboard = () => {
       />
     </>
   );
-}
+};
 
 export default ReadyPaperDashboard;

@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Sign_up.css";
 import { useNavigate } from "react-router-dom";
 import var1 from "../Assets/iips_logo2.png";
 import AlertModal from "../AlertModal/AlertModal";
+import Loader from "../Loader/Loader";
 
 const VerifyOtp = () => {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
+  const [loading,setLoading] = useState(true);
   const [isAlertOpen, setIsAlertOpen] = useState(false); // Modal for success/error messages
   const [alertMessage, setAlertMessage] = useState("");
   const [isErrorAlert, setIsErrorAlert] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(()=>{setTimeout(()=>{setLoading(false);},1000);},[]);
 
   const handleVerify = async (e) => {
     e.preventDefault();
@@ -47,7 +51,8 @@ const VerifyOtp = () => {
 
   return (
     <div className="sign_up_Box_min">
-      <div className="Sign_up_Box">
+      {loading ? (<Loader />) : (<>
+        <div className="Sign_up_Box">
         <img src={var1} alt="" />
         <h3>Enter Your PassCode</h3>
         <form onSubmit={handleVerify} className="verify_passcode_form">
@@ -80,6 +85,7 @@ const VerifyOtp = () => {
           <button type="submit">Verify & Sign up</button>
         </form>
       </div>
+      </>)}
 
       {/* Alert Modal for success/error messages */}
       <AlertModal

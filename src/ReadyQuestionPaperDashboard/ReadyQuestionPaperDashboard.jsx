@@ -6,6 +6,7 @@ import axios from "axios";
 import Nothing from "../Assets/nothing.svg";
 import AlertModal from '../AlertModal/AlertModal';
 import { useState,useEffect } from 'react';
+import Skeleton from '../Skeleton/Skeleton';
 
 
 const ReadyQuestionPaperDashboard = () => {
@@ -32,7 +33,7 @@ const ReadyQuestionPaperDashboard = () => {
            
            
           } finally {
-            setLoading(false);
+            setTimeout(()=>{setLoading(false)},1000);
           }
         };
         const fetchpaperdetails = async () => {
@@ -45,23 +46,20 @@ const ReadyQuestionPaperDashboard = () => {
           } catch (error) {
             console.error("Failed to fetch paperdetails:", error);
           } finally {
-            setLoading(false);
+            setTimeout(()=>{setLoading(false)},1000);
           }
         };
       fetchpaperdetails();
         fetchQuestions();
     }, [paperId]);
     console.log(paperdetails);
-      if (loading) {
-        return <div>Loading...</div>;
-      }
 
   return (
     <>
       <Navbar />
       
       <div className="question-list-container">
-        {questions.length > 0 ? 
+        {loading ? (<Skeleton exams={questions}/>) : questions.length > 0 ? 
         (<>
              <div className="question-header">
                 <div className='ready-question-display-flex'>
