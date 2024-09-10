@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../Assets/iips_logo2.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Reset_Password.css";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import AlertModal from "../AlertModal/AlertModal";
+import Loader from "../Loader/Loader";
 
 
 const Reset_Password = () => {
@@ -14,9 +15,15 @@ const Reset_Password = () => {
     const [d1, setDisplay1] = useState("block");
     const [message, setMessage] = useState("");
     const [modalIsOpen, setModalIsOpen] = useState(false); // Modal state
+    const [loading,setLoading] = useState(true);
     const [isError, setIsError] = useState(false); // Error state for modal
     const navigate = useNavigate();
     const location = useLocation();
+
+    useEffect(()=>
+    {
+        setTimeout(()=>{setLoading(false)},1000);
+    },[]);
 
     const toggleEye = (index) => {
         const input = document.getElementsByClassName("password-toggle")[index];
@@ -84,7 +91,8 @@ const Reset_Password = () => {
 
     return (
         <div className="reset-container-main">
-        <div className="reset-container">
+            {loading ? (<Loader />) : (<>
+                <div className="reset-container">
             <img alt="logo" src={Logo} />
             <h2>Teacher: Reset Password</h2>
             <form onSubmit={handleSubmit}>
@@ -125,6 +133,7 @@ const Reset_Password = () => {
                 iserror={isError} 
             />
         </div>
+            </>)}
         </div>
     );
 };

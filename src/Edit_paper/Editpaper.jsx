@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TimePicker from 'react-time-picker'; // Import TimePicker
@@ -8,6 +8,7 @@ import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AlertModal from '../AlertModal/AlertModal'; // Import AlertModal
+import Loader from '../Loader/Loader';
 
 const Editpaper = () => {
   const location = useLocation();  // Taking Current Values
@@ -15,6 +16,7 @@ const Editpaper = () => {
   
   const [date, setDate] = useState(new Date(current_values.date));  // Ensure date is in Date format
   const [time, setTime] = useState(current_values.time);
+  const [loading,setLoading] = useState(true);
   const [duration, setDuration] = useState({ hours: current_values.duration.hours, minutes: current_values.duration.minutes });
   const [marks, setMarks] = useState(current_values.marks);
   const [testType, setTestType] = useState(current_values.testType);
@@ -28,6 +30,11 @@ const Editpaper = () => {
   const [modalMessage, setModalMessage] = useState('');
   const [isError, setIsError] = useState(false); 
   const navigate = useNavigate();
+
+  useEffect(()=>
+  {
+    setTimeout(()=>{setLoading(false)},1000);
+  },[]);
 
   const handleDurationChange = (field, value) => {
     if (value >= 0) {
@@ -82,7 +89,8 @@ const Editpaper = () => {
     <>
       <Navbar />
       <div className="create_paper_container">
-        <form className="create_paper_form" onSubmit={handleSubmit}>
+        {loading ? (<Loader />) : (<>
+          <form className="create_paper_form" onSubmit={handleSubmit}>
           <div className='create_paper_row'>
             <FormGroup label="Class:" className="create_paper_class">
               <select className="create_paper_input" value={className} onChange={(e) => setClassName(e.target.value)}>
@@ -189,6 +197,7 @@ const Editpaper = () => {
 
           <button type="submit" className="create_paper_submit_btn">EDIT</button>
         </form>
+        </>)}
       </div>
       
       {/* Alert Modal */}

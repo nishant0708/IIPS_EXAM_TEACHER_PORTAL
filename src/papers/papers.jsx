@@ -8,6 +8,7 @@ import { CiEdit } from "react-icons/ci";
 import { HiDocumentDuplicate } from "react-icons/hi2";
 import { MdDelete } from "react-icons/md";
 import AlertModal from "../AlertModal/AlertModal";
+import Skeleton from "../Skeleton/Skeleton";
 
 function Papers() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ function Papers() {
   const [modalMessage, setModalMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [loading,setLoading] = useState(true);
 
   const teacherId = localStorage.getItem("teacherId");
 
@@ -31,8 +33,10 @@ function Papers() {
       } catch (error) {
         console.error("Error fetching papers:", error);
       }
+      finally{
+        setTimeout(()=>{setLoading(false)},1000);
+      }
     };
-
     fetchPapers();
   }, [teacherId, reload]);
 
@@ -108,7 +112,7 @@ function Papers() {
             </div>
           </div>
           <div className="exam-table">
-            {exams.map((exam) => (
+            {loading ? (<Skeleton exams={exams}/>) : exams.map((exam) => (
               <div
                 className="papers_table"
                 key={exam._id}
