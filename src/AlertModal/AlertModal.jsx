@@ -14,16 +14,26 @@ import Modal from 'react-modal';
 import './AlertModal.css'; 
 import cross from "../Assets/cross-mark.svg";
 import tick from "../Assets/accept-check-good-mark-ok-tick.svg";
+import warning from "../Assets/icons8-warning-48.png";
+import { FaRegThumbsUp } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
 
-const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror }) => {
+const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror, isConfirm }) => {
   var image = iserror ? cross : tick;
 
-  const handleClose = () => {
+  const handleClose = (e) => {
+    e.stopPropagation();
     if (onConfirm) {
       onConfirm(); // Trigger the callback for  any action
     }
     onClose(); // Always close the modal
   };
+
+  const handleConfirmClose=(e)=>
+  {
+      e.stopPropagation();
+      onClose();
+  }
 
   return (
     <Modal
@@ -34,16 +44,34 @@ const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror }) => {
       overlayClassName="alert_overlay"
     >
       <div className="alert_modal-content">
-        <img 
-          src={image}
-          alt="Success" 
-          className="alert_success-icon"
-        />
-        <h2>{iserror ? "Failed" : "Success"}</h2>
+        {isConfirm ? (<img src={warning} alt='Warning' className='alert_success-icon'/>) : (
+            <img 
+            src={image}
+            alt="Success" 
+            className="alert_success-icon"
+          />
+        )}
+
+        <h2>{isConfirm ? "Warning" : iserror ? "Failed" : "Success"}</h2>
         <p>{message}</p>
-        <button onClick={handleClose} className="alert_close-button">
+        {isConfirm ? (
+            <>
+              <div className='alert_display-flex'>
+                <div>
+                  <button onClick={handleClose} className='alert_confirm-button'>
+                    <FaRegThumbsUp />
+                    <div>Okay</div>
+                    </button>
+                </div>
+                <button onClick={handleConfirmClose} className='alert_confirm-button'>
+                  <IoMdClose />
+                  <div>Close</div>
+                  </button>
+              </div>
+            </>
+        ) : (<button onClick={handleClose} className="alert_close-button">
           Close
-        </button>
+        </button>)}
       </div>
     </Modal>
   );
@@ -56,12 +84,14 @@ AlertModal.propTypes = {
   onClose: PropTypes.func.isRequired, // onClose should be a function
   message: PropTypes.string.isRequired, // message should be a string
   iserror: PropTypes.bool.isRequired,  // iserror should be a boolean
-  onConfirm: PropTypes.func // onConfirm is optional and should be a function
+  onConfirm: PropTypes.func, // onConfirm is optional and should be a function
+  isConfirm: PropTypes.bool,
 };
 
 // Set default prop for optional onConfirm
 AlertModal.defaultProps = {
-  onConfirm: null
+  onConfirm: null,
+  isConfirm: false,
 };
 
 export default AlertModal;

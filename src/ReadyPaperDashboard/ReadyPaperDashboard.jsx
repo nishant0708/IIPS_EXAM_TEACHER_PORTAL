@@ -20,6 +20,8 @@ const ReadyPaperDashboard = () => {
   const [modalMessage, setModalMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalDeleteIsOpen,setModalDeleteIsOpen] = useState(false);
+  const [modalDeleteMessage,setModalDeleteMessage] = useState("");
 
   const getFormattedDateTime = (date, time) => {
     const [hours, minutes] = time.split(":").map(Number);
@@ -65,6 +67,12 @@ const ReadyPaperDashboard = () => {
   const handleCardClick = (paperId) => {
     navigate(`/ready_questions/${paperId}`);
   };
+
+  const deleteConfirm=()=>
+  {
+    setModalDeleteIsOpen(true);
+    setModalDeleteMessage("Do you want to delete this paper permanently?");
+  }
 
   const deleteReadyPaper = async (paper) => {
     try {
@@ -140,6 +148,14 @@ const ReadyPaperDashboard = () => {
                   onMouseEnter={() => setHoveredItem(exam._id)}
                   onMouseLeave={() => setHoveredItem(null)}
                 >
+                <AlertModal 
+                iserror={false}
+                isOpen={modalDeleteIsOpen}
+                onClose={()=>{setModalDeleteIsOpen(false)}}
+                message={modalDeleteMessage}
+                isConfirm={true}
+                onConfirm={()=>{deleteReadyPaper(exam)}}
+                />
                   {hoveredItem === exam._id && (
                     <div className="hovered-buttons">
                       {oneHourRemaining(exam.date, exam.time) && (
@@ -160,7 +176,7 @@ const ReadyPaperDashboard = () => {
                         id="delete"
                         onClick={(e) => {
                           e.stopPropagation();
-                          deleteReadyPaper(exam);
+                          deleteConfirm();
                         }}
                       >
                         <div className="flex-class">
