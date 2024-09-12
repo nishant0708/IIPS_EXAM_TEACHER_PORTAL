@@ -37,12 +37,12 @@ const ReadyPaperDashboard = () => {
     });
   };
 
-  const getDateTimeObject = (date, time) => {
-    const [hours, minutes] = time.split(":").map(Number);
-    const dateTime = new Date(date);
-    dateTime.setHours(hours, minutes);
-    return dateTime;
-  };
+  // const getDateTimeObject = (date, time) => {
+  //   const [hours, minutes] = time.split(":").map(Number);
+  //   const dateTime = new Date(date);
+  //   dateTime.setHours(hours, minutes);
+  //   return dateTime;
+  // };
 
   useEffect(() => {
     const fetchPapers = async () => {
@@ -116,12 +116,12 @@ const ReadyPaperDashboard = () => {
     }
   };
 
-  const oneHourRemaining = (examDate, examTime) => {
-    const examDateTime = getDateTimeObject(examDate, examTime);
-    const currentDateTime = new Date();
-    const timeDifference = (examDateTime - currentDateTime) / (1000 * 60 * 60);
-    return timeDifference > 1;
-  };
+  // const oneHourRemaining = (examDate, examTime) => {
+  //   const examDateTime = getDateTimeObject(examDate, examTime);
+  //   const currentDateTime = new Date();
+  //   const timeDifference = (examDateTime - currentDateTime) / (1000 * 60 * 60);
+  //   return timeDifference > 1;
+  // };
 
   return (
     <>
@@ -158,7 +158,7 @@ const ReadyPaperDashboard = () => {
                 />
                   {hoveredItem === exam._id && (
                     <div className="hovered-buttons">
-                      {oneHourRemaining(exam.date, exam.time) && (
+                      {/* {oneHourRemaining(exam.date, exam.time) && ( */}
                         <>
                         <button
                           id="move_to_dashboard"
@@ -185,7 +185,8 @@ const ReadyPaperDashboard = () => {
                         </div>
                       </button>
                         </>
-                      )}
+                      {/* ) */}
+                      {/* } */}
                     </div>
                   )}
                   <div className="scheduled">
