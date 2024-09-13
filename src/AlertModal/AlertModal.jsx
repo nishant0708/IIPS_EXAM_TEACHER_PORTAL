@@ -14,8 +14,6 @@ import Modal from 'react-modal';
 import './AlertModal.css'; 
 import cross from "../Assets/cross-mark.svg";
 import tick from "../Assets/accept-check-good-mark-ok-tick.svg";
-import { FaRegThumbsUp } from "react-icons/fa";
-import { IoMdClose } from "react-icons/io";
 
 const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror, isConfirm }) => {
   var image = iserror ? cross : tick;
@@ -56,13 +54,11 @@ const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror, isConfirm })
               <div className='alert_display-flex'>
                 <div>
                   <button onClick={handleClose} className='alert_confirm-button'>
-                    <FaRegThumbsUp />
                     <div>Okay</div>
                     </button>
                 </div>
                 <button onClick={handleConfirmClose} className='alert_confirm-button'>
-                  <IoMdClose />
-                  <div>Close</div>
+                  <div>Cancel</div>
                   </button>
               </div>
             </>

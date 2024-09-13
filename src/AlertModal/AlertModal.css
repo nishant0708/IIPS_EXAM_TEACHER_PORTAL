@@ -88,6 +88,6 @@
   {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     gap: 5px;
   }
