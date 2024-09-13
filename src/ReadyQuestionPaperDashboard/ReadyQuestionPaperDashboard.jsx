@@ -1,17 +1,17 @@
 import React from 'react'
 import "../QuestionPaperDashboard/QuestionPaperDashboard.css";
 import Navbar from '../Navbar/Navbar';
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import axios from "axios";
 import Nothing from "../Assets/nothing.svg";
 import AlertModal from '../AlertModal/AlertModal';
 import { useState,useEffect } from 'react';
 import Skeleton from '../Skeleton/Skeleton';
-
+import { CiEdit } from 'react-icons/ci';
 
 const ReadyQuestionPaperDashboard = () => {
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const { paperId } = useParams();
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -19,6 +19,7 @@ const ReadyQuestionPaperDashboard = () => {
     
     // State for the modal
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [hoveredItem, setHoveredItem] = useState(null);
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -52,8 +53,10 @@ const ReadyQuestionPaperDashboard = () => {
       fetchpaperdetails();
         fetchQuestions();
     }, [paperId]);
-    console.log(paperdetails);
 
+    const editReadyQuestion = (question) => {
+      navigate(`/edit-ready-question/${question.paperId}/${question._id}`, { state: { ...question } });
+    }
   return (
     <>
       <Navbar />
@@ -72,7 +75,19 @@ const ReadyQuestionPaperDashboard = () => {
             <div className="question-table">
               {questions.map((question) => (
                 <div className="questions-table" key={question._id}
+                onMouseEnter={() => setHoveredItem(question._id)}
+                onMouseLeave={() => setHoveredItem(null)}
                 >
+                {hoveredItem === question._id && (
+                  <div className="hovered-buttons">
+                    <button onClick={()=>editReadyQuestion(question)}>
+                      <div className="flex-class">
+                        <CiEdit />
+                        <div>Edit</div>
+                      </div>
+                    </button>
+                  </div>
+                )}
                   <div className="question-table-data">
                     <div className="compiler">
                       Compiler: {question.compilerReq}
