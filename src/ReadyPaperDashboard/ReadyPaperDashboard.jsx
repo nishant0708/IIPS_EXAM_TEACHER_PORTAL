@@ -144,7 +144,7 @@ const ReadyPaperDashboard = () => {
                 <div
                   className="papers_table"
                   key={index}
-                  onClick={() => handleCardClick(exam._id)}
+                  onClick={() => {if(!modalDeleteIsOpen) handleCardClick(exam._id)}}
                   onMouseEnter={() => setHoveredItem(exam._id)}
                   onMouseLeave={() => setHoveredItem(null)}
                 >

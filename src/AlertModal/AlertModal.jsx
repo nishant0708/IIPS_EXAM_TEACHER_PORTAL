@@ -14,24 +14,21 @@ import Modal from 'react-modal';
 import './AlertModal.css'; 
 import cross from "../Assets/cross-mark.svg";
 import tick from "../Assets/accept-check-good-mark-ok-tick.svg";
-import warning from "../Assets/icons8-warning-48.png";
 import { FaRegThumbsUp } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 
 const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror, isConfirm }) => {
   var image = iserror ? cross : tick;
 
-  const handleClose = (e) => {
-    e.stopPropagation();
+  const handleClose = () => {
     if (onConfirm) {
       onConfirm(); // Trigger the callback for  any action
     }
     onClose(); // Always close the modal
   };
 
-  const handleConfirmClose=(e)=>
+  const handleConfirmClose=()=>
   {
-      e.stopPropagation();
       onClose();
   }
 
@@ -43,8 +40,8 @@ const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror, isConfirm })
       className="alert_modal"
       overlayClassName="alert_overlay"
     >
-      <div className="alert_modal-content">
-        {isConfirm ? (<img src={warning} alt='Warning' className='alert_success-icon'/>) : (
+      <div className="alert_modal-content" onClick={(e)=>{e.stopPropagation();}}>
+        {isConfirm ? (<svg className="alert_success-icon" fill="#ffe438" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg" stroke="#ffe438"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M960 0c530.193 0 960 429.807 960 960s-429.807 960-960 960S0 1490.193 0 960 429.807 0 960 0Zm-9.838 1342.685c-84.47 0-153.19 68.721-153.19 153.19 0 84.47 68.72 153.192 153.19 153.192s153.19-68.721 153.19-153.191-68.72-153.19-153.19-153.19ZM1153.658 320H746.667l99.118 898.623h208.755L1153.658 320Z" fillRule="evenodd"></path></g></svg>) : (
             <img 
             src={image}
             alt="Success" 

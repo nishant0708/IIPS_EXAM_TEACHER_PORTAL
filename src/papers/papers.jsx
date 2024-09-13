@@ -19,7 +19,6 @@ function Papers() {
   const [isError, setIsError] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [loading,setLoading] = useState(true);
-  const [modalConfirmIsOpen,setModalConfirmIsOpen] = useState(false);
   const [modalDeleteIsOpen,setModalDeleteIsOpen] = useState(false);
   const [modalDeleteMessage,setModalDeleteMessage] = useState("");
 
@@ -44,13 +43,8 @@ function Papers() {
   }, [teacherId, reload]);
 
   const handleCreateNew = () => {
-    setModalConfirmIsOpen(true);
+    navigate("/create-paper");
   };
-  
-  const okayClicked=()=>
-  {
-      navigate("/create-paper");
-  }
 
   const handleEditNew = (exam) => {
     navigate("/edit-paper", {
@@ -132,7 +126,7 @@ function Papers() {
                 key={exam._id}
                 onMouseEnter={() => setHoveredItem(exam._id)}
                 onMouseLeave={() => setHoveredItem(null)}
-                onClick={() => handleCardClick(exam._id)}
+                onClick={() => {if(!modalDeleteIsOpen) handleCardClick(exam._id)}}
               >
                 <AlertModal 
                         isOpen = {modalDeleteIsOpen}
@@ -140,7 +134,7 @@ function Papers() {
                         message={modalDeleteMessage}
                         iserror={false}
                         isConfirm={true}
-                        onConfirm={()=>deleteConfirm(exam)}
+                        onConfirm={()=>{deleteConfirm(exam)}}
                 />
                 {hoveredItem === exam._id && (
                   <div className="hovered-buttons">
@@ -210,14 +204,6 @@ function Papers() {
         onClose={() => setModalIsOpen(false)}
         message={modalMessage}
         iserror={isError}
-      />
-      <AlertModal 
-      isOpen={modalConfirmIsOpen}
-      onClose={()=>{setModalConfirmIsOpen(false)}}
-      message={"Please make sure Subject Code, Date, Time and Duration are absolutely correct!!!"}
-      isConfirm={true}
-      iserror={false}
-      onConfirm={okayClicked}
       />
     </div>
   );
