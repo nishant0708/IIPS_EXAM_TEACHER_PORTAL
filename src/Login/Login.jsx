@@ -16,25 +16,8 @@ function Login() {
   const [modalMessage, setModalMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Loading state
-  const [t, setToggle] = useState("block");
+  const [d, setDisplay] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
-  const toggled = () => {
-    const input = document.getElementsByClassName("password-eye")[0];
-    const eyes1 = document.getElementsByClassName("eyes")[0];
-    const eyes2 = document.getElementsByClassName("eyes")[1];
-    if (t === "none") {
-      eyes1.style.display = "none";
-      eyes2.style.display = "block";
-      input.type = "password";
-      setToggle("block");
-    }
-    else {
-      eyes2.style.display = "none";
-      eyes1.style.display = "block";
-      input.type = "text";
-      setToggle("none");
-    }
-  }
 
   useEffect(() => {
     // Check if session ID exists in local storage and is still valid
@@ -56,7 +39,7 @@ function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    setIsLoading(true); 
+    setIsLoading(true);
 
     axios
       .post("http://localhost:5000/teacher/login", { email, password })
@@ -84,7 +67,8 @@ function Login() {
     axios
       .post("http://localhost:5000/teacher/verify-otp", { email, otp })
       .then((response) => {
-        const { sessionId, message, teacherId, name, email, mobileNumber } = response.data;
+        const { sessionId, message, teacherId, name, email, mobileNumber } =
+          response.data;
 
         // Set modal state first
         setModalMessage(message);
@@ -124,67 +108,91 @@ function Login() {
 
   return (
     <div className="lpgin-container-main">
-    <div className="login-container">
-      <img src={logo} alt="Logo" />
-      <h2>Teacher : Login</h2>
-      <form onSubmit={showOtp ? handleSubmit : handleLogin}>
-        <div>
-          <label>Email:</label>
+      <div className="login-container">
+        <img src={logo} alt="Logo" />
+        <h2>Teacher : Login</h2>
+        <form onSubmit={showOtp ? handleSubmit : handleLogin}>
           <div>
-            <input
-              type="email"
-              value={email}
-              placeholder="Enter your Email"
-              onChange={(e) => setEmail(e.target.value)}
-              disabled = {showOtp}
-              required
-            />
-          </div>
-        </div>
-
-        <div>
-          <label>Password:</label>
-          <div className="eye-container">
-            <input
-              type="password"
-              placeholder="Enter Your Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled = {showOtp}
-              required
-              className="password-eye"
-            />
-            <FaEye className="eyes" onClick={() => toggled()} />
-            <FaEyeSlash className="eyes" onClick={() => toggled()} />
-          </div>
-        </div>
-        {showOtp && (
-          <div>
-            <label>OTP:</label>
+            <label>Email:</label>
             <div>
               <input
-                type="text"
-                placeholder="Enter OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
+                type="email"
+                value={email}
+                placeholder="Enter your Email"
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={showOtp}
                 required
               />
             </div>
           </div>
-        )}
-        <p className="login_forgot_password" onClick={() => navigate("/forgot_password")}>Forgot Password?</p>
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Submiting..." : showOtp ? "Submit" : "Next"}
-        </button>
-        <p className="signup_text_redirect" onClick={() => navigate("/sign_up")}> Want to create Account? Signup. </p>
-      </form>
-      <AlertModal
-        isOpen={modalIsOpen}
-        onClose={handleCloseModal}
-        message={modalMessage}
-        iserror={isError}
-      />
-    </div>
+
+          <div>
+            <label>Password:</label>
+            <div className="eye-container">
+              <input
+                type={d ? "text" : "password"}
+                placeholder="Enter Your Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={showOtp}
+                required
+                className="password-eye"
+              />
+              {d ? (
+                <FaEye
+                  className="eyes"
+                  onClick={() => {
+                    setDisplay(false);
+                  }}
+                />
+              ) : (
+                <FaEyeSlash
+                  className="eyes"
+                  onClick={() => {
+                    setDisplay(true);
+                  }}
+                />
+              )}
+            </div>
+          </div>
+          {showOtp && (
+            <div>
+              <label>OTP:</label>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+          )}
+          <p
+            className="login_forgot_password"
+            onClick={() => navigate("/forgot_password")}
+          >
+            Forgot Password?
+          </p>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Submiting..." : showOtp ? "Submit" : "Next"}
+          </button>
+          <p
+            className="signup_text_redirect"
+            onClick={() => navigate("/sign_up")}
+          >
+            {" "}
+            Want to create Account? Signup.{" "}
+          </p>
+        </form>
+        <AlertModal
+          isOpen={modalIsOpen}
+          onClose={handleCloseModal}
+          message={modalMessage}
+          iserror={isError}
+        />
+      </div>
     </div>
   );
 }
