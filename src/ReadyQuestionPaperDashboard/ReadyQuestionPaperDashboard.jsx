@@ -111,14 +111,6 @@ const ReadyQuestionPaperDashboard = () => {
                   </div>
                 </div>
               ))}
-
-              <center>
-                  <button
-                    className="question_submit-button"
-                  >
-                    Submit
-                  </button>
-              </center>
             </div>
         </>) : (<>
             <div className="no-questions-container">
