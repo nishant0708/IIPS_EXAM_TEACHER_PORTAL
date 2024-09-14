@@ -1,23 +1,26 @@
 import React from 'react';
 import './error.css';
 import panda from "../Assets/pandu.png";
-import { useNavigate } from 'react-router-dom'; // Use `useNavigate` instead of `useHistory`
+import { useNavigate } from 'react-router-dom'; 
+import Navbar from '../Navbar/Navbar';
 
 export default function Error404() {
-  const navigate = useNavigate(); // Use `useNavigate` hook
-
+  const navigate = useNavigate(); 
+  const sessionId = localStorage.getItem('sessionId');
   const handleGoBack = () => {
-    const sessionId = localStorage.getItem('sessionId');
+ 
     if (sessionId) {
-      // If session ID exists, navigate to TeacherDashboard
-      navigate('/TeacherDashboard');
+    
+      navigate('/teacherDashboard');
     } else {
-      // If session ID doesn't exist, redirect to the login page
-      navigate('/login');
+     
+      navigate('/');
     }
   };
 
   return (
+    <>
+    {sessionId && <Navbar/>}
     <div className="error-container">
       <h1 className="error404-heading">Error 404</h1>
       <img src={panda} alt="panda" className="panda-image" />
@@ -26,5 +29,6 @@ export default function Error404() {
         Go Back
       </button>
     </div>
+    </>
   );
 }

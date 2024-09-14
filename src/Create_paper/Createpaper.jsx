@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TimePicker from 'react-time-picker'; // Import TimePicker
@@ -8,6 +8,7 @@ import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from '../AlertModal/AlertModal'; // Import AlertModal
+import Loader from '../Loader/Loader';
 
 const Createpaper = () => {
   const [date, setDate] = useState(null);
@@ -20,11 +21,25 @@ const Createpaper = () => {
   const [subject, setSubject] = useState('');
   const [subjectCode, setSubjectCode] = useState('');
   const teacherId = localStorage.getItem("teacherId");
+  const [loading,setLoading] = useState(true);
 
   const [modalIsOpen, setModalIsOpen] = useState(false); 
   const [modalMessage, setModalMessage] = useState('');
+  const [modalConfirmIsOpen,setModalConfirmIsOpen] = useState(false);
+  const [modalConfirmMessage,setModalConfirmMessage] = useState("");
   const [isError, setIsError] = useState(false); 
+  const handleConfirmSubmit=(e)=>
+    {
+        e.preventDefault();
+        setModalConfirmIsOpen(true);
+        setModalConfirmMessage('Please make sure Subject Code, Date, Time and Duration are absolutely correct!!!');
+    }
   const navigate = useNavigate(); 
+
+  useEffect(()=>
+  {
+    setTimeout(()=>{setLoading(false)},1000);
+  },[]);
 
   const handleDurationChange = (field, value) => {
     if (value >= 0) {
@@ -37,9 +52,8 @@ const Createpaper = () => {
     setMarks(value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
+    const minutes = duration.minutes === '' ? 0 : duration.minutes;
     const paperData = {
       className,
       semester,
@@ -47,10 +61,10 @@ const Createpaper = () => {
       marks,
       duration: {
         hours: duration.hours,
-        minutes: duration.minutes,
+        minutes: minutes,
       },
       subjectCode,
-      time, // No conversion needed, time is already in 12-hour format
+      time, 
       date,
       testType,
       teacherId,
@@ -77,17 +91,18 @@ const Createpaper = () => {
     }
   };
 
-  return (
-    <>
-      <Navbar />
-      <div className="create_paper_container">
-        <form className="create_paper_form" onSubmit={handleSubmit}>
+  return (<>
+    <Navbar />
+    <div className='create_paper_container_main'>
+      {loading ? (<Loader />): (<>
+        <div className="create_paper_container">
+        <form className="create_paper_form" onSubmit={handleConfirmSubmit}>
           <div className='create_paper_row'>
             <FormGroup label="Class:" className="create_paper_class">
               <select className="create_paper_input" value={className} onChange={(e) => setClassName(e.target.value)}>
                 <option value="">Select Class</option>
-                <option value="Mtech">Mtech</option>
-                <option value="Mca">Mca</option>
+                <option value="MTECH">Mtech</option>
+                <option value="MCA">Mca</option>
               </select>
             </FormGroup>
 
@@ -189,6 +204,7 @@ const Createpaper = () => {
           <button type="submit" className="create_paper_submit_btn">SUBMIT</button>
         </form>
       </div>
+      </>)}
       
       {/* Alert Modal */}
       <AlertModal 
@@ -197,6 +213,14 @@ const Createpaper = () => {
         message={modalMessage} 
         iserror={isError}
       />
+      <AlertModal
+      isOpen={modalConfirmIsOpen}
+      onClose={()=>{setModalConfirmIsOpen(false)}}
+      message={modalConfirmMessage}
+      iserror={false}
+      isConfirm={true}
+      onConfirm={handleSubmit}/>
+    </div>
     </>
   );
 };

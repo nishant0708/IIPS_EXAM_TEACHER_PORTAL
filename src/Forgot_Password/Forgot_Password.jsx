@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../Assets/iips_logo2.png";
 import "./Forgot_Password.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AlertModal from "../AlertModal/AlertModal";
+import Loader from "../Loader/Loader";
 
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
+    const [loading,setLoading] = useState(true);
     const [modalIsOpen, setModalIsOpen] = useState(false); // Modal state
     const [isError, setIsError] = useState(false); // Error state for modal
     const navigate = useNavigate();
+
+    useEffect(()=>
+    {
+        setTimeout(()=>{setLoading(false);},1000);
+    },[]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -32,7 +39,9 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div className="forgot-container">
+        <div className="forgot-container-main">
+            {loading ? (<Loader />) : (<>
+                <div className="forgot-container">
             <img alt="Logo" src={Logo} />
             <h2>Forgot Your Password?</h2>
             <form onSubmit={handleSubmit}>
@@ -55,6 +64,8 @@ const ForgotPassword = () => {
                 message={message} 
                 iserror={isError} 
             />
+        </div>
+            </>)}
         </div>
     );
 };

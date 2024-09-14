@@ -30,6 +30,7 @@
 {
     width: 100%;
     height: auto;
+    margin-top: 40px;
     margin-bottom: 20px;
 }
 .question-table-data
@@ -41,6 +42,7 @@
     display: flex;
     justify-content: center;
     padding: 20px;
+    cursor: pointer;
     color: white;
     text-align: left;
     border-bottom: 1px solid #ddd;
@@ -50,10 +52,14 @@
     gap: 4px;
     height: 125px;
 }
+.question-table-data:hover{
+    background-color: #404040;
+}
 .questions-table
 {
     position: relative;
     margin: 20px;
+    margin-bottom: 50px;
     font-size: large;
 }
 .compiler
@@ -85,6 +91,7 @@
 }
 .question-image img
 {
+    object-fit: contain;
     width: 250px;
     height: 125px;
 }
@@ -135,8 +142,15 @@
 width: 200px;
 height: 50px;
 border-radius: 5px;
+background-color: #45a049;
+color: white;
 border:1px solid rgb(0, 0, 0);
 font-size: 18px;
+}
+.question_submit-button:hover
+{
+    background-color: #45a04970;
+    cursor: pointer;
 }
 @media(max-width : 1000px)
 {
@@ -174,4 +188,18 @@ font-size: 18px;
 .error_message_questionDashboard{
     text-align: center;
     color: red;
+}
+
+/* ------------------------------------------------------ready question ----------------------------------*/
+
+.ready-question-display-flex
+{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+.ready-question-display-flex:first-child
+{
+    margin-right: 20px;
 }

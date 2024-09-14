@@ -12,8 +12,11 @@ import Question from './question/question';
 import QuestionPaperDashboard from './QuestionPaperDashboard/QuestionPaperDashboard';
 import Editpaper from './Edit_paper/Editpaper';
 import ReadyPaperDashboard from './ReadyPaperDashboard/ReadyPaperDashboard';
-
+import ReadyQuestionPaperDashboard from './ReadyQuestionPaperDashboard/ReadyQuestionPaperDashboard';
+import EditReadyQuestion from './edit_ready_question/EditReadyQuestion';
 import Error404 from './error/error404';
+import EditQuestion from './edit_question/EditQuestion';
+
 
 
 const App = () => {
@@ -68,13 +71,15 @@ const App = () => {
           <Route path="/create-paper" element={<Createpaper />} />
           <Route path="/edit-paper" element={<Editpaper/>} />
           <Route path="/add-question/:paperId" element={<Question />} />
-          <Route path="/edit-question/:paperId/:questionId" element={<Question/>} />
+          <Route path="/edit-question/:paperId/:questionId" element={<EditQuestion/>} />
+          <Route path='/edit-ready-question/:paperId/:questionId' element={<EditReadyQuestion/>} />
           <Route path="/questionPaperDashboard/:paperId" element={<QuestionPaperDashboard />}/>
           <Route path="/ready_papers" element={<ReadyPaperDashboard />}/>
+          <Route path="/ready_questions/:paperId" element={<ReadyQuestionPaperDashboard />} />
         </>
       )}
 
-      
+
 
       {/* Error404 Route */}
       <Route path="/*" element={<Error404/>}/> 

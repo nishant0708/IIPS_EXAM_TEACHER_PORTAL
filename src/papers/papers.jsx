@@ -8,6 +8,7 @@ import { CiEdit } from "react-icons/ci";
 import { HiDocumentDuplicate } from "react-icons/hi2";
 import { MdDelete } from "react-icons/md";
 import AlertModal from "../AlertModal/AlertModal";
+import Skeleton from "../Skeleton/Skeleton";
 
 function Papers() {
   const navigate = useNavigate();
@@ -17,6 +18,9 @@ function Papers() {
   const [modalMessage, setModalMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [loading,setLoading] = useState(true);
+  const [modalDeleteIsOpen,setModalDeleteIsOpen] = useState(false);
+  const [modalDeleteMessage,setModalDeleteMessage] = useState("");
 
   const teacherId = localStorage.getItem("teacherId");
 
@@ -31,8 +35,10 @@ function Papers() {
       } catch (error) {
         console.error("Error fetching papers:", error);
       }
+      finally{
+        setTimeout(()=>{setLoading(false)},1000);
+      }
     };
-
     fetchPapers();
   }, [teacherId, reload]);
 
@@ -46,7 +52,13 @@ function Papers() {
     });
   };
 
-  const deletePaper = async (paper) => {
+  const deletePaper = () => {
+    setModalDeleteIsOpen(true);
+    setModalDeleteMessage("Do you want to delete this paper permanently?");
+  };
+
+  const deleteConfirm= async (paper) =>
+  {
     try {
       await axios.post("http://localhost:5000/paper/delete-paper", { _id: paper._id });
       setExams((prevQuestions) => prevQuestions.filter((q) => q._id !== paper._id));
@@ -60,7 +72,7 @@ function Papers() {
       setIsError(true);
       setModalIsOpen(true);
     }
-  };
+  }
 
   const duplicatePaper = async (paper) => {
     try {
@@ -108,14 +120,22 @@ function Papers() {
             </div>
           </div>
           <div className="exam-table">
-            {exams.map((exam) => (
+            {loading ? (<Skeleton exams={exams}/>) : exams.map((exam) => (
               <div
                 className="papers_table"
                 key={exam._id}
                 onMouseEnter={() => setHoveredItem(exam._id)}
                 onMouseLeave={() => setHoveredItem(null)}
-                onClick={() => handleCardClick(exam._id)}
+                onClick={() => {if(!modalDeleteIsOpen) handleCardClick(exam._id)}}
               >
+                <AlertModal 
+                        isOpen = {modalDeleteIsOpen}
+                        onClose={()=>{setModalDeleteIsOpen(false)}}
+                        message={modalDeleteMessage}
+                        iserror={false}
+                        isConfirm={true}
+                        onConfirm={()=>{deleteConfirm(exam)}}
+                />
                 {hoveredItem === exam._id && (
                   <div className="hovered-buttons">
                     <button onClick={(e) => {
@@ -138,13 +158,14 @@ function Papers() {
                     </button>
                     <button id="delete" onClick={(e) => {
                       e.stopPropagation();
-                      deletePaper(exam);
+                      deletePaper();
                     }}>
                       <div className="flex-class">
                         <MdDelete />
                         <div>Delete</div>
                       </div>
                       </button>
+
                   </div>
                 )}
                 <div className="scheduled">

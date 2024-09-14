@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './question.css';
+import React, { useState,useEffect } from 'react';
+import '../question/question.css';
 import { FaTimes } from 'react-icons/fa';
 import { useDropzone } from 'react-dropzone';
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -8,23 +8,27 @@ import axios from 'axios';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import AlertModal from '../AlertModal/AlertModal'; // Import the AlertModal component
 
-const Question = () => {
+
+const EditReadyQuestion = () => {
   const { paperId } = useParams();
   const location = useLocation();
-  const { remainingMarks } = location.state || {}; // Get remaining marks from props
 
-  const [questionheading, setQuestionHeading] = useState('');
-  const [questionDescription, setQuestionDescription] = useState('');
-  const [compilerReq, setCompilerReq] = useState('');
-  const [marks, setMarks] = useState('');
+  const { remainingMarks } = location.state || {}; // Get remaining marks from props
+  const [questionheading, setQuestionHeading] = useState(location.state.questionheading);
+  const [questionDescription, setQuestionDescription] = useState(location.state.questionDescription);
+  const [compilerReq, setCompilerReq] = useState(location.state.compilerReq);
+  const [marks, setMarks] = useState(location.state.marks);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadingSpinner,setLoadingSpinner] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
 
-  const handleAddQuestion = async () => {
+  useEffect(()=>{setTimeout(()=>{setLoadingSpinner(false)},1000);},[]);
+
+  const handleEditQuestion = async () => {
     if (!questionheading || !questionDescription || !compilerReq || !marks) {
       setModalMessage('Please fill in all the required fields.');
       setIsError(true);
@@ -55,7 +59,7 @@ const Question = () => {
         imageUrl = uploadResponse.data.url; // Assuming the backend responds with the image URL
       }
 
-      await submitQuestion(imageUrl);
+      await editQuestion(imageUrl);
     } catch (error) {
       console.error('Failed to add question:', error.message);
       setModalMessage('Failed to add question. Please try again.');
@@ -65,8 +69,9 @@ const Question = () => {
     }
   };
 
-  const submitQuestion = async (imageUrl) => {
-    const response = await axios.post('http://localhost:5000/paper/add-question', {
+  const editQuestion = async (imageUrl) => {
+    const response = await axios.post('http://localhost:5000/paper/edit-ready-question', {
+      _id: location.state._id,
       paperId,
       questionheading,
       questionDescription,
@@ -75,24 +80,18 @@ const Question = () => {
       image: imageUrl, // Include imageUrl even if it's an empty string
     });
 
-    if (response.status === 201) {
-      setModalMessage('Question added successfully!');
+    if (response.status === 200) {
+      setModalMessage('Question Edited successfully!');
       setIsError(false);
       setModalIsOpen(true);
 
-      // If remaining marks are 0, navigate to the QuestionPaperDashboard
-      if (remainingMarks - parseInt(marks) === 0) {
-        setTimeout(() => {
-          navigate(`/questionPaperDashboard/${paperId}`);
-        }, 2000); // Wait for 2 seconds before navigating
-      } else {
-        // Clear form if there are remaining marks
-        setQuestionHeading('');
-        setQuestionDescription('');
-        setCompilerReq('');
-        setMarks('');
-        setImage(null);
-      }
+      setTimeout(() => {
+        navigate(`/ready_questions/${paperId}`);
+      }, 2000);
+    } else {
+      setModalMessage('Question Edit Failed!');
+      setIsError(true);
+      setModalIsOpen(true);
     }
     setLoading(false);
   };
@@ -109,13 +108,14 @@ const Question = () => {
     onDrop,
     maxSize: 10485760, // 10MB limit
   });
-
+console.log(paperId);
   return (
     <>
       <Navbar />
       <div className='add_question_container_main'>
-        <div className="add_question_container">
-          <h2 className="add_question_heading">Add Question</h2>
+        {loadingSpinner ? (<></>) : (<>
+          <div className="add_question_container">
+          <h2 className="add_question_heading">Edit Ready Question</h2>
 
           <div>
             <label className="add_question_label">Question Heading:</label>
@@ -190,10 +190,11 @@ const Question = () => {
             </div>
           </div>
 
-          <button onClick={handleAddQuestion} className="add_question_button" disabled={loading}>
-            {loading ? 'Adding...' : 'Add Question'}
+          <button onClick={handleEditQuestion} className="add_question_button" disabled={loading}>
+            {loading ? 'Editing...' : 'Edit Question'}
           </button>
         </div>
+        </>)}
       </div>
 
       {/* Alert Modal */}
@@ -207,4 +208,4 @@ const Question = () => {
   );
 };
 
-export default Question;
+export default EditReadyQuestion;

@@ -4,9 +4,13 @@ import Navbar from "../Navbar/Navbar";
 import { FaPlus } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import defaultImage from "../Assets/no-image-420x370-1.jpg";
 import Nothing from "../Assets/nothing.svg";
 import AlertModal from "../AlertModal/AlertModal";
+
+import { CiEdit } from "react-icons/ci";
+import { HiDocumentDuplicate } from "react-icons/hi2";
+import { MdDelete } from "react-icons/md";
+import Skeleton from "../Skeleton/Skeleton";
 
 
 const QuestionPaperDashboard = () => {
@@ -24,6 +28,8 @@ const QuestionPaperDashboard = () => {
   const [modalMessage, setModalMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
+  const [hoveredItem, setHoveredItem] = useState(null);
+
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -37,7 +43,7 @@ const QuestionPaperDashboard = () => {
        
        
       } finally {
-        setLoading(false);
+        setTimeout(()=>{setLoading(false)},1000);
       }
     };
     const fetchpaperdetails = async () => {
@@ -52,16 +58,12 @@ const QuestionPaperDashboard = () => {
        
        
       } finally {
-        setLoading(false);
+        setTimeout(()=>{setLoading(false)},1000);
       }
     };
   fetchpaperdetails();
     fetchQuestions();
   }, [paperId,reload]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   const totalMarks = questions.reduce(
     (sum, question) => sum + question.marks,
@@ -71,14 +73,24 @@ const QuestionPaperDashboard = () => {
 
   const deleteQuestion=async (question)=>
     {
-      console.log(question);
       try
       {
-        await axios.post('http://localhost:5000/paper/delete-question', { _id: question._id })
+        const response = await axios.post('http://localhost:5000/paper/delete-question', { _id: question._id })
         setQuestions((prevQuestions) => prevQuestions.filter(q => q._id !== question._id));
     
         if (questions.length === 1) {
           setQuestions([]); 
+        }
+
+        if(response.status===200){
+          setModalMessage('Question deleted successfully!');
+          setIsError(false);
+          setModalIsOpen(true); 
+        }
+        else{
+          setModalMessage('Question deleted failed!');
+          setIsError(true);
+          setModalIsOpen(true);
         }
 
         setReload(prev => !prev);
@@ -92,10 +104,29 @@ const QuestionPaperDashboard = () => {
     const duplicateQuestion= async (question)=>
     {
       console.log(question);
-      await axios.post(`http://localhost:5000/paper/duplicate-question`, { question})
+      const response =await axios.post(`http://localhost:5000/paper/duplicate-question`, { question})
+      if(response.status===201){
+        setModalMessage('Question duplicated successfully!');
+        setIsError(false);
+        setModalIsOpen(true); 
+      }
+      else{
+        setModalMessage('Question duplication failed!');
+        setIsError(true);
+        setModalIsOpen(true);
+      }
       setReload(prev => !prev);
-
     }
+
+    const editQuestion = (question) => {
+      const remainingMarks = paperdetails.marks - totalMarks + question.marks; // Calculate remaining marks considering the current question's marks
+      navigate(`/edit-question/${question.paperId}/${question._id}`, {
+        state: {
+          ...question,
+          remainingMarks,  // Pass remaining marks to the EditQuestion component
+        }
+      });
+    };
     const handleSubmit = async () => {
       try {
     
@@ -130,8 +161,10 @@ const QuestionPaperDashboard = () => {
   return (
     <>
       <Navbar />
+      
       <div className="question-list-container">
-        {questions.length > 0 ? (
+        { 
+        questions.length > 0 ? (
           <>
             <div className="question-header">
               <h2 className="question-subject">
@@ -151,8 +184,36 @@ const QuestionPaperDashboard = () => {
               </div>
             )}
             <div className="question-table">
-              {questions.map((question, index) => (
-                <div className="questions-table" key={index}>
+              {loading ? <Skeleton exams={questions}/>
+        : questions.map((question) => (
+
+                <div className="questions-table" key={question._id}
+                onMouseEnter={() => setHoveredItem(question._id)}
+                onMouseLeave={() => setHoveredItem(null)}
+                
+                >
+                {hoveredItem === question._id && (
+                  <div className="hovered-buttons">
+                    <button onClick={()=>editQuestion(question)}>
+                      <div className="flex-class">
+                        <CiEdit />
+                        <div>Edit</div>
+                      </div>
+                    </button>
+                    <button id="duplicate" onClick={()=>duplicateQuestion(question)}>
+                      <div className="flex-class">
+                        <HiDocumentDuplicate />
+                        <div>Duplicate</div>
+                      </div>
+                    </button>
+                    <button id="delete" onClick={()=>deleteQuestion(question)}>
+                      <div className="flex-class">
+                        <MdDelete />
+                        <div>Delete</div>
+                      </div>
+                      </button>
+                  </div>
+                )}
                   <div className="question-table-data">
                     <div className="compiler">
                       Compiler: {question.compilerReq}
@@ -166,16 +227,12 @@ const QuestionPaperDashboard = () => {
                         {question.questionDescription}
                       </div>
                     </div>
-                    <button onClick={()=>duplicateQuestion(question)} style={{width:"200px"}}>Duplicate</button>
-                    <button onClick={()=>deleteQuestion(question)} style={{width:"200px"}}>Delete</button>
                     {question.image ? (
                       <div className="question-image">
                         <img src={question.image} alt="question" />
                       </div>
                     ) : (
-                      <div className="question-image">
-                        <img src={defaultImage} alt="question" />
-                      </div>
+                      <></>
                     )}
                   </div>
                 </div>
@@ -198,7 +255,6 @@ const QuestionPaperDashboard = () => {
                 {totalMarks === paperdetails.marks && (
                   <button
                     className="question_submit-button"
-                    style={{ backgroundColor: "green", color: "white" }}
                     onClick={handleSubmit}
                   >
                     Submit
