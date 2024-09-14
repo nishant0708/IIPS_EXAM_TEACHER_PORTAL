@@ -18,7 +18,7 @@ const EditReadyQuestion = () => {
   const [questionDescription, setQuestionDescription] = useState(location.state.questionDescription);
   const [compilerReq, setCompilerReq] = useState(location.state.compilerReq);
   const [marks, setMarks] = useState(location.state.marks);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(location.state.image);
   const [loading, setLoading] = useState(false);
   const [loadingSpinner,setLoadingSpinner] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -27,7 +27,7 @@ const EditReadyQuestion = () => {
   const navigate = useNavigate();
 
   useEffect(()=>{setTimeout(()=>{setLoadingSpinner(false)},1000);},[]);
-
+  console.log(location.state);
   const handleEditQuestion = async () => {
     if (!questionheading || !questionDescription || !compilerReq || !marks) {
       setModalMessage('Please fill in all the required fields.');
@@ -108,7 +108,7 @@ const EditReadyQuestion = () => {
     onDrop,
     maxSize: 10485760, // 10MB limit
   });
-console.log(paperId);
+console.log(image);
   return (
     <>
       <Navbar />
@@ -162,10 +162,11 @@ console.log(paperId);
               <input
                 type="number"
                 value={marks}
-                onChange={(e) => setMarks(e.target.value)}
+                onChange={() => setMarks(marks)}
                 placeholder="Enter marks"
                 required
                 className="add_question_input"
+                disabled
               />
             </div>
           </div>
@@ -176,9 +177,11 @@ console.log(paperId);
               <input {...getInputProps()} />
               {image ? (
                 <div className="add_question_image_preview">
-                  <img src={URL.createObjectURL(image)} alt="Question" className="add_question_preview_image" />
-                  <FaTimes className="add_question_remove_image_icon" onClick={handleRemoveImage} />
-                </div>
+                  <img src={image ? typeof image === 'string' 
+                              ? image: URL.createObjectURL(image): 
+                            URL.createObjectURL(image)} alt="Question" className="add_question_preview_image" />
+                  <FaTimes className="add_question_remove_image_icon" onClick={(e)=>{e.stopPropagation();handleRemoveImage()}} />
+                </div> 
               ) : (
                 <p>
                   <div className='add_question_cloudicon'>

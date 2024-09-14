@@ -18,7 +18,7 @@ const EditQuestion = () => {
   const [questionDescription, setQuestionDescription] = useState(location.state.questionDescription);
   const [compilerReq, setCompilerReq] = useState(location.state.compilerReq);
   const [marks, setMarks] = useState(location.state.marks);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(location.state.image);
   const [loading, setLoading] = useState(false);
   const [loadingSpinner,setLoadingSpinner] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -176,8 +176,10 @@ const EditQuestion = () => {
               <input {...getInputProps()} />
               {image ? (
                 <div className="add_question_image_preview">
-                  <img src={URL.createObjectURL(image)} alt="Question" className="add_question_preview_image" />
-                  <FaTimes className="add_question_remove_image_icon" onClick={handleRemoveImage} />
+                  <img src={image ? typeof image === 'string' 
+                              ? image: URL.createObjectURL(image): 
+                            URL.createObjectURL(image)} alt="Question" className="add_question_preview_image" />
+                  <FaTimes className="add_question_remove_image_icon" onClick={(e)=>{e.stopPropagation();handleRemoveImage()}} />
                 </div>
               ) : (
                 <p>
