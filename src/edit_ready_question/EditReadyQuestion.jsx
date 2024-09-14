@@ -166,6 +166,7 @@ console.log(image);
                 placeholder="Enter marks"
                 required
                 className="add_question_input"
+                disabled
               />
             </div>
           </div>
