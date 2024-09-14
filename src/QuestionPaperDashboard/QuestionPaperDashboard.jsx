@@ -74,6 +74,7 @@ const QuestionPaperDashboard = () => {
 
 
   const stripMarkdown = (content) => {
+    console.log(content);
     const cleanHtml = DOMPurify.sanitize(marked(content));
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = cleanHtml;
