@@ -21,53 +21,16 @@ const SignUp = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [isErrorAlert, setIsErrorAlert] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state for signup button
-  const [loadingSpinner,setLoadingSpinner] = useState(true);
+  const [loadingSpinner, setLoadingSpinner] = useState(true);
   const [isFirstClick, setIsFirstClick] = useState(true); // Track if it is the first click
-  const [d0,setToggle0] = useState("block");
-  const [d1,setToggle1] = useState("block");
+  const [d1, setDisplay1] = useState(false);
+  const [d2, setDisplay2] = useState(false);
 
-  useEffect(()=>{setTimeout(()=>{setLoadingSpinner(false);},1000);},[]);
-
-  const toggled=(index)=>
-  {
-      const input=document.getElementsByClassName("password-eye")[index];
-      const eye0=document.getElementsByClassName("eye-icon-signup")[index];
-      const eye1=document.getElementsByClassName("eye-icon-slash-signup")[index];
-      if(index==0)
-      {
-          if(d0==="block")
-          {
-              eye1.style.display="none";
-              eye0.style.display="block";
-              input.type="text";
-              setToggle0("none");
-          }
-          else
-          {
-              eye0.style.display="none";
-              eye1.style.display="block";
-              input.type="password";
-              setToggle0("block");
-          }
-      }
-      else
-      {
-        if(d1==="block")
-        {
-            eye1.style.display="none";
-            eye0.style.display="block";
-            input.type="text";
-            setToggle1("none");
-        }
-        else
-        {
-            eye0.style.display="none";
-            eye1.style.display="block";
-            input.type="password";
-            setToggle1("block");
-        }
-      }
-  }
+  useEffect(() => {
+    setTimeout(() => {
+      setLoadingSpinner(false);
+    }, 1000);
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -123,116 +86,149 @@ const SignUp = () => {
     }
 
     if (isFirstClick) {
-      setIsWarningOpen(true); 
-      setIsFirstClick(false); 
+      setIsWarningOpen(true);
+      setIsFirstClick(false);
     } else {
-      handleSignUp(); 
+      handleSignUp();
     }
   };
 
   const handleWarningConfirm = () => {
-    setIsWarningOpen(false); 
+    setIsWarningOpen(false);
     handleSignUp();
   };
 
   const handleAlertConfirm = () => {
-    setIsAlertOpen(false); 
-    navigate("/verify_passcode"); 
+    setIsAlertOpen(false);
+    navigate("/verify_passcode");
   };
 
   return (
     <div className="sign_up_Box_min">
-      {loadingSpinner ? (<Loader />) : (<>
-        <div className="Sign_up_Box">
-        <img src={var1} alt="" />
-        <h3>Teacher : Sign Up</h3>
-        <form onSubmit={handleFormSubmit}>
-          <div>
-            <label>
-              Name :
-              <input
-                type="text"
-                name="name"
-                placeholder="Enter your Name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </label>
-          </div>
-
-          <div>
-            <label>
-              Email :
-              <input
-                type="email"
-                name="email"
-                placeholder="Enter your Email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-              Mobile No.
-              <input
-                type="tel"
-                name="mobileNumber"
-                placeholder="Enter your Mobile No."
-                value={formData.mobileNumber}
-                onChange={handleChange}
-                required
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-              Password:
-              <div className="eye-containers">
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Enter Your Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  className="password-eye"
-                />
-                <FaEye className="eyes-signup eye-icon-signup" onClick={()=> toggled(0)}/>
-                <FaEyeSlash className="eyes-signup eye-icon-slash-signup" onClick={()=> toggled(0)}/>
+      {loadingSpinner ? (
+        <Loader />
+      ) : (
+        <>
+          <div className="Sign_up_Box">
+            <img src={var1} alt="" />
+            <h3>Teacher : Sign Up</h3>
+            <form onSubmit={handleFormSubmit}>
+              <div>
+                <label>
+                  Name :
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter your Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
               </div>
-            </label>
-          </div>
-          <div>
-            <label>
-              Confirm Password:
-              <div className="eye-containers">
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirm Your Password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                  className="password-eye"
-                />
-                <FaEye className="eyes-signup eye-icon-signup" onClick={()=> toggled(1)}/>
-                <FaEyeSlash className="eyes-signup eye-icon-slash-signup" onClick={()=> toggled(1)}/>
-              </div>
-            </label>
-          </div>
 
-          <button type="submit" disabled={loading}>
-            {loading ? "Signing up..." : "Sign up"}
-          </button>
-        </form>
-        <p className="signup_text_redirect" onClick={() => navigate("/verify_passcode")}>
-          Already Have passcode?
-        </p>
-      </div>
-      </>)}
+              <div>
+                <label>
+                  Email :
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+              </div>
+              <div>
+                <label>
+                  Mobile No.
+                  <input
+                    type="tel"
+                    name="mobileNumber"
+                    placeholder="Enter your Mobile No."
+                    value={formData.mobileNumber}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+              </div>
+              <div>
+                <label>
+                  Password:
+                  <div className="eye-containers">
+                    <input
+                      type={d1 ? "text" : "password"}
+                      name="password"
+                      placeholder="Enter Your Password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                      className="password-eye"
+                    />
+                    {d1 ? (
+                      <FaEye
+                        className="eyes-signup eye-icon-signup"
+                        onClick={() => {
+                          setDisplay1(false);
+                        }}
+                      />
+                    ) : (
+                      <FaEyeSlash
+                        className="eyes-signup eye-icon-slash-signup"
+                        onClick={() => {
+                          setDisplay1(true);
+                        }}
+                      />
+                    )}
+                  </div>
+                </label>
+              </div>
+              <div>
+                <label>
+                  Confirm Password:
+                  <div className="eye-containers">
+                    <input
+                      type={d2 ? "text" : "password"}
+                      name="confirmPassword"
+                      placeholder="Confirm Your Password"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      required
+                      className="password-eye"
+                    />
+                    {d2 ? (
+                      <FaEye
+                        className="eyes-signup eye-icon-signup"
+                        onClick={() => {
+                          setDisplay2(false);
+                        }}
+                      />
+                    ) : (
+                      <FaEyeSlash
+                        className="eyes-signup eye-icon-slash-signup"
+                        onClick={() => {
+                          setDisplay2(true);
+                        }}
+                      />
+                    )}
+                  </div>
+                </label>
+              </div>
+
+              <button type="submit" disabled={loading}>
+                {loading ? "Signing up..." : "Sign up"}
+              </button>
+            </form>
+            <p
+              className="signup_text_redirect"
+              onClick={() => navigate("/verify_passcode")}
+            >
+              Already Have passcode?
+            </p>
+          </div>
+        </>
+      )}
 
       {/* Warning Modal for OTP */}
       <AlertModal
@@ -246,7 +242,7 @@ const SignUp = () => {
       {/* Alert Modal for success/error messages */}
       <AlertModal
         isOpen={isAlertOpen}
-        onClose={handleAlertConfirm} 
+        onClose={handleAlertConfirm}
         message={alertMessage}
         iserror={isErrorAlert}
       />
