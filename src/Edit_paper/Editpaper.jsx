@@ -33,6 +33,7 @@ const Editpaper = () => {
 
   useEffect(()=>
   {
+    document.title = "Edit-Paper";
     setTimeout(()=>{setLoading(false)},1000);
   },[]);
 
