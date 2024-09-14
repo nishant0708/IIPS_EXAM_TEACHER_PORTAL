@@ -65,11 +65,21 @@ const Question = () => {
     }
   };
 
+  function urlify(text) {
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function (url) {
+      return '<img src="' + url + '" alt="fail to load image">' + url + '</img>';
+    })
+
+  }
+
   const submitQuestion = async (imageUrl) => {
+    const questionDescriptionModified = urlify(questionDescription);
+
     const response = await axios.post('http://localhost:5000/paper/add-question', {
       paperId,
       questionheading,
-      questionDescription,
+      questionDescriptionModified,
       compilerReq,
       marks,
       image: imageUrl, // Include imageUrl even if it's an empty string

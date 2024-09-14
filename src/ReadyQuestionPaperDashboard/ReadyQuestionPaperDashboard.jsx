@@ -56,16 +56,9 @@ const ReadyQuestionPaperDashboard = () => {
     fetchQuestions();
   }, [paperId]);
 
-  function urlify(text) {
-    var urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, function(url) {
-      return '<img src="' + url + '" alt="fail to load image">' + url + '</img>';
-    })
-  
-  }
 
   const stripMarkdown = (content) => {
-    const cleanHtml = DOMPurify.sanitize(marked(urlify(content)));
+    const cleanHtml = DOMPurify.sanitize(marked(content));
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = cleanHtml;
     return tempDiv.textContent || tempDiv.innerText || "";
