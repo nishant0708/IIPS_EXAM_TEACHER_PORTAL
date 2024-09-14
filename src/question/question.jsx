@@ -197,11 +197,11 @@ const Question = () => {
       </div>
 
       {/* Alert Modal */}
-      <AlertModal 
-        isOpen={modalIsOpen} 
-        onClose={() => setModalIsOpen(false)} 
-        message={modalMessage} 
-        iserror={isError} 
+      <AlertModal
+        isOpen={modalIsOpen}
+        onClose={() => setModalIsOpen(false)}
+        message={modalMessage}
+        iserror={isError}
       />
     </>
   );
