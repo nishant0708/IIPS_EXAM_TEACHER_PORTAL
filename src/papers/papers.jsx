@@ -19,6 +19,8 @@ function Papers() {
   const [isError, setIsError] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [loading,setLoading] = useState(true);
+  const [modalDeleteIsOpen,setModalDeleteIsOpen] = useState(false);
+  const [modalDeleteMessage,setModalDeleteMessage] = useState("");
 
   const teacherId = localStorage.getItem("teacherId");
 
@@ -50,7 +52,13 @@ function Papers() {
     });
   };
 
-  const deletePaper = async (paper) => {
+  const deletePaper = () => {
+    setModalDeleteIsOpen(true);
+    setModalDeleteMessage("Do you want to delete this paper permanently?");
+  };
+
+  const deleteConfirm= async (paper) =>
+  {
     try {
       await axios.post("http://localhost:5000/paper/delete-paper", { _id: paper._id });
       setExams((prevQuestions) => prevQuestions.filter((q) => q._id !== paper._id));
@@ -64,7 +72,7 @@ function Papers() {
       setIsError(true);
       setModalIsOpen(true);
     }
-  };
+  }
 
   const duplicatePaper = async (paper) => {
     try {
@@ -118,8 +126,16 @@ function Papers() {
                 key={exam._id}
                 onMouseEnter={() => setHoveredItem(exam._id)}
                 onMouseLeave={() => setHoveredItem(null)}
-                onClick={() => handleCardClick(exam._id)}
+                onClick={() => {if(!modalDeleteIsOpen) handleCardClick(exam._id)}}
               >
+                <AlertModal 
+                        isOpen = {modalDeleteIsOpen}
+                        onClose={()=>{setModalDeleteIsOpen(false)}}
+                        message={modalDeleteMessage}
+                        iserror={false}
+                        isConfirm={true}
+                        onConfirm={()=>{deleteConfirm(exam)}}
+                />
                 {hoveredItem === exam._id && (
                   <div className="hovered-buttons">
                     <button onClick={(e) => {
@@ -142,13 +158,14 @@ function Papers() {
                     </button>
                     <button id="delete" onClick={(e) => {
                       e.stopPropagation();
-                      deletePaper(exam);
+                      deletePaper();
                     }}>
                       <div className="flex-class">
                         <MdDelete />
                         <div>Delete</div>
                       </div>
                       </button>
+
                   </div>
                 )}
                 <div className="scheduled">

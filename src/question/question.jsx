@@ -65,7 +65,16 @@ const Question = () => {
     }
   };
 
+  /// to be used to parse image url at time of rendering
+  // function urlify(text) {
+  //   var urlRegex = /(https?:\/\/[^\s]+)/g;
+  //   return text.replaceAll(urlRegex, function (url) {
+  //     return '<img src="' + url + '" alt="fail to load image" >'+ url +' </img>';
+  //   })
+  // }
+
   const submitQuestion = async (imageUrl) => {
+
     const response = await axios.post('http://localhost:5000/paper/add-question', {
       paperId,
       questionheading,
@@ -197,11 +206,11 @@ const Question = () => {
       </div>
 
       {/* Alert Modal */}
-      <AlertModal 
-        isOpen={modalIsOpen} 
-        onClose={() => setModalIsOpen(false)} 
-        message={modalMessage} 
-        iserror={isError} 
+      <AlertModal
+        isOpen={modalIsOpen}
+        onClose={() => setModalIsOpen(false)}
+        message={modalMessage}
+        iserror={isError}
       />
     </>
   );

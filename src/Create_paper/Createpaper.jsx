@@ -25,7 +25,15 @@ const Createpaper = () => {
 
   const [modalIsOpen, setModalIsOpen] = useState(false); 
   const [modalMessage, setModalMessage] = useState('');
+  const [modalConfirmIsOpen,setModalConfirmIsOpen] = useState(false);
+  const [modalConfirmMessage,setModalConfirmMessage] = useState("");
   const [isError, setIsError] = useState(false); 
+  const handleConfirmSubmit=(e)=>
+    {
+        e.preventDefault();
+        setModalConfirmIsOpen(true);
+        setModalConfirmMessage('Please make sure Subject Code, Date, Time and Duration are absolutely correct!!!');
+    }
   const navigate = useNavigate(); 
 
   useEffect(()=>
@@ -44,8 +52,7 @@ const Createpaper = () => {
     setMarks(value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     const minutes = duration.minutes === '' ? 0 : duration.minutes;
     const paperData = {
       className,
@@ -89,7 +96,7 @@ const Createpaper = () => {
     <div className='create_paper_container_main'>
       {loading ? (<Loader />): (<>
         <div className="create_paper_container">
-        <form className="create_paper_form" onSubmit={handleSubmit}>
+        <form className="create_paper_form" onSubmit={handleConfirmSubmit}>
           <div className='create_paper_row'>
             <FormGroup label="Class:" className="create_paper_class">
               <select className="create_paper_input" value={className} onChange={(e) => setClassName(e.target.value)}>
@@ -206,6 +213,13 @@ const Createpaper = () => {
         message={modalMessage} 
         iserror={isError}
       />
+      <AlertModal
+      isOpen={modalConfirmIsOpen}
+      onClose={()=>{setModalConfirmIsOpen(false)}}
+      message={modalConfirmMessage}
+      iserror={false}
+      isConfirm={true}
+      onConfirm={handleSubmit}/>
     </div>
     </>
   );

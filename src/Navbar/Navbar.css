@@ -52,6 +52,7 @@
     background-color: #4caf50;
     padding: 0px 0px 0px 5px;
     color: #000000;
+    border-radius: 10px;
 }
 
 .navbar-logout {

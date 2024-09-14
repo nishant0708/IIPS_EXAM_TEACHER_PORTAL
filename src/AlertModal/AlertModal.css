@@ -49,8 +49,45 @@
     border-radius: 4px;
     cursor: pointer;
   }
-  
+  .alert_confirm-button {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+  }
+  .alert_confirm-button:first-child
+  {
+      background-color: green;
+  }
+  .alert_confirm-button:nth-child(2)
+  {
+      background-color: red;
+  }
+  .alert_confirm-button:hover
+  {
+      cursor: pointer;
+  }
+  .alert_confirm-button:first-child:hover
+  {
+    background-color: rgba(0, 128, 0, 0.384);
+  }
+  .alert_confirm-button:nth-child(2):hover
+  {
+    background-color: rgba(255, 0, 0, 0.384);
+  }
   .alert_close-button:hover {
     background-color: #777;
   }
   
+  .alert_display-flex
+  {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 5px;
+  }
