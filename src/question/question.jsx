@@ -52,7 +52,7 @@ const Question = () => {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
 
-        imageUrl = uploadResponse.data.url; // Assuming the backend responds with the image URL
+        imageUrl = uploadResponse.data.url; 
       }
 
       await submitQuestion(imageUrl);
@@ -65,14 +65,6 @@ const Question = () => {
     }
   };
 
-  /// to be used to parse image url at time of rendering
-  // function urlify(text) {
-  //   var urlRegex = /(https?:\/\/[^\s]+)/g;
-  //   return text.replaceAll(urlRegex, function (url) {
-  //     return '<img src="' + url + '" alt="fail to load image" >'+ url +' </img>';
-  //   })
-  // }
-
   const submitQuestion = async (imageUrl) => {
 
     const response = await axios.post('http://localhost:5000/paper/add-question', {
@@ -81,7 +73,7 @@ const Question = () => {
       questionDescription,
       compilerReq,
       marks,
-      image: imageUrl, // Include imageUrl even if it's an empty string
+      image: imageUrl, 
     });
 
     if (response.status === 201) {
@@ -89,13 +81,11 @@ const Question = () => {
       setIsError(false);
       setModalIsOpen(true);
 
-      // If remaining marks are 0, navigate to the QuestionPaperDashboard
       if (remainingMarks - parseInt(marks) === 0) {
         setTimeout(() => {
           navigate(`/questionPaperDashboard/${paperId}`);
-        }, 2000); // Wait for 2 seconds before navigating
+        }, 2000); 
       } else {
-        // Clear form if there are remaining marks
         setQuestionHeading('');
         setQuestionDescription('');
         setCompilerReq('');
@@ -116,8 +106,37 @@ const Question = () => {
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    maxSize: 10485760, // 10MB limit
+    maxSize: 10485760, 
   });
+
+ const handlePaste = async (event) => {
+  const clipboardData = event.clipboardData;
+  const items = clipboardData.items;
+
+  for (const item of items) {
+    if (item.type.includes('image')) {
+      const file = item.getAsFile();
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'question');
+
+      
+      setQuestionDescription((prev) => prev + '\nUploading image...');
+
+      try {
+        const uploadResponse = await axios.post('http://localhost:5000/paper/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+
+        const imageUrl = uploadResponse.data.url;
+        setQuestionDescription((prev) => prev.replace('Uploading image...', `![image](${imageUrl})`));
+      } catch (error) {
+        console.error('Image upload failed:', error.message);
+        setQuestionDescription((prev) => prev.replace('Uploading image...', 'Image upload failed.'));
+      }
+    }
+  }
+};
 
   return (
     <>
@@ -143,6 +162,7 @@ const Question = () => {
             <textarea
               value={questionDescription}
               onChange={(e) => setQuestionDescription(e.target.value)}
+              onPaste={handlePaste} // Capture paste event
               placeholder="Enter question description"
               required
               rows="3"
@@ -205,7 +225,6 @@ const Question = () => {
         </div>
       </div>
 
-      {/* Alert Modal */}
       <AlertModal
         isOpen={modalIsOpen}
         onClose={() => setModalIsOpen(false)}
