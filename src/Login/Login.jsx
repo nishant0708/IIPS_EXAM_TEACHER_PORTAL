@@ -20,8 +20,6 @@ function Login() {
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
-    document.title = "Teacher:login";
-
     // Check if session ID exists in local storage and is still valid
     const sessionId = localStorage.getItem("sessionId");
     if (sessionId) {

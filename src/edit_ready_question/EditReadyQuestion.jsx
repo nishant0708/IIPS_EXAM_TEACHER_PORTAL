@@ -10,7 +10,6 @@ import AlertModal from '../AlertModal/AlertModal'; // Import the AlertModal comp
 
 
 const EditReadyQuestion = () => {
-  document.title = "Ready Question";
   const { paperId } = useParams();
   const location = useLocation();
 

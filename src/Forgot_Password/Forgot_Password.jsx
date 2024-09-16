@@ -17,7 +17,6 @@ const ForgotPassword = () => {
 
     useEffect(()=>
     {
-        document.title = "Forgot Password";
         setTimeout(()=>{setLoading(false);},1000);
     },[]);
 

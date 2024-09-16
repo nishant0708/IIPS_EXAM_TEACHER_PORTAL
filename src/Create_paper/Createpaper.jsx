@@ -38,7 +38,6 @@ const Createpaper = () => {
 
   useEffect(()=>
   {
-    document.title = "Create-Paper";
     setTimeout(()=>{setLoading(false)},1000);
   },[]);
 
