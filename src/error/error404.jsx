@@ -18,6 +18,8 @@ export default function Error404() {
     }
   };
 
+  
+
   return (
     <>
     {sessionId && <Navbar/>}

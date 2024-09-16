@@ -33,6 +33,7 @@ const QuestionPaperDashboard = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
 
   useEffect(() => {
+    document.title = "Question-paper-Dashboard";
     const fetchQuestions = async () => {
       try {
         const res = await axios.post(

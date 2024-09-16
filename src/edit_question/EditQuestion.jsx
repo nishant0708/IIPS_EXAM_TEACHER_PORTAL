@@ -10,6 +10,7 @@ import AlertModal from '../AlertModal/AlertModal'; // Import the AlertModal comp
 import Loader from '../Loader/Loader';
 
 const EditQuestion = () => {
+  document.title = "Edit-Question";
   const { paperId } = useParams();
   const location = useLocation();
 
