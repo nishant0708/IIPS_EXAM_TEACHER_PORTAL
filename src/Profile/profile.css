@@ -1,0 +1,146 @@
+/* Profile container */
+.profile-card {
+  background-color: #282828;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  margin: 100px auto;
+  text-align: center;
+  padding: 20px;
+  position: relative; /* Added to position the edit button relative to the container */
+}
+
+.profile-header {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid rgb(255, 255, 255);
+  margin-top: -90px;
+  box-shadow: 10px 15px 60px rgba(255, 255, 255, .1);
+}
+
+.plus-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: black;
+  color: white;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.profile-details {
+  margin-top: -40px;
+}
+
+.profile-email {
+  font-size: 16px;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-top: 50px;
+}
+
+.profile-mob {
+  font-size: 18px;
+  color: gray;
+  margin-bottom: 15px;
+}
+
+/* Edit button */
+.edit-button {
+  background-color: #4CAF50; 
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 20px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.edit-button:hover {
+  background-color: #45a049;
+}
+
+/* Modal styles */
+.modal {
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  margin: auto;
+  align-items: center;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal form styles */
+.modal-form {
+  display: grid;
+  flex-direction: column;
+}
+
+.modal-form label {
+  margin-bottom: 10px;
+  color: white;
+  display: inline-grid;
+}
+
+.modal-form input {
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  background-color: #282828;
+  border: 1px solid #fffdfd;
+  color: white;
+}
+
+.modal-buttons {
+  gap: 5px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal-buttons button:hover {
+  background-color: #45a049;
+}
