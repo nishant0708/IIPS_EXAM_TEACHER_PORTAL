@@ -16,6 +16,7 @@ import ReadyQuestionPaperDashboard from './ReadyQuestionPaperDashboard/ReadyQues
 import EditReadyQuestion from './edit_ready_question/EditReadyQuestion';
 import Error404 from './error/error404';
 import EditQuestion from './edit_question/EditQuestion';
+import Profile from './Profile/profile';
 
 
 
@@ -76,6 +77,7 @@ const App = () => {
           <Route path="/questionPaperDashboard/:paperId" element={<QuestionPaperDashboard />}/>
           <Route path="/ready_papers" element={<ReadyPaperDashboard />}/>
           <Route path="/ready_questions/:paperId" element={<ReadyQuestionPaperDashboard />} />
+          <Route path='/profile' element={<Profile/>}/>
         </>
       )}
 
