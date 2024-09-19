@@ -78,6 +78,7 @@ const SignUp = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
+    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setAlertMessage("Passwords do not match!");
       setIsErrorAlert(true);
@@ -85,6 +86,7 @@ const SignUp = () => {
       return; // Stop further execution
     }
 
+    // If it's the first click, open warning modal
     if (isFirstClick) {
       setIsWarningOpen(true);
       setIsFirstClick(false);
@@ -149,7 +151,9 @@ const SignUp = () => {
                     placeholder="Enter your Mobile No."
                     value={formData.mobileNumber}
                     onChange={handleChange}
+                    pattern="[0-9]{10}" // Validation for exactly 10 digits
                     required
+                    title="Mobile number must be exactly 10 digits."
                   />
                 </label>
               </div>

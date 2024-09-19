@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import './profile.css'; // Ensure the CSS file is created for styling
+import './profile.css';
 import Navbar from '../Navbar/Navbar';
-import { FaPlus } from 'react-icons/fa'; // Importing the plus icon
-import Modal from 'react-modal'; // Importing react-modal
+import { FaPlus } from 'react-icons/fa';
+import Modal from 'react-modal';
+import defaultPhoto from "../Assets/profile_photo.png";
 
-import defaultPhoto from "../Assets/profile_photo.png"; // Corrected import statement
-
-Modal.setAppElement('#root'); // Set the root element for accessibility
+Modal.setAppElement('#root');
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
@@ -14,6 +13,8 @@ const Profile = () => {
     name: "Niko",
     email: "niko@gmail.com",
     mobile_no: "1234567890",
+    password: "qwerty123",
+    confirmPassword: "qwerty123"
   });
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -29,6 +30,24 @@ const Profile = () => {
   };
 
   const handleSave = () => {
+    const { email, mobile_no, password, confirmPassword } = newProfileData;
+
+    if (!email.includes('@')) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    const mobileRegex = /^\d{10}$/;
+    if (!mobileRegex.test(mobile_no)) {
+      alert("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
     setProfileData(newProfileData);
     setModalIsOpen(false);
     alert("Profile updated successfully!");
@@ -47,6 +66,8 @@ const Profile = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  const passwordsMatch = newProfileData.password === newProfileData.confirmPassword;
 
   return (
     <>
@@ -107,11 +128,21 @@ const Profile = () => {
             />
           </label>
           <label>
-            password:
+            Password:
             <input
-              type="email"
-              value={newProfileData.email}
-              onChange={(e) => setNewProfileData({ ...newProfileData, email: e.target.value })}
+              type="password"
+              className={passwordsMatch ? 'input-normal' : 'input-faded'}
+              value={newProfileData.password}
+              onChange={(e) => setNewProfileData({ ...newProfileData, password: e.target.value })}
+            />
+          </label>
+          <label>
+            Confirm Password:
+            <input
+              type="password"
+              className={passwordsMatch ? 'input-normal' : 'input-faded'}
+              value={newProfileData.confirmPassword}
+              onChange={(e) => setNewProfileData({ ...newProfileData, confirmPassword: e.target.value })}
             />
           </label>
           <div className="modal-buttons">

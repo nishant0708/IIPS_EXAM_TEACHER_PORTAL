@@ -80,7 +80,7 @@
 
 /* Modal styles */
 .modal {
-  background-color: #1a1a1a;
+  background-color: #282828;
   padding: 20px;
   border-radius: 10px;
   width: 500px;
@@ -116,7 +116,7 @@
   padding: 10px;
   margin-top: 5px;
   border-radius: 5px;
-  background-color: #282828;
+  background-color: #1a1a1a;
   border: 1px solid #fffdfd;
   color: white;
 }
@@ -143,4 +143,14 @@
 
 .modal-buttons button:hover {
   background-color: #45a049;
+}
+
+.input-faded {
+  opacity: 0.5;
+  border: 1px solid red;
+}
+
+.input-normal {
+  opacity: 1;
+  border: 1px solid #ccc;
 }
