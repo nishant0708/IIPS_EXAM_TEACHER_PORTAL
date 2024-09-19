@@ -6,6 +6,7 @@
     color: white;
     background-color: #282828;
     align-items: center;
+    z-index: 4444;
     height: 75px;
     font-size: large;
     box-shadow: none;

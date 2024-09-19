@@ -6,12 +6,12 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import AlertModal from '../AlertModal/AlertModal'; // Import the AlertModal component
+import AlertModal from '../AlertModal/AlertModal'; 
 
 const Question = () => {
   const { paperId } = useParams();
   const location = useLocation();
-  const { remainingMarks } = location.state || {}; // Get remaining marks from props
+  const initialRemainingMarks = location.state?.remainingMarks || 0; 
 
   const [questionheading, setQuestionHeading] = useState('');
   const [questionDescription, setQuestionDescription] = useState('');
@@ -22,6 +22,7 @@ const Question = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [isError, setIsError] = useState(false);
+  const [remainingMarks, setRemainingMarks] = useState(initialRemainingMarks); 
   const navigate = useNavigate();
 
   const handleAddQuestion = async () => {
@@ -66,7 +67,6 @@ const Question = () => {
   };
 
   const submitQuestion = async (imageUrl) => {
-
     const response = await axios.post('http://localhost:5000/paper/add-question', {
       paperId,
       questionheading,
@@ -81,11 +81,13 @@ const Question = () => {
       setIsError(false);
       setModalIsOpen(true);
 
-      if (remainingMarks - parseInt(marks) === 0) {
+      const updatedRemainingMarks = remainingMarks - parseInt(marks); // Calculate remaining marks
+      if (updatedRemainingMarks === 0) {
         setTimeout(() => {
           navigate(`/questionPaperDashboard/${paperId}`);
         }, 2000); 
       } else {
+        setRemainingMarks(updatedRemainingMarks);
         setQuestionHeading('');
         setQuestionDescription('');
         setCompilerReq('');
@@ -109,34 +111,33 @@ const Question = () => {
     maxSize: 10485760, 
   });
 
- const handlePaste = async (event) => {
-  const clipboardData = event.clipboardData;
-  const items = clipboardData.items;
+  const handlePaste = async (event) => {
+    const clipboardData = event.clipboardData;
+    const items = clipboardData.items;
 
-  for (const item of items) {
-    if (item.type.includes('image')) {
-      const file = item.getAsFile();
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', 'question');
+    for (const item of items) {
+      if (item.type.includes('image')) {
+        const file = item.getAsFile();
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'question');
 
-      
-      setQuestionDescription((prev) => prev + '\nUploading image...');
+        setQuestionDescription((prev) => prev + '\nUploading image...');
 
-      try {
-        const uploadResponse = await axios.post('http://localhost:5000/paper/upload', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        try {
+          const uploadResponse = await axios.post('http://localhost:5000/paper/upload', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          });
 
-        const imageUrl = uploadResponse.data.url;
-        setQuestionDescription((prev) => prev.replace('Uploading image...', `![image](${imageUrl})`));
-      } catch (error) {
-        console.error('Image upload failed:', error.message);
-        setQuestionDescription((prev) => prev.replace('Uploading image...', 'Image upload failed.'));
+          const imageUrl = uploadResponse.data.url;
+          setQuestionDescription((prev) => prev.replace('Uploading image...', `![image](${imageUrl})`));
+        } catch (error) {
+          console.error('Image upload failed:', error.message);
+          setQuestionDescription((prev) => prev.replace('Uploading image...', 'Image upload failed.'));
+        }
       }
     }
-  }
-};
+  };
 
   return (
     <>
