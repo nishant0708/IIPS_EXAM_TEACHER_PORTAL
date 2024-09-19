@@ -6,20 +6,18 @@ import axios from "axios";
 import AlertModal from "../AlertModal/AlertModal";
 import Loader from "../Loader/Loader";
 
-
 const ForgotPassword = () => {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
-    const [loading,setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [modalIsOpen, setModalIsOpen] = useState(false); // Modal state
     const [isError, setIsError] = useState(false); // Error state for modal
     const navigate = useNavigate();
 
-    useEffect(()=>
-    {
+    useEffect(() => {
         document.title = "Forgot Password";
-        setTimeout(()=>{setLoading(false);},1000);
-    },[]);
+        setTimeout(() => { setLoading(false); }, 1000);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,8 +28,8 @@ const ForgotPassword = () => {
             setModalIsOpen(true);
             setTimeout(() => {
                 setModalIsOpen(false);
-                navigate("/Login");
-            }, 3000); // Optional: Navigate to login after 3 seconds
+                navigate(-1); // Navigate to previous page after submission
+            }, 3000); 
         } catch (error) {
             setMessage(error.response?.data?.error || "Something went wrong. Please try again.");
             setIsError(true);
@@ -39,33 +37,39 @@ const ForgotPassword = () => {
         }
     };
 
+    const handleBackToLoginPage = () => {
+        navigate("./login"); 
+    };
+
     return (
         <div className="forgot-container-main">
             {loading ? (<Loader />) : (<>
                 <div className="forgot-container">
-            <img alt="Logo" src={Logo} />
-            <h2>Forgot Your Password?</h2>
-            <form onSubmit={handleSubmit}>
-                <label>Email:</label>
-                <input 
-                    type="email" 
-                    name="forgot_email" 
-                    placeholder="Enter your Email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <button type="submit">Submit</button>
-            </form>
-            
-            {/* Use the AlertModal component */}
-            <AlertModal
-                isOpen={modalIsOpen} 
-                onClose={() => setModalIsOpen(false)} 
-                message={message} 
-                iserror={isError} 
-            />
-        </div>
+                    <img alt="Logo" src={Logo} />
+                    <h2>Forgot Your Password?</h2>
+                    <form onSubmit={handleSubmit}>
+                        <label>Email:</label>
+                        <input
+                            type="email"
+                            name="forgot_email"
+                            placeholder="Enter your Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        <button type="submit">Submit</button>
+                       
+                        <p className="back_to_login" onClick={handleBackToLoginPage}>Back to Login page</p>
+                    </form>
+
+                    {/* Use the AlertModal component */}
+                    <AlertModal
+                        isOpen={modalIsOpen}
+                        onClose={() => setModalIsOpen(false)}
+                        message={message}
+                        iserror={isError}
+                    />
+                </div>
             </>)}
         </div>
     );
