@@ -58,6 +58,7 @@ const SignUp = () => {
       const data = await response.json();
 
       if (response.ok) {
+        
         setAlertMessage("Your account has been created successfully.");
         setIsErrorAlert(false);
         setIsAlertOpen(true);

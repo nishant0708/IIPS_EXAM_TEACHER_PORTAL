@@ -53,6 +53,7 @@ function Login() {
         setModalIsOpen(true);
       })
       .catch((error) => {
+        console.log(error);
         setModalMessage(error.response.data.error);
         setIsError(true);
         setModalIsOpen(true);
