@@ -70,18 +70,21 @@
 {
     color: rgb(4, 231, 4);
 }
-.question_paper_h3{
-    margin: 0px;
-}
-.description
+.description,
+.question_paper_h3 
 {
+    width: 80%; /* Adjust the width as needed */
     line-clamp: 2;
-    width: 80%;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis; /* Ensures the '...' is shown */
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 2; /* Limits the text to 2 lines */
     -webkit-box-orient: vertical;
+    word-wrap: break-word; /* Prevents overflow */
+}
+.question_paper_h3
+{
+    margin:0;
 }
 .question-image
 {
@@ -154,7 +157,7 @@ font-size: 18px;
 }
 @media(max-width : 1000px)
 {
-    .description
+    .description,.question_paper_h3
     {
         width: 70%;
     }
@@ -171,7 +174,7 @@ font-size: 18px;
         justify-content: center;
         text-align: center;
     }
-    .description
+    .description,.question_paper_h3
     {
         width: 60%;
     }
