@@ -17,7 +17,6 @@ import EditReadyQuestion from './edit_ready_question/EditReadyQuestion';
 import Error404 from './error/error404';
 import EditQuestion from './edit_question/EditQuestion';
 import Profile from './Profile/profile';
-import ChangePassword from './ChangePassword/ChangePassword';
 
 
 
@@ -79,7 +78,6 @@ const App = () => {
           <Route path="/ready_papers" element={<ReadyPaperDashboard />}/>
           <Route path="/ready_questions/:paperId" element={<ReadyQuestionPaperDashboard />} />
           <Route path='/profile' element={<Profile/>}/>
-          <Route path="/change-password" element={<ChangePassword />}/>
         </>
       )}
 
