@@ -1,0 +1,114 @@
+.compiler-editor {
+  width: 100%;
+  background-color: #282828;
+  min-height: 100px;
+  min-width: 125px;
+  height: 75%;
+  margin: 10px 10px 0 5px;
+  border-radius: 10px;
+  color: white;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Ensure no overflow from the parent */
+}
+
+.editor-header {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  background-color: #1a1a1a;
+  height: 50px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding-left: 20px;
+  justify-content: space-between;
+}
+
+.editor-editor {
+  flex-grow: 1; /* Allow the editor to grow and fill the space */
+  position: relative; /* Ensure the editor is positioned relative to the parent */
+  overflow: hidden; /* Hide overflow to remove scrollbar from parent */
+}
+
+.editor-monaco {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-x: auto; /* Enable horizontal scrolling within Monaco */
+  overflow-y: auto; /* Enable vertical scrolling within Monaco */
+}
+
+.editor-run
+{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #4caf50;
+    width: 75px;
+    height: 35px;
+    justify-content: center;
+    border-radius: 10px;
+    margin-right: 25px;
+    font-size: medium;
+}
+.editor-run:hover
+{
+  cursor: pointer;
+  background-color: red;
+}
+.editor-code
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 1000;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  outline: none;
+  width: 300px;
+  z-index: 1001;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-content input {
+  padding: 5px;
+}
+
+.modal-content button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal-content button:hover {
+  background-color: #45a049;
+}

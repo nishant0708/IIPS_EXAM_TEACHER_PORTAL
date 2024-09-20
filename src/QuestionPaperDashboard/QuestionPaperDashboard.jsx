@@ -13,6 +13,7 @@ import { CiEdit } from "react-icons/ci";
 import { HiDocumentDuplicate } from "react-icons/hi2";
 import { MdDelete } from "react-icons/md";
 import Skeleton from "../Skeleton/Skeleton";
+import Body from "../Body/Body";
 
 
 const QuestionPaperDashboard = () => {
@@ -31,6 +32,7 @@ const QuestionPaperDashboard = () => {
   const [isError, setIsError] = useState(false);
 
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [body,setBody] = useState(false);
 
   useEffect(() => {
     document.title = "Question-paper-Dashboard";
@@ -164,142 +166,152 @@ const QuestionPaperDashboard = () => {
     }
   };
 
-
   return (
     <>
-      <Navbar />
-
-      <div className="question-list-container">
-        {
-          questions.length > 0 ? (
+      {
+          body ? (
             <>
-              <div className="question-header">
-                <h2 className="question-subject">
-                  {paperdetails.className} {paperdetails.semester} ({paperdetails.subject})
-                </h2>
-                <h2 className="question-total-marks">
-                  Total Marks: &nbsp;{totalMarks}/{paperdetails.marks}
-                </h2>
-              </div>
-              {totalMarks > paperdetails.marks && (
-                <div className="error_message_questionDashboard">
-                  <p>
-                    The total marks ({totalMarks}) exceed the allowed marks (
-                    {paperdetails.marks}). Please remove <strong>{totalMarks - paperdetails.marks}</strong>{" "}
-                    marks to submit the paper.
-                  </p>
-                </div>
-              )}
-              <div className="question-table">
-                {loading ? <Skeleton exams={questions} />
-                  : questions.map((question) => (
-
-                    <div className="questions-table" key={question._id}
-                      onMouseEnter={() => setHoveredItem(question._id)}
-                      onMouseLeave={() => setHoveredItem(null)}
-
-                    >
-                      {hoveredItem === question._id && (
-                        <div className="hovered-buttons">
-                          <button onClick={() => editQuestion(question)}>
-                            <div className="flex-class">
-                              <CiEdit />
-                              <div>Edit</div>
-                            </div>
-                          </button>
-                          <button id="duplicate" onClick={() => duplicateQuestion(question)}>
-                            <div className="flex-class">
-                              <HiDocumentDuplicate />
-                              <div>Duplicate</div>
-                            </div>
-                          </button>
-                          <button id="delete" onClick={() => deleteQuestion(question)}>
-                            <div className="flex-class">
-                              <MdDelete />
-                              <div>Delete</div>
-                            </div>
-                          </button>
-                        </div>
-                      )}
-                      <div className="question-table-data">
-                        <div className="compiler">
-                          Compiler: {question.compilerReq}
-                        </div>
-                        <div className="marks">Marks: {question.marks}</div>
-                        <div className="heading-description">
-                          <h3 className="question_paper_h3">
-                            {question.questionheading}
-                          </h3>
-                          <div className="description">
-                            {stripMarkdown(question.questionDescription)}
-                          </div>
-                        </div>
-                        {question.image ? (
-                          <div className="question-image">
-                            <img src={question.image} alt="question" />
-                          </div>
-                        ) : (
-                          <></>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-
-                <center>
-                  {totalMarks < paperdetails.marks && (
-                    <button
-                      className="add-question-button2"
-                      onClick={() =>
-                        navigate(`/add-question/${paperId}`, {
-                          state: { remainingMarks: paperdetails.marks - totalMarks },
-                        })
-                      }
-                    >
-                      <FaPlus />
-                      <p>Add Question</p>
-                    </button>
-                  )}
-                  {totalMarks === paperdetails.marks && (
-                    <button
-                      className="question_submit-button"
-                      onClick={handleSubmit}
-                    >
-                      Submit
-                    </button>
-                  )}
-                </center>
-              </div>
+              <Navbar />
+              <Body question={body}/>
             </>
           ) : (
             <>
-              <div className="no-questions-container">
-                <center>
-                  <img alt="Nothing" src={Nothing} className="nothing" />
-                  <h2>No Questions Found</h2>
-                  <button
-                    className="add-question-button"
-                    onClick={() =>
-                      navigate(`/add-question/${paperId}`, {
-                        state: { remainingMarks: paperdetails.marks - totalMarks },
-                      })
-                    }
-                  >
-                    <FaPlus />
-                    <p>Create Your First Question</p>
-                  </button>
-                </center>
-              </div>
-            </>
-          )}
-      </div>
 
-      {/* Alert Modal */}
-      < AlertModal
-        isOpen={modalIsOpen}
-        onClose={() => setModalIsOpen(false)}
-        message={modalMessage}
-        iserror={isError}
-      />
+                <Navbar />
+                <div className="question-list-container">
+                {
+                  questions.length > 0 ? (
+                    <>
+                      <div className="question-header">
+                        <h2 className="question-subject">
+                          {paperdetails.className} {paperdetails.semester} ({paperdetails.subject})
+                        </h2>
+                        <h2 className="question-total-marks">
+                          Total Marks: &nbsp;{totalMarks}/{paperdetails.marks}
+                        </h2>
+                      </div>
+                      {totalMarks > paperdetails.marks && (
+                        <div className="error_message_questionDashboard">
+                          <p>
+                            The total marks ({totalMarks}) exceed the allowed marks (
+                            {paperdetails.marks}). Please remove <strong>{totalMarks - paperdetails.marks}</strong>{" "}
+                            marks to submit the paper.
+                          </p>
+                        </div>
+                      )}
+                      <div className="question-table">
+                        {loading ? <Skeleton exams={questions} />
+                          : questions.map((question) => (
+        
+                            <div className="questions-table" key={question._id}
+                              onMouseEnter={() => setHoveredItem(question._id)}
+                              onMouseLeave={() => setHoveredItem(null)}
+                              onClick={()=>{setBody(question)}}
+                            >
+                              {hoveredItem === question._id && (
+                                <div className="hovered-buttons">
+                                  <button onClick={() => editQuestion(question)}>
+                                    <div className="flex-class">
+                                      <CiEdit />
+                                      <div>Edit</div>
+                                    </div>
+                                  </button>
+                                  <button id="duplicate" onClick={() => duplicateQuestion(question)}>
+                                    <div className="flex-class">
+                                      <HiDocumentDuplicate />
+                                      <div>Duplicate</div>
+                                    </div>
+                                  </button>
+                                  <button id="delete" onClick={() => deleteQuestion(question)}>
+                                    <div className="flex-class">
+                                      <MdDelete />
+                                      <div>Delete</div>
+                                    </div>
+                                  </button>
+                                </div>
+                              )}
+                              <div className="question-table-data">
+                                <div className="compiler">
+                                  Compiler: {question.compilerReq}
+                                </div>
+                                <div className="marks">Marks: {question.marks}</div>
+                                <div className="heading-description">
+                                  <h3 className="question_paper_h3">
+                                    {question.questionheading}
+                                  </h3>
+                                  <div className="description">
+                                    {stripMarkdown(question.questionDescription)}
+                                  </div>
+                                </div>
+                                {question.image ? (
+                                  <div className="question-image">
+                                    <img src={question.image} alt="question" />
+                                  </div>
+                                ) : (
+                                  <></>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+        
+                        <center>
+                          {totalMarks < paperdetails.marks && (
+                            <button
+                              className="add-question-button2"
+                              onClick={() =>
+                                navigate(`/add-question/${paperId}`, {
+                                  state: { remainingMarks: paperdetails.marks - totalMarks },
+                                })
+                              }
+                            >
+                              <FaPlus />
+                              <p>Add Question</p>
+                            </button>
+                          )}
+                          {totalMarks === paperdetails.marks && (
+                            <button
+                              className="question_submit-button"
+                              onClick={handleSubmit}
+                            >
+                              Submit
+                            </button>
+                          )}
+                        </center>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="no-questions-container">
+                        <center>
+                          <img alt="Nothing" src={Nothing} className="nothing" />
+                          <h2>No Questions Found</h2>
+                          <button
+                            className="add-question-button"
+                            onClick={() =>
+                              navigate(`/add-question/${paperId}`, {
+                                state: { remainingMarks: paperdetails.marks - totalMarks },
+                              })
+                            }
+                          >
+                            <FaPlus />
+                            <p>Create Your First Question</p>
+                          </button>
+                        </center>
+                      </div>
+                    </>
+                  )}
+              </div>
+        
+              {/* Alert Modal */}
+              < AlertModal
+                isOpen={modalIsOpen}
+                onClose={() => setModalIsOpen(false)}
+                message={modalMessage}
+                iserror={isError}
+              />
+            </>
+          )
+      }
     </>
   );
 };
