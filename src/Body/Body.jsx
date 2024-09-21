@@ -6,14 +6,32 @@ import Questions from "../QuestionsDescription/QuestionsDescription";
 import Editor from "../Editor/Editor";
 import Test from "../Test/Test";
 import "./Body.css";
+import axios from "axios";
+import { useLocation, useParams } from "react-router-dom";
+import Navbar from "../Navbar/Navbar";
 
-const Body = ({ question }) => {
+const Body = () => {
   const bodyContentsRef = useRef(null); // Reference for body-contents
   const [isSmallWidth, setIsSmallWidth] = useState(false); // State to track if width < 200px
   const [output, setOutput] = useState("");  // State to store the output
+  const {questionId} = useParams();
+  const [question,setQuestion] = useState("");
+  const location=useLocation();
+  const url=location.state?.url || "http://localhost:5000/student/getQuestionById";
 
   // useEffect to observe the width of body-contents
   useEffect(() => {
+    axios.post(
+        url,
+        {
+            questionId: questionId
+        }
+    ).then((res)=>{
+      setQuestion(res.data.question)}
+    ).catch((err)=>{
+      console.error(err);
+    });
+
     const observer = new ResizeObserver((entries) => {
       if (bodyContentsRef.current) {
         const { width } = entries[0].contentRect;
@@ -32,30 +50,34 @@ const Body = ({ question }) => {
       }
       observer.disconnect();
     };
+
   }, []);
 
   return (
-    <div className="compiler-body" data-flex-splitter-horizontal>
-      <Questions question={question} />
+    <>
+      <Navbar />
+      <div className="compiler-body" data-flex-splitter-horizontal>
+        <Questions question={question} />
 
-      <div role="separator" tabIndex="1"></div>
+        <div role="separator" tabIndex="1"></div>
 
-      {/* Conditionally render based on width */}
-      {isSmallWidth ? (
-        <div className="body-contents-small" ref={bodyContentsRef}>
-          {/* Render alternate content when width is less than 200px */}
-          <p>Code</p>
-        </div>
-      ) : (
-        <div className="body-contents" data-flex-splitter-vertical ref={bodyContentsRef}>
-          {/* Pass setOutput function to Editor to update the output */}
-          <Editor question={question} onOutput={setOutput} />
-          <div role="separator" tabIndex="1"></div>
-          {/* Pass the output state to the Test component */}
-          <Test output={output} />
-        </div>
-      )}
-    </div>
+        {/* Conditionally render based on width */}
+        {isSmallWidth ? (
+          <div className="body-contents-small" ref={bodyContentsRef}>
+            {/* Render alternate content when width is less than 200px */}
+            <p>Code</p>
+          </div>
+        ) : (
+          <div className="body-contents" data-flex-splitter-vertical ref={bodyContentsRef}>
+            {/* Pass setOutput function to Editor to update the output */}
+            <Editor question={question} onOutput={setOutput} />
+            <div role="separator" tabIndex="1"></div>
+            {/* Pass the output state to the Test component */}
+            <Test output={output} />
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
