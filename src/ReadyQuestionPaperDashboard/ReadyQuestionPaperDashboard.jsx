@@ -1,18 +1,17 @@
-import React from 'react'
+import React from "react";
 import "../QuestionPaperDashboard/QuestionPaperDashboard.css";
-import Navbar from '../Navbar/Navbar';
+import Navbar from "../Navbar/Navbar";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Nothing from "../Assets/nothing.svg";
-import AlertModal from '../AlertModal/AlertModal';
-import { useState, useEffect } from 'react';
-import Skeleton from '../Skeleton/Skeleton';
-import { CiEdit } from 'react-icons/ci';
+import AlertModal from "../AlertModal/AlertModal";
+import { useState, useEffect } from "react";
+import Skeleton from "../Skeleton/Skeleton";
+import { CiEdit } from "react-icons/ci";
 import DOMPurify from "dompurify";
 import { marked } from "marked";
 
 const ReadyQuestionPaperDashboard = () => {
-
   const navigate = useNavigate();
   const { paperId } = useParams();
   const [questions, setQuestions] = useState([]);
@@ -33,10 +32,10 @@ const ReadyQuestionPaperDashboard = () => {
         setQuestions(res.data);
       } catch (error) {
         console.error("Failed to fetch questions:", error);
-
-
       } finally {
-        setTimeout(() => { setLoading(false) }, 1000);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       }
     };
     const fetchpaperdetails = async () => {
@@ -49,13 +48,14 @@ const ReadyQuestionPaperDashboard = () => {
       } catch (error) {
         console.error("Failed to fetch paperdetails:", error);
       } finally {
-        setTimeout(() => { setLoading(false) }, 1000);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       }
     };
     fetchpaperdetails();
     fetchQuestions();
   }, [paperId]);
-
 
   const stripMarkdown = (content) => {
     const cleanHtml = DOMPurify.sanitize(marked(content));
@@ -65,28 +65,37 @@ const ReadyQuestionPaperDashboard = () => {
   };
 
   const editReadyQuestion = (question) => {
-    navigate(`/edit-ready-question/${question.paperId}/${question._id}`, { state: { ...question } });
-  }
+    navigate(`/edit-ready-question/${question.paperId}/${question._id}`, {
+      state: { ...question },
+    });
+  };
   return (
     <>
       <Navbar />
-
       <div className="question-list-container">
-        {loading ? (<Skeleton exams={questions} />) : questions.length > 0 ?
-          (<>
+        {loading ? (
+          <Skeleton exams={questions} />
+        ) : questions.length > 0 ? (
+          <>
             <div className="question-header">
-              <div className='ready-question-display-flex'>
+              <div className="ready-question-display-flex">
                 <h2 className="question-subject">
-                  {paperdetails.className} {paperdetails.semester} ({paperdetails.subject})
+                  {paperdetails.className} {paperdetails.semester} (
+                  {paperdetails.subject})
                 </h2>
                 <h2>Total Marks: {paperdetails.marks}</h2>
               </div>
             </div>
             <div className="question-table">
               {questions.map((question) => (
-                <div className="questions-table" key={question._id}
+                <div
+                  className="questions-table"
+                  key={question._id}
                   onMouseEnter={() => setHoveredItem(question._id)}
                   onMouseLeave={() => setHoveredItem(null)}
+                  onClick={() => {
+                    navigate(`/preview/${question._id}`);
+                  }}
                 >
                   {hoveredItem === question._id && (
                     <div className="hovered-buttons">
@@ -122,23 +131,23 @@ const ReadyQuestionPaperDashboard = () => {
                 </div>
               ))}
             </div>
-          </>) : (<>
+          </>
+        ) : (
+          <>
             <div className="no-questions-container">
               <center>
                 <img alt="Nothing" src={Nothing} className="nothing" />
                 <h2>No Ready Questions Found</h2>
               </center>
             </div>
-          </>)}
+          </>
+        )}
       </div>
 
       {/* Alert Modal */}
-      < AlertModal
-        isOpen={modalIsOpen}
-        onClose={() => setModalIsOpen(false)}
-      />
+      <AlertModal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)} />
     </>
-  )
-}
+  );
+};
 
-export default ReadyQuestionPaperDashboard
+export default ReadyQuestionPaperDashboard;

@@ -1,0 +1,100 @@
+.compiler-questions {
+  width: 70%;
+  height: 98%;
+  min-width: 110px;
+  max-width: 90vw;
+  overflow-y: auto;
+  background-color: #282828;
+  color: #ccc;
+  border-radius: 10px;
+  margin-left: 10px;
+  font-size: 20px;
+  margin-top: 10px;
+}
+.questions-header {
+  padding-left: 20px;
+  background-color: #1a1a1a;
+  display: flex;
+  color: white;
+  align-items: center;
+  gap: 5px;
+  height: 50px;
+  position: relative;
+}
+.questions-content {
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  position: relative;
+}
+.question_marks_body{
+  position: absolute;
+  top: -12px;
+  font-size: 22px;
+  right: 20px;
+  color: rgb(193, 116, 22);
+}
+.content-heading {
+  font-weight: 600;
+  color: white;
+  font-size: xx-large;
+  word-break: break-all;
+}
+.questions-image {
+  max-width: 300px;
+  object-fit: contain;
+  width: 100%;
+}
+.questions-small-content {
+  background-color:rgb(211 229 255 / 40%);
+  border-radius: 10px;
+  position: relative;
+  color: black;
+  width: 100%;
+  height: 100%;
+}
+
+.questions-small-content p {
+  margin: 0px;
+  font-size: 2rem;
+  text-wrap: nowrap;
+  transform: rotate(-90deg) translate(-50%, -50%);
+  position: absolute;
+  top: 45%;
+  font-weight: 600;
+  left: 60%;
+  transform-origin: left center;
+}
+
+/*-------- markdown support --------*/
+.content-body *{
+   max-width: 100%;
+   word-break: break-all;
+}
+
+.content-body img{
+
+
+  max-height: 400px;
+}
+.content-body pre{
+
+  background-color: #353434;
+  color: white;
+  word-wrap: break-word;   
+  overflow-wrap: break-word;
+  padding: 0px 10px;
+  border-radius: 10px;
+}
+.content-body code{
+  background-color: #353434;
+  padding:  0px 10px;
+  white-space: break-spaces;
+  color: white;
+
+
+}
+.content-body strong{
+  color: white;
+}
