@@ -99,7 +99,7 @@ const ReadyQuestionPaperDashboard = () => {
                 >
                   {hoveredItem === question._id && (
                     <div className="hovered-buttons">
-                      <button onClick={() => editReadyQuestion(question)}>
+                      <button onClick={(e) => {e.stopPropagation();editReadyQuestion(question)}}>
                         <div className="flex-class">
                           <CiEdit />
                           <div>Edit</div>

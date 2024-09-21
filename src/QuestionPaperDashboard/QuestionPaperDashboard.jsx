@@ -213,7 +213,10 @@ const QuestionPaperDashboard = () => {
                   >
                     {hoveredItem === question._id && (
                       <div className="hovered-buttons">
-                        <button onClick={() => editQuestion(question)}>
+                        <button onClick={(e) => 
+                          {
+                            e.stopPropagation();
+                            editQuestion(question)}}>
                           <div className="flex-class">
                             <CiEdit />
                             <div>Edit</div>
@@ -221,7 +224,7 @@ const QuestionPaperDashboard = () => {
                         </button>
                         <button
                           id="duplicate"
-                          onClick={() => duplicateQuestion(question)}
+                          onClick={(e) => {e.stopPropagation();duplicateQuestion(question)}}
                         >
                           <div className="flex-class">
                             <HiDocumentDuplicate />
@@ -230,7 +233,7 @@ const QuestionPaperDashboard = () => {
                         </button>
                         <button
                           id="delete"
-                          onClick={() => deleteQuestion(question)}
+                          onClick={(e) => {e.stopPropagation();deleteQuestion(question)}}
                         >
                           <div className="flex-class">
                             <MdDelete />
