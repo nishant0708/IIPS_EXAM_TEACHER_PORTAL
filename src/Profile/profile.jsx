@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './profile.css';
 import Navbar from '../Navbar/Navbar';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaEye, FaEyeSlash } from 'react-icons/fa';
 import Modal from 'react-modal';
 import defaultPhoto from "../Assets/profile_photo.png";
 
@@ -13,12 +13,14 @@ const Profile = () => {
     name: "Niko",
     email: "niko@gmail.com",
     mobile_no: "1234567890",
-    password: "qwerty123",
-    confirmPassword: "qwerty123"
+    password: "Qwerty@123",
+    confirmPassword: "Qwerty@123"
   });
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newProfileData, setNewProfileData] = useState(profileData);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const openModal = () => {
     setNewProfileData(profileData);
@@ -40,6 +42,12 @@ const Profile = () => {
     const mobileRegex = /^\d{10}$/;
     if (!mobileRegex.test(mobile_no)) {
       alert("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      alert("Password must be at least 8 characters, contain one uppercase letter, one number, and one special character.");
       return;
     }
 
@@ -66,6 +74,9 @@ const Profile = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
   const passwordsMatch = newProfileData.password === newProfileData.confirmPassword;
 
@@ -129,21 +140,31 @@ const Profile = () => {
           </label>
           <label>
             Password:
-            <input
-              type="password"
-              className={passwordsMatch ? 'input-normal' : 'input-faded'}
-              value={newProfileData.password}
-              onChange={(e) => setNewProfileData({ ...newProfileData, password: e.target.value })}
-            />
+            <div className="password-field">
+              <input
+                type={showPassword ? "text" : "password"}
+                className={passwordsMatch ? 'input-normal' : 'input-faded'}
+                value={newProfileData.password}
+                onChange={(e) => setNewProfileData({ ...newProfileData, password: e.target.value })}
+              />
+              <span onClick={togglePasswordVisibility} className="eye-icon">
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
           </label>
           <label>
             Confirm Password:
-            <input
-              type="password"
-              className={passwordsMatch ? 'input-normal' : 'input-faded'}
-              value={newProfileData.confirmPassword}
-              onChange={(e) => setNewProfileData({ ...newProfileData, confirmPassword: e.target.value })}
-            />
+            <div className="password-field">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                className={passwordsMatch ? 'input-normal' : 'input-faded'}
+                value={newProfileData.confirmPassword}
+                onChange={(e) => setNewProfileData({ ...newProfileData, confirmPassword: e.target.value })}
+              />
+              <span onClick={toggleConfirmPasswordVisibility} className="eye-icon">
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
           </label>
           <div className="modal-buttons">
             <button type="button" onClick={handleSave}>Save</button>

@@ -119,6 +119,8 @@
   background-color: #1a1a1a;
   border: 1px solid #fffdfd;
   color: white;
+  width: 90%; 
+  padding-right: 40px; 
 }
 
 .modal-buttons {
@@ -154,3 +156,17 @@
   opacity: 1;
   border: 1px solid #ccc;
 }
+.password-field {
+  position: relative;
+  width: 100%; /* Set width to be the same as other inputs */
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+
