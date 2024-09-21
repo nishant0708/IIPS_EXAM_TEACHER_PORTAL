@@ -28,7 +28,7 @@ const ForgotPassword = () => {
             setModalIsOpen(true);
             setTimeout(() => {
                 setModalIsOpen(false);
-                navigate(-1); // Navigate to previous page after submission
+                navigate("/"); 
             }, 3000); 
         } catch (error) {
             setMessage(error.response?.data?.error || "Something went wrong. Please try again.");
@@ -38,7 +38,7 @@ const ForgotPassword = () => {
     };
 
     const handleBackToLoginPage = () => {
-        navigate("/login"); 
+        navigate("/"); 
     };
 
     return (

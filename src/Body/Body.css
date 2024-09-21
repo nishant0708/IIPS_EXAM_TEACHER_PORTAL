@@ -19,6 +19,7 @@
 .body-contents-small p
 {
     font-size: 50px;
+    color: black;
     transform: rotate(90deg);
     position: absolute;
     top: 35%;
