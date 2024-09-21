@@ -27,14 +27,16 @@ const Navbar = () => {
   return (
     <>
       <div className="navbar">
-        <div className="navbar-contents navbar-left-margin">
+        <div className="navbar-contents navbar-left-margin"
+         onClick={() => navigate(`/profile`)}
+         >
           <img
             alt="Image"
             className="pfp"
             src="https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg"
             width="35"
             height="35"
-            onClick={() => navigate(`/profile`)}
+           
           />
           <div>Nishant Kaushal</div>
         </div>

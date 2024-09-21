@@ -3,6 +3,7 @@ import './profile.css';
 import Navbar from '../Navbar/Navbar';
 import { FaPlus, FaEye, FaEyeSlash } from 'react-icons/fa';
 import Modal from 'react-modal';
+import AlertModal from '../AlertModal/AlertModal';
 import defaultPhoto from "../Assets/profile_photo.png";
 
 Modal.setAppElement('#root');
@@ -18,6 +19,9 @@ const Profile = () => {
   });
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [alertIsOpen, setAlertIsOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const [newProfileData, setNewProfileData] = useState(profileData);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -31,34 +35,40 @@ const Profile = () => {
     setModalIsOpen(false);
   };
 
+  const openAlertModal = (message, isError = false) => {
+    setAlertMessage(message);
+    setIsError(isError);
+    setAlertIsOpen(true);
+  };
+
   const handleSave = () => {
     const { email, mobile_no, password, confirmPassword } = newProfileData;
 
     if (!email.includes('@')) {
-      alert("Please enter a valid email address.");
+      openAlertModal("Please enter a valid email address.", true);
       return;
     }
 
     const mobileRegex = /^\d{10}$/;
     if (!mobileRegex.test(mobile_no)) {
-      alert("Please enter a valid 10-digit mobile number.");
+      openAlertModal("Please enter a valid 10-digit mobile number.", true);
       return;
     }
 
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
-      alert("Password must be at least 8 characters, contain one uppercase letter, one number, and one special character.");
+      openAlertModal("Password must be at least 8 characters, contain one uppercase letter, one number, and one special character.", true);
       return;
     }
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match.");
+      openAlertModal("Passwords do not match.", true);
       return;
     }
 
     setProfileData(newProfileData);
     setModalIsOpen(false);
-    alert("Profile updated successfully!");
+    openAlertModal("Profile updated successfully!");
   };
 
   const handleImageChange = (event) => {
@@ -172,6 +182,14 @@ const Profile = () => {
           </div>
         </form>
       </Modal>
+
+      {/* Alert Modal for Success or Error Messages */}
+      <AlertModal
+        isOpen={alertIsOpen}
+        onClose={() => setAlertIsOpen(false)}
+        message={alertMessage}
+        iserror={isError}
+      />
     </>
   );
 };
