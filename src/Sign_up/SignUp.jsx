@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Sign_up.css";
 import var1 from "../Assets/iips_logo2.png";
 import { useNavigate } from "react-router-dom";
-import { FaEye } from "react-icons/fa";
-import { FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import AlertModal from "../AlertModal/AlertModal";
 import Loader from "../Loader/Loader";
 
@@ -23,8 +22,8 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false); // Loading state for signup button
   const [loadingSpinner, setLoadingSpinner] = useState(true);
   const [isFirstClick, setIsFirstClick] = useState(true); // Track if it is the first click
-  const [d1, setDisplay1] = useState(false);
-  const [d2, setDisplay2] = useState(false);
+  const [d1, setDisplay1] = useState(false); // Toggle password visibility
+  const [d2, setDisplay2] = useState(false); // Toggle confirm password visibility
 
   useEffect(() => {
     setTimeout(() => {
@@ -79,6 +78,10 @@ const SignUp = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
+    // Regular expression to check for at least 8 characters, 1 uppercase letter, and 1 special character
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/;
+
+    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setAlertMessage("Passwords do not match!");
       setIsErrorAlert(true);
@@ -86,6 +89,17 @@ const SignUp = () => {
       return; // Stop further execution
     }
 
+    // Check if the password meets the required criteria
+    if (!passwordRegex.test(formData.password)) {
+      setAlertMessage(
+        "Password must be at least 8 characters, include a capital letter and a special character."
+      );
+      setIsErrorAlert(true);
+      setIsAlertOpen(true);
+      return;
+    }
+
+    // If it's the first click, open warning modal
     if (isFirstClick) {
       setIsWarningOpen(true);
       setIsFirstClick(false);
@@ -141,6 +155,7 @@ const SignUp = () => {
                   />
                 </label>
               </div>
+
               <div>
                 <label>
                   Mobile No.
@@ -150,10 +165,13 @@ const SignUp = () => {
                     placeholder="Enter your Mobile No."
                     value={formData.mobileNumber}
                     onChange={handleChange}
+                    pattern="[0-9]{10}" // Validation for exactly 10 digits
                     required
+                    title="Mobile number must be exactly 10 digits."
                   />
                 </label>
               </div>
+
               <div>
                 <label>
                   Password:
@@ -170,21 +188,18 @@ const SignUp = () => {
                     {d1 ? (
                       <FaEye
                         className="eyes-signup eye-icon-signup"
-                        onClick={() => {
-                          setDisplay1(false);
-                        }}
+                        onClick={() => setDisplay1(false)}
                       />
                     ) : (
                       <FaEyeSlash
                         className="eyes-signup eye-icon-slash-signup"
-                        onClick={() => {
-                          setDisplay1(true);
-                        }}
+                        onClick={() => setDisplay1(true)}
                       />
                     )}
                   </div>
                 </label>
               </div>
+
               <div>
                 <label>
                   Confirm Password:
@@ -201,16 +216,12 @@ const SignUp = () => {
                     {d2 ? (
                       <FaEye
                         className="eyes-signup eye-icon-signup"
-                        onClick={() => {
-                          setDisplay2(false);
-                        }}
+                        onClick={() => setDisplay2(false)}
                       />
                     ) : (
                       <FaEyeSlash
                         className="eyes-signup eye-icon-slash-signup"
-                        onClick={() => {
-                          setDisplay2(true);
-                        }}
+                        onClick={() => setDisplay2(true)}
                       />
                     )}
                   </div>
