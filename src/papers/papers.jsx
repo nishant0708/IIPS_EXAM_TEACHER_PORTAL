@@ -116,7 +116,7 @@ function Papers() {
             <h2>Previous Papers:</h2>
             <div className="icon-button-wrapper">
               <button className="create-new-button" onClick={handleCreateNew}>
-                <FaPlus className="plus-icon" /> Create New
+                <FaPlus className="plus-icon-create" /> Create New
               </button>
             </div>
           </div>
