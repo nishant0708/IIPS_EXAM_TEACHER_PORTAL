@@ -1,3 +1,6 @@
+
+
+
 /* Profile container */
 .profile-card {
   background-color: #282828;
@@ -7,7 +10,7 @@
   margin: 100px auto;
   text-align: center;
   padding: 20px;
-  position: relative; /* Added to position the edit button relative to the container */
+  position: relative;
 }
 
 .profile-header {
@@ -25,7 +28,7 @@
   box-shadow: 10px 15px 60px rgba(255, 255, 255, .1);
 }
 
-.plus-icon {
+.profile-plus-icon {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -56,112 +59,92 @@
 .profile-mob {
   font-size: 18px;
   color: gray;
-  margin-bottom: 15px;
 }
 
-/* Edit button */
-.edit-button {
-  background-color: #4CAF50; 
+.profile-edit-button {
+  background-color: #4CAF50;
+  color: black;
   border: none;
-  color: white;
   padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 20px 2px;
-  cursor: pointer;
   border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
 }
 
-.edit-button:hover {
-  background-color: #45a049;
+.profile-edit-button:hover {
+  background-color: #4caf4fcb;
 }
 
-/* Modal styles */
-.modal {
+.profile-modal {
   background-color: #282828;
   padding: 20px;
   border-radius: 10px;
-  width: 500px;
+  width: 400px;
+  max-width: 90%;
   margin: auto;
-  align-items: center;
 }
 
-.overlay {
-  background-color: rgba(0, 0, 0, 0.75);
+.profile-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  display: grid;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Modal form styles */
-.modal-form {
-  display: grid;
-  flex-direction: column;
+.profile-modal h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
 }
 
-.modal-form label {
+.profile-modal-form label {
+  display: block;
   margin-bottom: 10px;
-  color: white;
-  display: inline-grid;
+  font-size: 16px;
 }
 
-.modal-form input {
-  padding: 10px;
+.profile-modal-form input {
+  width: calc(100% - 10px);
+  padding: 8px;
+  font-size: 14px;
   margin-top: 5px;
+  border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #1a1a1a;
-  border: 1px solid #fffdfd;
   color: white;
-  width: 90%; 
-  padding-right: 40px; 
 }
 
-.modal-buttons {
-  gap: 5px;
-  display: flex;
-  justify-content: flex-end;
+.profile-modal-buttons {
   margin-top: 20px;
+  text-align: right;
 }
 
-.modal-buttons button {
+.profile-modal-buttons button {
   background-color: #4CAF50;
+  color: black;
   border: none;
-  color: white;
   padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
   border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 10px;
 }
 
-.modal-buttons button:hover {
-  background-color: #45a049;
+.profile-modal-buttons button:hover {
+  background-color: #4caf4fba;
 }
 
-.input-faded {
-  opacity: 0.5;
-  border: 1px solid red;
-}
-
-.input-normal {
-  opacity: 1;
-  border: 1px solid #ccc;
-}
-.password-field {
+.profile-password-field {
   position: relative;
-  width: 100%; /* Set width to be the same as other inputs */
+  width: 100%;
 }
 
-.eye-icon {
+.profile-eye-icon {
   position: absolute;
   right: 10px;
   top: 50%;
@@ -169,4 +152,61 @@
   cursor: pointer;
 }
 
+.profile-input-normal {
+  border: 1px solid #ccc;
+}
 
+.profile-input-faded {
+  border: 1px solid red;
+}
+
+/* Alert Modal Styles */
+.profile-alert-modal {
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-alert-message {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.profile-alert-buttons button {
+  background-color: #f5b921;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.profile-alert-buttons button:hover {
+  background-color: #e09e1a;
+}
+
+.profile-alert-buttons .profile-close-button {
+  background-color: #d9534f;
+  margin-left: 10px;
+}
+
+.profile-alert-buttons .profile-close-button:hover {
+  background-color: #c9302c;
+}
+
+.profile-edit-password-button{
+  background-color: #4CAF50;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.profile-edit-password-button:hover {
+  background-color: #4caf4fba;
+}

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './profile.css';
 import Navbar from '../Navbar/Navbar';
 import { FaPlus, FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -11,11 +12,11 @@ Modal.setAppElement('#root');
 const Profile = () => {
   const [profileData, setProfileData] = useState({
     photo: defaultPhoto,
-    name: "Niko",
-    email: "niko@gmail.com",
-    mobile_no: "1234567890",
-    password: "Qwerty@123",
-    confirmPassword: "Qwerty@123"
+    name: "",
+    email: "",
+    mobile_no: "",
+    password: "",
+    confirmPassword: ""
   });
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -25,6 +26,28 @@ const Profile = () => {
   const [newProfileData, setNewProfileData] = useState(profileData);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [editPassword, setEditPassword] = useState(false);
+  const [teacher, setTeacher] = useState();
+
+  useEffect(() => {
+    axios.post('http://localhost:5000/teacher/getteacherDetails', { teacherId: localStorage.getItem("teacherId") })
+      .then((response) => {
+        setTeacher(response?.data?.teacher);
+        if (teacher) {
+          setProfileData(prevData => ({
+            ...prevData,
+            name: teacher?.name,
+            email: teacher?.email,
+            mobile_no: teacher?.mobileNumber,
+            password: teacher?.password,
+            confirmPassword: teacher?.password,
+          }));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, );
 
   const openModal = () => {
     setNewProfileData(profileData);
@@ -55,20 +78,39 @@ const Profile = () => {
       return;
     }
 
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordRegex.test(password)) {
-      openAlertModal("Password must be at least 8 characters, contain one uppercase letter, one number, and one special character.", true);
-      return;
+    if (editPassword) {
+      const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if (!passwordRegex.test(password)) {
+        openAlertModal("Password must be at least 8 characters, contain one uppercase letter, one number, and one special character.", true);
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        openAlertModal("Passwords do not match.", true);
+        return;
+      }
     }
 
-    if (password !== confirmPassword) {
-      openAlertModal("Passwords do not match.", true);
-      return;
-    }
-
-    setProfileData(newProfileData);
-    setModalIsOpen(false);
-    openAlertModal("Profile updated successfully!");
+    // Merging /edit API call
+    axios.post('http://localhost:5000/teacher/edit', {
+      teacherId: localStorage.getItem("teacherId"),
+      ...newProfileData,
+    })
+      .then((response) => {
+        console.log(teacher);
+        setProfileData({
+          ...profileData,
+          name: response?.data?.teacher?.name,
+          email: response?.data?.teacher?.email,
+          mobile_no: response?.data?.teacher?.mobileNumber,
+        });
+        openAlertModal("Profile updated successfully!");
+        closeModal();
+      })
+      .catch((error) => {
+        openAlertModal("An error occurred while updating the profile.", true);
+        console.log(error);
+      });
   };
 
   const handleImageChange = (event) => {
@@ -96,7 +138,7 @@ const Profile = () => {
       <div className="profile-card">
         <div className="profile-header">
           <img src={profileData.photo} alt="Profile" className="profile-image" />
-          <label htmlFor="file-input" className="plus-icon">
+          <label htmlFor="file-input" className="profile-plus-icon">
             <FaPlus />
           </label>
           <input
@@ -112,18 +154,18 @@ const Profile = () => {
           <p className="profile-email">Email: {profileData.email}</p>
           <p className="profile-mob">Mobile: {profileData.mobile_no}</p>
         </div>
-        <button className="edit-button" onClick={openModal}>Edit Profile</button>
+        <button className="profile-edit-button" onClick={openModal}>Edit Profile</button>
       </div>
 
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Edit Profile"
-        className="modal"
-        overlayClassName="overlay"
+        className="profile-modal"
+        overlayClassName="profile-overlay"
       >
         <h2>Edit Profile</h2>
-        <form className="modal-form">
+        <form className="profile-modal-form">
           <label>
             Name:
             <input
@@ -148,42 +190,51 @@ const Profile = () => {
               onChange={(e) => setNewProfileData({ ...newProfileData, mobile_no: e.target.value })}
             />
           </label>
-          <label>
-            Password:
-            <div className="password-field">
-              <input
-                type={showPassword ? "text" : "password"}
-                className={passwordsMatch ? 'input-normal' : 'input-faded'}
-                value={newProfileData.password}
-                onChange={(e) => setNewProfileData({ ...newProfileData, password: e.target.value })}
-              />
-              <span onClick={togglePasswordVisibility} className="eye-icon">
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </span>
-            </div>
-          </label>
-          <label>
-            Confirm Password:
-            <div className="password-field">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                className={passwordsMatch ? 'input-normal' : 'input-faded'}
-                value={newProfileData.confirmPassword}
-                onChange={(e) => setNewProfileData({ ...newProfileData, confirmPassword: e.target.value })}
-              />
-              <span onClick={toggleConfirmPasswordVisibility} className="eye-icon">
-                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-              </span>
-            </div>
-          </label>
-          <div className="modal-buttons">
+
+          <button type="button" className="profile-edit-password-button" onClick={() => setEditPassword(!editPassword)}>
+            {editPassword ? "Cancel Edit Password" : "Edit Password"}
+          </button>
+
+          {editPassword && (
+            <>
+              <label>
+                Password:
+                <div className="profile-password-field">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className={passwordsMatch ? 'profile-input-normal' : 'profile-input-faded'}
+                    value={newProfileData.password}
+                    onChange={(e) => setNewProfileData({ ...newProfileData, password: e.target.value })}
+                  />
+                  <span onClick={togglePasswordVisibility} className="profile-eye-icon">
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
+                </div>
+              </label>
+              <label>
+                Confirm Password:
+                <div className="profile-password-field">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    className={passwordsMatch ? 'profile-input-normal' : 'profile-input-faded'}
+                    value={newProfileData.confirmPassword}
+                    onChange={(e) => setNewProfileData({ ...newProfileData, confirmPassword: e.target.value })}
+                  />
+                  <span onClick={toggleConfirmPasswordVisibility} className="profile-eye-icon">
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
+                </div>
+              </label>
+            </>
+          )}
+
+          <div className="profile-modal-buttons">
             <button type="button" onClick={handleSave}>Save</button>
             <button type="button" onClick={closeModal}>Cancel</button>
           </div>
         </form>
       </Modal>
 
-      {/* Alert Modal for Success or Error Messages */}
       <AlertModal
         isOpen={alertIsOpen}
         onClose={() => setAlertIsOpen(false)}
