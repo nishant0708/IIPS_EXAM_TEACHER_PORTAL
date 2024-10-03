@@ -153,11 +153,12 @@
 }
 
 .profile-input-normal {
-  border: 1px solid #ccc;
+  border: 1px solid #ccc !important;
 }
 
 .profile-input-faded {
-  border: 1px solid red;
+   border: 1px solid red !important;
+   outline: red;
 }
 
 /* Alert Modal Styles */
