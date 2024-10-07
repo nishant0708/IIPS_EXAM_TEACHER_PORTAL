@@ -101,7 +101,7 @@ const getFormattedDateTime = (date, time) => {
                     Completed on: {getFormattedDateTime(paper.endTime, paper.time)}
                   </div>
                   <div className="table-data">
-                    <div className={`evaluation ${evaluations[0]}`}>
+                    <div className={`evaluation ${evaluations[0]+"-completed"}`}>
                       <GoDotFill />
                       <div>{evaluations[0]}</div>
                     </div>

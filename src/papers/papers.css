@@ -194,17 +194,21 @@
   background-color: #282828;
   border-radius: 3px;
 }
-.Evaluated
+.Evaluated,.Evaluated-completed
 {
     color: green;
+    width: 255px;
+}
+.Evaluated-completed
+{
     width: 110px;
 }
-.Not-Evaluated
+.Not-Evaluated,.Not-Evaluated-completed
 {
     color: red;
     width: 145px;
 }
-.Evaluation-in-Progress
+.Evaluation-in-Progress,.Evaluation-in-Progress-completed
 {
   color: yellow;
   width: 210px;
@@ -212,7 +216,6 @@
 .evaluation-attemption
 {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 .attemption
@@ -224,6 +227,9 @@
   border-radius: 3px;
   height: 30px;
   justify-content: center;
+  position: absolute;
+  top: 18px;
+  right: 20px;
 }
 .Attempted
 {
@@ -240,7 +246,7 @@
   display: flex;
   gap: 50px;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 .student-image {
   width: 100px;
@@ -259,7 +265,7 @@
 }
 .student-name
 {
-  margin-top: -45px;
+  margin-top: -25px;
 }
 @media screen and (max-width: 768px) {
   .student-image {
@@ -268,11 +274,16 @@
   }
   .student-image-name
   {
+    margin-top: 5px;
     gap: 10px;
   }
   .student-name
   {
-    margin-top: -25px;
+    margin-top: 0px;
+  }
+  .Evaluated
+  {
+    width: 100px;
   }
 }
 
@@ -282,4 +293,9 @@
     width: 60px;
     height: 60px;
   }
+}
+
+.completed-student
+{
+  position: relative;
 }
