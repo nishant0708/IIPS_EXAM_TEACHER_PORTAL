@@ -66,6 +66,7 @@
     margin-top: 10px;
     background-color: #1a1a1a;
     transition: 0.3s all;
+    border-radius: 10px;
 }
 
 .navbar-logout:hover {

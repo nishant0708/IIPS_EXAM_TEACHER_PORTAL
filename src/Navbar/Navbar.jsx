@@ -23,32 +23,32 @@ const Navbar = () => {
     localStorage.removeItem("sessionId");
     navigate("/");
   };
+  const teacherName = localStorage.getItem("name");
 
   return (
     <>
       <div className="navbar">
-        <div className="navbar-contents navbar-left-margin"
-         onClick={() => navigate(`/profile`)}
-         >
+        <div
+          className="navbar-contents navbar-left-margin"
+          onClick={() => navigate(`/profile`)}
+        >
           <img
             alt="Image"
             className="pfp"
             src="https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg"
             width="35"
             height="35"
-           
           />
-          <div>Nishant Kaushal</div>
+          <div>{teacherName}</div>
         </div>
         <div className="navbar-contents navbar-displayed">
-
-        <p
+          <p
             className={`navbar-links ${
               location.pathname === `/teacherDashboard` ? "active" : ""
             }`}
             onClick={() => navigate(`/teacherDashboard`)}
           >
-          Dashboard
+            Dashboard
           </p>
           <p
             className={`navbar-links ${
@@ -64,13 +64,15 @@ const Navbar = () => {
             }`}
             onClick={() => navigate(`/completed_papers`)}
           >
-        Completed Papers
+            Completed Papers
           </p>
-         
         </div>
         <div className="navbar-right-margin navbar-displayed">
           <p className="navbar-logout" onClick={handleLogout}>
-          <span className="logbut"> <FaPowerOff size={15}/>  Logout</span> 
+            <span className="logbut">
+              {" "}
+              <FaPowerOff size={15} /> Logout
+            </span>
           </p>
         </div>
         <div className="navbar-menu navbar-right-margin">
@@ -84,7 +86,7 @@ const Navbar = () => {
       </div>
       <div className="navbar-sidebar">
         <ul type="none" className="navbar-sidebar-ul">
-        <li>
+          <li>
             <p
               className={`navbar-links ${
                 location.pathname === `/teacherDashboard` ? "active" : ""
@@ -94,7 +96,7 @@ const Navbar = () => {
                 responsive(); // close sidebar after click
               }}
             >
-            Dashboard
+              Dashboard
             </p>
           </li>
           <li>
@@ -120,10 +122,10 @@ const Navbar = () => {
                 responsive(); // close sidebar after click
               }}
             >
-          Completed Papers
+              Completed Papers
             </p>
           </li>
-     
+
           <li>
             <p
               className="navbar-logout navbar-logout-menu"
@@ -132,7 +134,10 @@ const Navbar = () => {
                 responsive(); // close sidebar after logout
               }}
             >
-           <span className="logbut"> <FaPowerOff size={15}/>  Logout</span>
+              <span className="logbut">
+                {" "}
+                <FaPowerOff size={15} /> Logout
+              </span>
             </p>
           </li>
         </ul>
