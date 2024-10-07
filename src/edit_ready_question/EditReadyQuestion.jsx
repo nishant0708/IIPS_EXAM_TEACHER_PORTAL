@@ -74,44 +74,52 @@ const EditReadyQuestion = () => {
 
   const handleEditQuestion = async () => {
     if (!questionheading || !questionDescription || !compilerReq || !marks) {
-      setModalMessage('Please fill in all the required fields.');
+      setModalMessage("Please fill in all the required fields.");
       setIsError(true);
       setModalIsOpen(true);
       return;
     }
-
+  
     if (parseInt(marks) > remainingMarks) {
-      setModalMessage(`You can assign a maximum of ${remainingMarks} marks to this question.`);
+      setModalMessage(
+        `You can assign a maximum of ${remainingMarks} marks to this question.`
+      );
       setIsError(true);
       setModalIsOpen(true);
       return;
     }
-
+  
     setLoading(true);
     try {
-      let imageUrl = '';
-
-      if (image) {
+      let imageUrl = image;
+  
+      // Only upload if the image is a new file (not a pre-existing URL)
+      if (image && typeof image !== "string") {
         const formData = new FormData();
-        formData.append('file', image);
-        formData.append('upload_preset', 'question');
-
-        const uploadResponse = await axios.post('http://localhost:5000/paper/upload', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
-
-        imageUrl = uploadResponse.data.url; // Assuming the backend responds with the image URL
+        formData.append("file", image);
+        formData.append("upload_preset", "question");
+  
+        const uploadResponse = await axios.post(
+          "http://localhost:5000/paper/upload",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+  
+        imageUrl = uploadResponse.data.url;
       }
-
+  
       await editQuestion(imageUrl);
     } catch (error) {
-      console.error('Failed to add question:', error.message);
-      setModalMessage('Failed to add question. Please try again.');
+      console.error("Failed to edit question:", error.message);
+      setModalMessage("Failed to edit question. Please try again.");
       setIsError(true);
       setModalIsOpen(true);
       setLoading(false);
     }
   };
+  
 
   const editQuestion = async (imageUrl) => {
     const response = await axios.post('http://localhost:5000/paper/edit-ready-question', {
