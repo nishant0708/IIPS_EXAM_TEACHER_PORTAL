@@ -6,13 +6,20 @@ import axios from "axios";
 import Nothing from "../Assets/nothing.svg";
 import Navbar from "../Navbar/Navbar";
 import Skeleton from "../Skeleton/Skeleton";
+import { GoDotFill } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 // import AlertModal from "../AlertModal/AlertModal";
 
 const CompletedPaperDashboard = () => {
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [completedPapers, setCompletedPapers] = useState([]);
 //   const [hoveredItem, setHoveredItem] = useState(null);
   const [loading, setLoading] = useState(true);
+  const evaluations=[
+    "Evaluated",
+    "Not-Evaluated",
+    "Evaluation-in-Progress",
+  ];
 
   const teacherId = localStorage.getItem("teacherId");
 //   const [reload, setReload] = useState(false);
@@ -59,9 +66,10 @@ const getFormattedDateTime = (date, time) => {
     fetchCompletedPapers();
   }, [teacherId]);
 
-//   const handleCardClick = (paperId) => {
-//     navigate(`/completed_questions/${paperId}`);
-//   };
+  const handleCardClick = (paperId) => {
+    // navigate(`/completed_questions/${paperId}`);
+    navigate(`/completed_papers_student/${paperId}`);
+  };
 
   return (
     <>
@@ -84,7 +92,7 @@ const getFormattedDateTime = (date, time) => {
                 <div
                   className="papers_table"
                   key={index}
-                //   onClick={() => handleCardClick(paper._id)}
+                  onClick={() => handleCardClick(paper._id)}
                 //   onMouseEnter={() => setHoveredItem(paper._id)}
                 //   onMouseLeave={() => setHoveredItem(null)}
                 >
@@ -93,6 +101,10 @@ const getFormattedDateTime = (date, time) => {
                     Completed on: {getFormattedDateTime(paper.endTime, paper.time)}
                   </div>
                   <div className="table-data">
+                    <div className={`evaluation ${evaluations[0]+"-completed"}`}>
+                      <GoDotFill />
+                      <div>{evaluations[0]}</div>
+                    </div>
                     <div className="classhead">
                       {paper.className} {paper.semester}
                     </div>
