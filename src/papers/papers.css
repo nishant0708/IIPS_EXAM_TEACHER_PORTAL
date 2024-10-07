@@ -182,3 +182,104 @@
 .readyDasboardwarning{
   color: red;
 }
+
+/*----------------Completed Papers------------ */
+
+.evaluation
+{
+  font-size: 18px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  background-color: #282828;
+  border-radius: 3px;
+}
+.Evaluated
+{
+    color: green;
+    width: 110px;
+}
+.Not-Evaluated
+{
+    color: red;
+    width: 145px;
+}
+.Evaluation-in-Progress
+{
+  color: yellow;
+  width: 210px;
+}
+.evaluation-attemption
+{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.attemption
+{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  background-color: #282828;
+  border-radius: 3px;
+  height: 30px;
+  justify-content: center;
+}
+.Attempted
+{
+  width: 110px;
+  color: green;
+}
+.Not-Attempted
+{
+  width: 140px;
+  color: red;
+}
+.student-image-name
+{
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  margin-top: 10px;
+}
+.student-image {
+  width: 100px;
+  height: 100px;
+}
+
+.student-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.student-image img
+{
+  width: 100%;
+  height: 100%;
+}
+.student-name
+{
+  margin-top: -45px;
+}
+@media screen and (max-width: 768px) {
+  .student-image {
+    width: 80px;
+    height: 80px;
+  }
+  .student-image-name
+  {
+    gap: 10px;
+  }
+  .student-name
+  {
+    margin-top: -25px;
+  }
+}
+
+/* Media Query for extra small screens */
+@media screen and (max-width: 480px) {
+  .student-image {
+    width: 60px;
+    height: 60px;
+  }
+}

@@ -19,6 +19,7 @@ import EditQuestion from './edit_question/EditQuestion';
 import Profile from './Profile/profile';
 import Body from './Body/Body';
 import CompletedPaperDashboard from './CompletedPaperDashboard/CompletedPaperDashboard';
+import CompletedPaperStudentDashboard from './CompletedPaperStudentDashboard/CompletedPaperStudentDashboard';
 
 
 
@@ -82,6 +83,7 @@ const App = () => {
           <Route path='/profile' element={<Profile/>}/>
           <Route path="/preview/:questionId" element={<Body/>}/>
           <Route path="/completed_papers" element={<CompletedPaperDashboard />}/>
+          <Route path='/completed_papers_student/:paperId' element={<CompletedPaperStudentDashboard />}/>
         </>
       )}
 
