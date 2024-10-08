@@ -20,6 +20,7 @@ import Profile from './Profile/profile';
 import Body from './Body/Body';
 import CompletedPaperDashboard from './CompletedPaperDashboard/CompletedPaperDashboard';
 import CompletedPaperStudentDashboard from './CompletedPaperStudentDashboard/CompletedPaperStudentDashboard';
+import CompletedBody from './CompletedBody/CompletedBody';
 
 
 
@@ -84,6 +85,7 @@ const App = () => {
           <Route path="/preview/:questionId" element={<Body/>}/>
           <Route path="/completed_papers" element={<CompletedPaperDashboard />}/>
           <Route path='/completed_papers_student/:paperId' element={<CompletedPaperStudentDashboard />}/>
+          <Route path="/Evaluation/:questionId" element={<CompletedBody/>}/>
         </>
       )}
 

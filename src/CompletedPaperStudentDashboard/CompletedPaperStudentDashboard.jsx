@@ -4,7 +4,7 @@ import Nothing from "../Assets/nothing.svg";
 import Navbar from "../Navbar/Navbar";
 import Skeleton from "../Skeleton/Skeleton";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
@@ -16,12 +16,13 @@ const CompletedPaperStudentDashboard = () => {
   const { paperId } = useParams();
   const evaluations = ["Evaluated", "Not-Evaluated", "Evaluation-in-Progress"];
   const [studentIds, setStudentIds] = useState([]);
+  const [questionId, setQuestionId] = useState(null); // State to store questionId
+  const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
+    // Fetch students based on paperId
     axios
-      .post("http://localhost:5000/student/getStudentByPaperId", {
-        paperId,
-      })
+      .post("http://localhost:5000/student/getStudentByPaperId", { paperId })
       .then((res) => {
         setStudents(res.data.students);
       })
@@ -34,10 +35,19 @@ const CompletedPaperStudentDashboard = () => {
         }, 1000);
       });
 
+    // Fetch the first completed question ID for the paper
     axios
-      .post("http://localhost:5000/paper/getCompletedPaperByPaperId",{
-        paperId,
+      .post("http://localhost:5000/student/getFirstCompletedQuestionByPaperId", { paperId })
+      .then((res) => {
+        setQuestionId(res.data.question._id); // Store the question ID in state
       })
+      .catch((err) => {
+        console.error("Error fetching first question:", err);
+      });
+
+    // Fetch student IDs who have completed the paper
+    axios
+      .post("http://localhost:5000/paper/getCompletedPaperByPaperId", { paperId })
       .then((res) => {
         setStudentIds(res.data.students);
       })
@@ -46,8 +56,20 @@ const CompletedPaperStudentDashboard = () => {
       });
   }, [paperId]);
 
+  // Function to get the attemption status
   const getAttemptionStatus = (studentId) => {
     return studentIds.indexOf(studentId) === -1 ? "Not-Attempted" : "Attempted";
+  };
+
+  // Function to handle card click
+  const handleCardClick = (studentId) => {
+    if (questionId) {
+      navigate(`/Evaluation/${questionId}`, { 
+        state: { studentId, paperId }  // Correctly pass both studentId and paperId in a single state object
+      });
+    } else {
+      console.error("Question ID not found.");
+    }
   };
 
   return (
@@ -65,12 +87,21 @@ const CompletedPaperStudentDashboard = () => {
               {students.map((student, index) => {
                 const attemption = getAttemptionStatus(student._id);
                 return (
-                  <div className="papers_table" key={index}>
+                  <div
+                    className="papers_table"
+                    key={index}
+                    onClick={() => handleCardClick(student._id)} // Handle click
+                  >
                     <div className="table-data completed-student">
                       <div className="evaluation-attemption">
-                        <div className={`evaluation ${evaluations[index%3]}`}>
+                        <div className={`evaluation ${evaluations[index % 3]}`}>
                           <GoDotFill />
-                          <div>{evaluations[index%3]}&nbsp; {evaluations[index%3] === "Evaluated" && <>Alloted Marks: 20</>}</div>
+                          <div>
+                            {evaluations[index % 3]}&nbsp;
+                            {evaluations[index % 3] === "Evaluated" && (
+                              <>Alloted Marks: 20</>
+                            )}
+                          </div>
                         </div>
                         <div className={`attemption ${attemption}`}>
                           {attemption === "Attempted" ? (
@@ -92,9 +123,7 @@ const CompletedPaperStudentDashboard = () => {
                         </div>
                         <div className="student-name">
                           <div className="classhead">{student.fullName}</div>
-                          <div className="subname">
-                            Email: &nbsp;{student.email}
-                          </div>
+                          <div className="subname">Email: &nbsp;{student.email}</div>
                           <div className="subname">{student.rollNumber}</div>
                           <div className="subname">{student.phoneNumber}</div>
                         </div>
