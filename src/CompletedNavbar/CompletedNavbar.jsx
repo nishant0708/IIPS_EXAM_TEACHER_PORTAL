@@ -54,7 +54,7 @@ const CompletedNavbar = () => {
         studentId: JSON.parse(localStorage.getItem("response")).studentId,
       })
       .then((res) => {
-        setStudentDetails(res.data.student);
+        setStudentDetails(res.data.student[0]);
       })
       .catch((err) => {
         console.error(err);
