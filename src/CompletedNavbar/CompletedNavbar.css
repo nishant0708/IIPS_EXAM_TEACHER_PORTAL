@@ -1,0 +1,89 @@
+.completed-navbar
+{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    color: white;
+    background-color: #282828;
+    align-items: center;
+    z-index: 4444;
+    height: 75px;
+    font-size: large;
+    box-shadow: none;
+    position: relative; 
+}
+.completed-nb-contents
+{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.completed-nb-fullName
+{
+    margin-left: 30px;
+}
+.completed-content-button
+{
+    background-color: #1a1a1a;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    height: 40px;
+}
+.completed-content-button:hover
+{
+    cursor: pointer;
+    background-color: #1a1a1aab;
+}
+.completed-previous
+{
+    width: 100px;
+}
+.completed-next
+{
+    width: 85px;
+}
+.completed-student-button
+{
+    background-color: #4caf50;
+    width: 125px;
+}
+.completed-allot
+{
+    width: 75px;
+    background-color: #4caf50;
+}
+.completed-student-button:hover,.completed-allot:hover
+{
+    background-color: #4caf4f69;
+}
+.completed-allot-marks
+{
+    display: flex;
+    align-items: center;
+}
+.completed-nb-marksAllocation .completed-marks
+{
+    font-size: 25px;
+}
+.completed-nb-marksAllocation
+{
+    margin-right: 30px;
+}
+.completed-nb-marksAllocation [type="tel"]
+{
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding:5px;
+    font-size: 15px;
+    width: 100px;
+    border: 1px solid black;
+}
+.disabled
+{
+    pointer-events: none;
+    opacity: 0.5;
+}
+  

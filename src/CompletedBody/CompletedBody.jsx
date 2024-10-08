@@ -5,7 +5,7 @@ import "flex-splitter-directive/styles.min.css";
 import "../Body/Body.css";
 import axios from "axios";
 import { useLocation, useParams } from "react-router-dom";
-import Navbar from "../Navbar/Navbar";
+import CompletedNavbar from "../CompletedNavbar/CompletedNavbar";
 import CompletedEditor from "../CompletedEditor/CompletedEditor";
 import CompletedQuestionsDescription from "../CompletedQuestionDescription/CompletedQuestionsDescription";
 import CompletedTest from "../CompletedTest/CompletedTest";
@@ -14,19 +14,20 @@ const CompletedBody = () => {
   const bodyContentsRef = useRef(null); // Reference for body-contents
   const [isSmallWidth, setIsSmallWidth] = useState(false); // State to track if width < 200px
   const [output, setOutput] = useState(""); // State to store the output
-  const { questionId } = useParams(); // Getting questionId  from the URL params
+  const { questionId } = useParams(); // Getting questionId from the URL params
   const [question, setQuestion] = useState("");
-  const [response, setResponse] = useState(null);
+  const [response, setResponse] = useState(
+    JSON.parse(localStorage.getItem("response")) || null
+  ); // Retrieve response from localStorage if available
   const location = useLocation();
-  console.log(location.state);
-  // Extract studentId from location state
+
+  // Extract studentId and paperId from location state
   const studentId = location.state?.studentId || "";
   const paperId = location.state?.paperId || "";
   const questionUrl =
     location.state?.url || "http://localhost:5000/paper/getCompletedQuestion";
   const responseUrl = "http://localhost:5000/student/getResponse";
 
-  // useEffect to observe the width of body-contents and make API calls
   useEffect(() => {
     // Fetch question details
     axios
@@ -39,11 +40,12 @@ const CompletedBody = () => {
       });
 
     // Fetch the response by paperId and studentId if both are available
-    if (paperId && studentId) {
+    if (paperId && studentId && !response) {
       axios
         .post(responseUrl, { paperId, studentId })
         .then((res) => {
           setResponse(res.data.response); // Store the response data
+          localStorage.setItem("response", JSON.stringify(res.data.response)); // Save response to localStorage
         })
         .catch((err) => {
           console.error("Error fetching response:", err);
@@ -69,12 +71,12 @@ const CompletedBody = () => {
       }
       observer.disconnect();
     };
-  }, [questionId, paperId, studentId, questionUrl, responseUrl]);
+  }, [questionId, paperId, studentId, questionUrl, response]);
 
   return (
     <>
-      {console.log(response.questions)}
-      <Navbar />
+    {console.log(response.studentId)}
+      <CompletedNavbar />
       <div className="compiler-body" data-flex-splitter-horizontal>
         <CompletedQuestionsDescription question={question} />
 
@@ -83,7 +85,6 @@ const CompletedBody = () => {
         {/* Conditionally render based on width */}
         {isSmallWidth ? (
           <div className="body-contents-small" ref={bodyContentsRef}>
-            {/* Render alternate content when width is less than 200px */}
             <p>Code</p>
           </div>
         ) : (
@@ -92,11 +93,9 @@ const CompletedBody = () => {
             data-flex-splitter-vertical
             ref={bodyContentsRef}
           >
-            {/* Pass setOutput function to Editor to update the output */}
             <CompletedEditor question={question} onOutput={setOutput} />
             <div role="separator" tabIndex="1"></div>
-            {/* Pass the output state and response data to the Test component */}
-            <CompletedTest output={output} />
+            <CompletedTest output={output} response={response} />
           </div>
         )}
       </div>
