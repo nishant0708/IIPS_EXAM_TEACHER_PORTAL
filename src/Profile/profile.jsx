@@ -202,11 +202,28 @@ const Profile = () => {
                 <div className="profile-password-field">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className={passwordsMatch ? 'profile-input-normal' : 'profile-input-faded'}
+                    className={
+                      passwordsMatch
+                        ? "profile-input-normal"
+                        : "profile-input-faded"
+                    }
                     value={newProfileData.password}
-                    onChange={(e) => setNewProfileData({ ...newProfileData, password: e.target.value })}
+                    onChange={(e) => {
+                      setNewProfileData({
+                        ...newProfileData,
+                        password: e.target.value,
+                      });
+                      if(e.target.value == newProfileData.confirmPassword){
+                        setPasswordMatch(true);
+                      }else{
+                        setPasswordMatch(false);
+                      }
+                    }}
                   />
-                  <span onClick={togglePasswordVisibility} className="profile-eye-icon">
+                  <span
+                    onClick={togglePasswordVisibility}
+                    className="profile-eye-icon"
+                  >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </span>
                 </div>
@@ -216,11 +233,28 @@ const Profile = () => {
                 <div className="profile-password-field">
                   <input
                     type={showConfirmPassword ? "text" : "password"}
-                    className={passwordsMatch ? 'profile-input-normal' : 'profile-input-faded'}
+                    className={
+                      passwordsMatch
+                        ? "profile-input-normal"
+                        : "profile-input-faded"
+                    }
                     value={newProfileData.confirmPassword}
-                    onChange={(e) => setNewProfileData({ ...newProfileData, confirmPassword: e.target.value })}
+                    onChange={(e) => {
+                      setNewProfileData({
+                        ...newProfileData,
+                        confirmPassword: e.target.value,
+                      });
+                      if(newProfileData.password == e.target.value){
+                        setPasswordMatch(true);
+                      }else{
+                        setPasswordMatch(false);
+                      }
+                    }}
                   />
-                  <span onClick={toggleConfirmPasswordVisibility} className="profile-eye-icon">
+                  <span
+                    onClick={toggleConfirmPasswordVisibility}
+                    className="profile-eye-icon"
+                  >
                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                   </span>
                 </div>
