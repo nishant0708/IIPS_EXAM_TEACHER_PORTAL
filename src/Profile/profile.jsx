@@ -179,6 +179,7 @@ const Profile = () => {
             <input
               type="email"
               value={newProfileData.email}
+              disabled
               onChange={(e) => setNewProfileData({ ...newProfileData, email: e.target.value })}
             />
           </label>
