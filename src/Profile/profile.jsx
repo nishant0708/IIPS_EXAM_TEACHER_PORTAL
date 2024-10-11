@@ -28,6 +28,7 @@ const Profile = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
   const [teacher, setTeacher] = useState();
+  const [passwordsMatch, setPasswordMatch] = useState(false);
 
   useEffect(() => {
     axios.post('http://localhost:5000/teacher/getteacherDetails', { teacherId: localStorage.getItem("teacherId") })
@@ -50,7 +51,9 @@ const Profile = () => {
   }, );
 
   const openModal = () => {
-    setNewProfileData(profileData);
+    setNewProfileData({ ...profileData, password: "", confirmPassword: "" });
+    setEditPassword(false);
+    setPasswordMatch(true);
     setModalIsOpen(true);
   };
 
@@ -97,7 +100,6 @@ const Profile = () => {
       ...newProfileData,
     })
       .then((response) => {
-        console.log(teacher);
         setProfileData({
           ...profileData,
           name: response?.data?.teacher?.name,
@@ -129,8 +131,6 @@ const Profile = () => {
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
-
-  const passwordsMatch = newProfileData.password === newProfileData.confirmPassword;
 
   return (
     <>
