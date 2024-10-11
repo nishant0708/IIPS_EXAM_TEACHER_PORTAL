@@ -75,7 +75,6 @@ const CompletedBody = () => {
 
   return (
     <>
-    {console.log(response.studentId)}
       <CompletedNavbar />
       <div className="compiler-body" data-flex-splitter-horizontal>
         <CompletedQuestionsDescription question={question} />
