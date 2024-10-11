@@ -16,12 +16,9 @@ const CompletedBody = () => {
   const [output, setOutput] = useState(""); // State to store the output
   const { questionId } = useParams(); // Getting questionId from the URL params
   const [question, setQuestion] = useState("");
-  const [response, setResponse] = useState(
-    JSON.parse(localStorage.getItem("response")) || null
-  ); // Retrieve response from localStorage if available
+  const [response, setResponse] = useState(null);
   const location = useLocation();
 
-  // Extract studentId and paperId from location state
   const studentId = location.state?.studentId || "";
   const paperId = location.state?.paperId || "";
   const questionUrl =
@@ -29,30 +26,28 @@ const CompletedBody = () => {
   const responseUrl = "http://localhost:5000/student/getResponse";
 
   useEffect(() => {
-    // Fetch question details
-    axios
-      .post(questionUrl, { questionId })
-      .then((res) => {
-        setQuestion(res.data.question);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    if (questionId) {
+      axios
+        .post(questionUrl, { questionId })
+        .then((res) => {
+          setQuestion(res.data.question);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
 
-    // Fetch the response by paperId and studentId if both are available
-    if (paperId && studentId && !response) {
+    if (paperId && studentId && questionId) {
       axios
         .post(responseUrl, { paperId, studentId })
         .then((res) => {
           setResponse(res.data.response); // Store the response data
-          localStorage.setItem("response", JSON.stringify(res.data.response)); // Save response to localStorage
         })
         .catch((err) => {
           console.error("Error fetching response:", err);
         });
     }
 
-    // Resize observer
     const observer = new ResizeObserver((entries) => {
       if (bodyContentsRef.current) {
         const { width } = entries[0].contentRect;
@@ -71,7 +66,7 @@ const CompletedBody = () => {
       }
       observer.disconnect();
     };
-  }, [questionId, paperId, studentId, questionUrl, response]);
+  }, [questionId, paperId, studentId, questionUrl]);
 
   return (
     <>
@@ -80,8 +75,6 @@ const CompletedBody = () => {
         <CompletedQuestionsDescription question={question} />
 
         <div role="separator" tabIndex="1"></div>
-
-        {/* Conditionally render based on width */}
         {isSmallWidth ? (
           <div className="body-contents-small" ref={bodyContentsRef}>
             <p>Code</p>
