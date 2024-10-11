@@ -37,7 +37,10 @@ const CompletedPaperStudentDashboard = () => {
 
     // Fetch the first completed question ID for the paper
     axios
-      .post("http://localhost:5000/student/getFirstCompletedQuestionByPaperId", { paperId })
+      .post(
+        "http://localhost:5000/student/getFirstCompletedQuestionByPaperId",
+        { paperId }
+      )
       .then((res) => {
         setQuestionId(res.data.question._id); // Store the question ID in state
       })
@@ -47,7 +50,9 @@ const CompletedPaperStudentDashboard = () => {
 
     // Fetch student IDs who have completed the paper
     axios
-      .post("http://localhost:5000/paper/getCompletedPaperByPaperId", { paperId })
+      .post("http://localhost:5000/paper/getCompletedPaperByPaperId", {
+        paperId,
+      })
       .then((res) => {
         setStudentIds(res.data.students);
       })
@@ -64,8 +69,8 @@ const CompletedPaperStudentDashboard = () => {
   // Function to handle card click
   const handleCardClick = (studentId) => {
     if (questionId) {
-      navigate(`/Evaluation/${questionId}`, { 
-        state: { studentId, paperId }  // Correctly pass both studentId and paperId in a single state object
+      navigate(`/Evaluation/${questionId}`, {
+        state: { studentId, paperId }, // Correctly pass both studentId and paperId in a single state object
       });
     } else {
       console.error("Question ID not found.");
@@ -90,7 +95,7 @@ const CompletedPaperStudentDashboard = () => {
                   <div
                     className="papers_table"
                     key={index}
-                    onClick={() => handleCardClick(student._id)} // Handle click
+                    onClick={() => handleCardClick(student?._id)} // Handle click
                   >
                     <div className="table-data completed-student">
                       <div className="evaluation-attemption">
@@ -123,7 +128,9 @@ const CompletedPaperStudentDashboard = () => {
                         </div>
                         <div className="student-name">
                           <div className="classhead">{student.fullName}</div>
-                          <div className="subname">Email: &nbsp;{student.email}</div>
+                          <div className="subname">
+                            Email: &nbsp;{student.email}
+                          </div>
                           <div className="subname">{student.rollNumber}</div>
                           <div className="subname">{student.phoneNumber}</div>
                         </div>
