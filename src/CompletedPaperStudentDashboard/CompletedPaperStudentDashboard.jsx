@@ -69,9 +69,13 @@ const CompletedPaperStudentDashboard = () => {
   // Function to handle card click
   const handleCardClick = (studentId) => {
     if (questionId) {
-      navigate(`/Evaluation/${questionId}`, {
-        state: { studentId, paperId }, // Correctly pass both studentId and paperId in a single state object
-      });
+      if(getAttemptionStatus(studentId) === "Attempted"){
+        navigate(`/Evaluation/${questionId}`, {
+          state: { studentId, paperId }, // Correctly pass both studentId and paperId in a single state object
+        });
+      }else{
+        console.error("Paper not Attempted by student");
+      }
     } else {
       console.error("Question ID not found.");
     }
