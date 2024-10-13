@@ -1,6 +1,3 @@
-
-
-
 /* Profile container */
 .profile-card {
   background-color: #282828;
@@ -25,7 +22,7 @@
   object-fit: cover;
   border: 5px solid rgb(255, 255, 255);
   margin-top: -90px;
-  box-shadow: 10px 15px 60px rgba(255, 255, 255, .1);
+  box-shadow: 10px 15px 60px rgba(255, 255, 255, 0.1);
 }
 
 .profile-plus-icon {
@@ -62,7 +59,7 @@
 }
 
 .profile-edit-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: black;
   border: none;
   padding: 10px 20px;
@@ -125,7 +122,7 @@
 }
 
 .profile-modal-buttons button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: black;
   border: none;
   padding: 10px 20px;
@@ -199,8 +196,8 @@
   background-color: #c9302c;
 }
 
-.profile-edit-password-button{
-  background-color: #4CAF50;
+.profile-edit-password-button {
+  background-color: #4caf50;
   color: black;
   border: none;
   padding: 10px 20px;

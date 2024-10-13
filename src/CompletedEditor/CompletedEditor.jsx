@@ -46,11 +46,9 @@ const CompletedEditor = ({ question, onOutput }) => {
     };
   }, []);
 
-
   const handleRunClick = async () => {
     const code = editorRef.current.getValue();
     setUserCode(code);
-    
 
     const needsInputModal = (code) => {
       switch (question?.compilerReq) {
@@ -102,14 +100,11 @@ const CompletedEditor = ({ question, onOutput }) => {
       const output = res.data.stdout || res.data.stderr;
       setUserOutput(output);
       onOutput(output);
-
-
     } catch (err) {
       const errorOutput =
         "Error: " + (err.response ? err.response.data.error : err.message);
       setUserOutput(errorOutput);
       onOutput(errorOutput);
-
     } finally {
       setLoading(false);
     }
@@ -127,14 +122,12 @@ const CompletedEditor = ({ question, onOutput }) => {
       const output = res.data.output || res.data.stderr;
       setUserOutput(output);
       onOutput(output);
-
     } catch (err) {
       const errorOutput =
         "Error: " + (err.response ? err.response.data.error : err.message);
       setUserOutput(errorOutput);
       onOutput(errorOutput);
       console.log(userOutput);
-
     } finally {
       setLoading(false);
     }

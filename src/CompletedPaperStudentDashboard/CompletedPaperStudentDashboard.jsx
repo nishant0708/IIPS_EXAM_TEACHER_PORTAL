@@ -69,11 +69,11 @@ const CompletedPaperStudentDashboard = () => {
   // Function to handle card click
   const handleCardClick = (studentId) => {
     if (questionId) {
-      if(getAttemptionStatus(studentId) === "Attempted"){
+      if (getAttemptionStatus(studentId) === "Attempted") {
         navigate(`/Evaluation/${questionId}`, {
           state: { studentId, paperId }, // Correctly pass both studentId and paperId in a single state object
         });
-      }else{
+      } else {
         console.error("Paper not Attempted by student");
       }
     } else {
