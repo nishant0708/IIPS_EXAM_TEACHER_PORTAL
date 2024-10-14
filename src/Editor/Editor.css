@@ -77,16 +77,27 @@
   z-index: 1000;
 }
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 1000;
+}
+
 .modal {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: white;
+  background:#282828;
+  color: white;
   padding: 20px;
   border-radius: 10px;
   outline: none;
-  width: 300px;
+  width: 500px;
   z-index: 1001;
 }
 
@@ -96,8 +107,13 @@
   gap: 10px;
 }
 
-.modal-content input {
+.modal-content textarea {
+  background-color:#1d1a1a;
+  color: white;
   padding: 5px;
+  resize: vertical;
+  min-height: 100px;
+  width: 97%;
 }
 
 .modal-content button {
@@ -105,10 +121,44 @@
   background-color: #4CAF50;
   color: white;
   border: none;
+
   cursor: pointer;
   border-radius: 5px;
 }
 
 .modal-content button:hover {
   background-color: #45a049;
+}
+
+.editor-run-history {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin-right: 20px; /* Adjust spacing as needed */
+}
+
+.run-history-dropdown {
+  position: absolute;
+  top: 30px; /* Adjust based on header height */
+  left: 10px;
+  background-color: #2d2d2d; /* Match the editor theme */
+  border: 1px solid #444;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100px;
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.run-history-item {
+  padding: 10px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.run-history-item:hover {
+  background-color: #3c3c3c;
 }

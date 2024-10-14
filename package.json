@@ -61,7 +61,9 @@
     "react-markdown": "^9.0.1",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.26.1",
-    "react-time-picker": "^7.0.0"
+    "react-time-picker": "^7.0.0",
+    "rehype-sanitize": "^6.0.0",
+    "remark-breaks": "^4.0.0"
   },
   "description": "- Primary Background color : #1A1A1A\r - secondary Background Color : #282828\r - text color : white (primary)\r - secondary text color : #Eff2f699\r - secondary text color : #Eff1f6bf(Darker for headings)",
   "main": "index.js",

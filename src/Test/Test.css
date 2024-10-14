@@ -19,10 +19,25 @@
   height: 50px;
   gap: 5px;
 }
+
 .test-output {
-  overflow: hidden;
   padding: 5px 11px;
+  white-space: pre-wrap;
   width: 92%;
   overflow-wrap: break-word; 
-  white-space: normal; 
+}
+.test-output .stdout-output {
+  color:#cccc;
+  font-family: monospace;
+}
+.stdout-output p{
+  line-height: 1;
+}
+
+.test-output .stderr-output {
+  color: #d20000;
+  font-family: monospace;
+}
+.stderr-output p{
+  line-height: 1;
 }

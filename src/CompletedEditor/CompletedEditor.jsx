@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "../Editor/Editor.css";
 import { Editor as Ed } from "@monaco-editor/react";
-import { FaCode, FaPlay } from "react-icons/fa";
+import { FaPlay, FaHistory } from "react-icons/fa";
 import axios from "axios";
 import Modal from "react-modal";
 
@@ -16,35 +16,71 @@ const CompletedEditor = ({ question, onOutput }) => {
   const [userCode, setUserCode] = useState("");
   const [userOutput, setUserOutput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [runList, setRunList] = useState([]);
+  const studentId = localStorage.getItem("studentId") || "";
+  const paperId = localStorage.getItem("paperId") || "";
+  const responseUrl = "http://localhost:5000/student/getResponse";
+
+  useEffect(() => {
+    console.log("Student ID:", studentId);
+    console.log("Paper ID:", paperId);
+    if (response && response.questions) {
+      const currentQuestion = response.questions.find(
+        (q) => q.questionId === question._id
+      );
+      if (currentQuestion) {
+        setUserCode(currentQuestion.finalCode || "");
+
+        // Set runList with sorted runHistory
+        const sortedRunHistory = currentQuestion.runHistory.sort(
+          (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+        );
+        setRunList(sortedRunHistory);
+
+        // Check if the finalCode exists in runHistory
+        const matchingRun = sortedRunHistory.find(
+          (run) => run.code === currentQuestion.finalCode
+        );
+        if (matchingRun) {
+          setInput(matchingRun.input || "");
+          setUserOutput(
+            matchingRun.output.stdout || matchingRun.output.stderr || ""
+          );
+        } else if (sortedRunHistory.length > 0) {
+          // Use the last entry in runHistory
+          const lastRun = sortedRunHistory[sortedRunHistory.length - 1];
+          setInput(lastRun.input || "");
+          setUserOutput(
+            lastRun.output.stdout || lastRun.output.stderr || ""
+          );
+        }
+      }
+    }
+  }, [response, question]);
+
+  useEffect(() => {
+    if (paperId && studentId && question?._id) {
+      axios
+        .post(responseUrl, { paperId, studentId })
+        .then((res) => {
+          setResponse(res.data.response);
+        })
+        .catch((err) => {
+          console.error("Error fetching response:", err);
+        });
+    }
+  }, [paperId, studentId, question]);
 
   const handleEditorChange = (newValue) => {
     setUserCode(newValue);
-    // You can handle any other logic here if needed
   };
 
   const handleEditorDidMount = (editor) => {
     editorRef.current = editor;
     editor.layout();
   };
-
-  useEffect(() => {
-    const observer = new ResizeObserver(() => {
-      if (editorRef.current) {
-        editorRef.current.layout();
-      }
-    });
-
-    if (editorContainerRef.current) {
-      observer.observe(editorContainerRef.current);
-    }
-
-    return () => {
-      if (editorContainerRef.current) {
-        observer.unobserve(editorContainerRef.current);
-      }
-      observer.disconnect();
-    };
-  }, []);
 
   const handleRunClick = async () => {
     const code = editorRef.current.getValue();
@@ -97,7 +133,10 @@ const CompletedEditor = ({ question, onOutput }) => {
         input: input || "",
       });
 
-      const output = res.data.stdout || res.data.stderr;
+      const output = {
+        stdout: res.data.stdout || "",
+        stderr: res.data.stderr || "",
+      };
       setUserOutput(output);
       onOutput(output);
     } catch (err) {
@@ -119,7 +158,10 @@ const CompletedEditor = ({ question, onOutput }) => {
         input: inputValue || "",
       });
 
-      const output = res.data.output || res.data.stderr;
+      const output = {
+        stdout: res.data.stdout || "",
+        stderr: res.data.stderr || "",
+      };
       setUserOutput(output);
       onOutput(output);
     } catch (err) {
@@ -138,13 +180,84 @@ const CompletedEditor = ({ question, onOutput }) => {
     executeCode(input);
   };
 
+  // Toggle dropdown visibility
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  // Handle run selection from dropdown
+  const handleRunSelect = (run, type = "run") => {
+    if (type === "run") {
+      setUserCode(run.code);
+      setInput(run.input || "");
+      setUserOutput(run.output.stdout || run.output.stderr || "");
+      onOutput(run.output);
+    } else if (type === "final") {
+      const finalRun = response.questions.find(
+        (q) => q.questionId === question._id
+      );
+      if (finalRun) {
+        setUserCode(finalRun.finalCode || "");
+        // Find corresponding run history if any
+        const matchingRun = runList.find(
+          (run) => run.code === finalRun.finalCode
+        );
+        if (matchingRun) {
+          setInput(matchingRun.input || "");
+          setUserOutput(
+            matchingRun.output.stdout || matchingRun.output.stderr || ""
+          );
+        } else {
+          setInput("");
+          setUserOutput("");
+        }
+        onOutput({
+          stdout: matchingRun?.output.stdout || "",
+          stderr: matchingRun?.output.stderr || "",
+        });
+      }
+    }
+    setIsDropdownOpen(false);
+  };
+
   return (
     <div className="compiler-editor">
       <div className="editor-header">
-        <div className="editor-code">
-          <FaCode />
-          <div>Code</div>
+        <div className="editor-run-history">
+          <div className="editor-run-history" onClick={toggleDropdown}>
+            <FaHistory style={{ cursor: "pointer", marginRight: "5px" }} />
+            <div>{runList.length} Run History</div>
+          </div>
+          {isDropdownOpen && (
+            <div className="run-history-dropdown">
+              {/* Final Code Option */}
+              <div
+                className="run-history-item final-code-item"
+                onClick={() => handleRunSelect(null, "final")}
+              >
+                <strong>Final Code</strong>
+              </div>
+              {/* Divider */}
+              {runList.length > 0 && <hr className="dropdown-divider" />}
+              {/* Run History Entries */}
+              {runList.length > 0 ? (
+                runList.map((run, index) => (
+                  <div
+                    key={run._id}
+                    className="run-history-item"
+                    onClick={() => handleRunSelect(run, "run")}
+                  >
+                    Run {index + 1}
+                    
+                  </div>
+                ))
+              ) : (
+                <div className="run-history-item">No run history available.</div>
+              )}
+            </div>
+          )}
         </div>
+
         <div className="editor-run" onClick={handleRunClick}>
           <FaPlay size={15} />
           <div>{loading ? "Running..." : "Run"}</div>
@@ -154,14 +267,14 @@ const CompletedEditor = ({ question, onOutput }) => {
         <Ed
           theme="vs-dark"
           defaultLanguage={question?.compilerReq}
-          value={userCode || ""} // Update code value
+          value={userCode || ""}
           className="editor-monaco"
           onMount={handleEditorDidMount}
-          onChange={handleEditorChange} // Handle changes without saving to localStorage
+          onChange={handleEditorChange}
+          options={{ readOnly: true }}
         />
       </div>
 
-      {/* Modal for input prompt */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
@@ -189,7 +302,6 @@ CompletedEditor.propTypes = {
     compilerReq: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     _id: PropTypes.string.isRequired,
-    image: PropTypes.string,
   }),
   onOutput: PropTypes.func.isRequired,
 };

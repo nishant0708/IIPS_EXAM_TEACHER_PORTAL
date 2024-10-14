@@ -2,24 +2,54 @@ import React from "react";
 import PropTypes from "prop-types";
 import "../Test/Test.css";
 import { IoCheckmarkDone } from "react-icons/io5";
+import ReactMarkdown from "react-markdown";
+import rehypeSanitize from "rehype-sanitize";
+import remarkBreaks from "remark-breaks";
 
-const CompletedTest = ({ output }) => {
-    return (
-        <div className="compiler-test">
-            <div className="test-header">
-                <IoCheckmarkDone />
-                Test Output
-            </div>
-            <div className="test-output">
-              {output}
-            </div>
-        </div>
-    );
+const Test = ({ output }) => {
+  // Split stdout and stderr
+  console.log(output);
+  const stdout = output?.stdout ||  "";
+  const stderr = output.stderr || "";
+
+  return (
+    <div className="compiler-test">
+      <div className="test-header">
+        <IoCheckmarkDone />
+        Test Output
+      </div>
+      <div className="test-output">
+        {/* Display stdout in white */}
+        {stdout && (
+          <ReactMarkdown
+            className="stdout-output" // Add class for stdout
+            remarkPlugins={[remarkBreaks]}
+            rehypePlugins={[rehypeSanitize]}
+          >
+            
+            {stdout}
+          </ReactMarkdown>
+        )}
+        {/* Display stderr in red */}
+        {stderr && (
+          <ReactMarkdown
+            className="stderr-output" // Add class for stderr
+            remarkPlugins={[remarkBreaks]}
+            rehypePlugins={[rehypeSanitize]}
+          >
+            {stderr}
+          </ReactMarkdown>
+        )}
+      </div>
+    </div>
+  );
 };
 
-// Define prop types for the Test component
-CompletedTest.propTypes = {
-    output: PropTypes.string.isRequired,  // Ensure 'output' is a required string
+Test.propTypes = {
+  output: PropTypes.shape({
+    stdout: PropTypes.string,
+    stderr: PropTypes.string,
+  }).isRequired,
 };
 
-export default CompletedTest;
+export default Test;

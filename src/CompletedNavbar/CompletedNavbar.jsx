@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./CompletedNavbar.css";
 import axios from "axios";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 const CompletedNavbar = () => {
   const [allotDisplay, setAllotDisplay] = useState(false);
@@ -10,7 +10,6 @@ const CompletedNavbar = () => {
   const [marks, setMarks] = useState("");
   const [question, setQuestion] = useState(null);
   const [studentDetails, setStudentDetails] = useState({});
-  const navigate = useNavigate();
   const location = useLocation();
 
   const studentId = location.state?.studentId || "";
@@ -34,9 +33,9 @@ const CompletedNavbar = () => {
         const nextQuestion = response.data?.question;
         if (nextQuestion && nextQuestion._id) {
           setQuestion(nextQuestion);
-          navigate(`/Evaluation/${nextQuestion._id}`, {
+          window.location.href =`/Evaluation/${nextQuestion._id}`, {
             state: { studentId },
-          });
+          };
         }
       }
     } catch (err) {

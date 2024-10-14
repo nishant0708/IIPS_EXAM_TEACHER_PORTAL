@@ -16,14 +16,11 @@ const CompletedBody = () => {
   const [output, setOutput] = useState(""); // State to store the output
   const { questionId } = useParams(); // Getting questionId from the URL params
   const [question, setQuestion] = useState("");
-  const [response, setResponse] = useState(null);
   const location = useLocation();
 
-  const studentId = location.state?.studentId || "";
-  const paperId = location.state?.paperId || "";
   const questionUrl =
     location.state?.url || "http://localhost:5000/paper/getCompletedQuestion";
-  const responseUrl = "http://localhost:5000/student/getResponse";
+
 
   useEffect(() => {
     if (questionId) {
@@ -34,17 +31,6 @@ const CompletedBody = () => {
         })
         .catch((err) => {
           console.error(err);
-        });
-    }
-
-    if (paperId && studentId && questionId) {
-      axios
-        .post(responseUrl, { paperId, studentId })
-        .then((res) => {
-          setResponse(res.data.response); // Store the response data
-        })
-        .catch((err) => {
-          console.error("Error fetching response:", err);
         });
     }
 
@@ -66,7 +52,7 @@ const CompletedBody = () => {
       }
       observer.disconnect();
     };
-  }, [questionId, paperId, studentId, questionUrl]);
+  }, [questionId, questionUrl]);
 
   return (
     <>
@@ -85,9 +71,14 @@ const CompletedBody = () => {
             data-flex-splitter-vertical
             ref={bodyContentsRef}
           >
-            <CompletedEditor question={question} onOutput={setOutput} />
+            {/* Pass only the question and output props */}
+            <CompletedEditor
+              question={question}
+              onOutput={setOutput}
+       
+            />
             <div role="separator" tabIndex="1"></div>
-            <CompletedTest output={output} response={response} />
+            <CompletedTest output={output} />
           </div>
         )}
       </div>

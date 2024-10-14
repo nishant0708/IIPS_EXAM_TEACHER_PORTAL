@@ -70,9 +70,12 @@ const CompletedPaperStudentDashboard = () => {
   const handleCardClick = (studentId) => {
     if (questionId) {
       if (getAttemptionStatus(studentId) === "Attempted") {
+        localStorage.setItem("studentId", studentId);
+        localStorage.setItem("paperId",paperId);
         navigate(`/Evaluation/${questionId}`, {
           state: { studentId, paperId }, // Correctly pass both studentId and paperId in a single state object
         });
+
       } else {
         console.error("Paper not Attempted by student");
       }
