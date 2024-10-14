@@ -16,6 +16,7 @@
 .profile-header {
   position: relative;
   display: inline-block;
+  margin-bottom: 30px;
 }
 
 .profile-image {
@@ -53,7 +54,7 @@
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 5px;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .profile-mob {
@@ -210,4 +211,71 @@
 }
 .profile-edit-password-button:hover {
   background-color: #4caf4fba;
+}
+
+.profile-cropper
+{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+.profile-crop-button-container
+{
+  position: relative;
+  top: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+.profile-cropper-modal button, .profile-image-submit
+{
+  width: 150px;
+  height: 40px;
+  border-radius: 5px;
+  border-color: transparent;
+  font-size: large;
+  font-weight: 500;
+}
+.profile-cropper-modal button:hover, .profile-image-submit:hover
+{
+  cursor: pointer;
+}
+.profile-button-crop
+{
+  background-color: #4CAF50;
+}
+.profile-button-cancel
+{
+  background-color: #c9302c;
+}
+.profile-button-crop:hover
+{
+  background-color: #4caf4f7e;
+}
+.profile-button-cancel:hover
+{
+  background-color: #c9312c8c;
+}
+.profile-cropper-note
+{
+  position: relative;
+  color: red;
+  top: 410px;
+  font-weight: 600;
+}
+.profile-image-submit
+{
+  margin-top: 50px;
+  width: 200px;
+  background-color: #4CAF50;
+}
+.profile-image-submit
+{
+  background-color: #4caf50;
+}
+.profile-image-submit:hover
+{
+  background-color: #4CAF4f7e;
 }
