@@ -39,11 +39,11 @@
 }
 .completed-previous
 {
-    width: 100px;
+    width: 185px;
 }
 .completed-next
 {
-    width: 85px;
+    width: 150px;
 }
 .completed-student-button
 {
@@ -81,9 +81,16 @@
     width: 100px;
     border: 1px solid black;
 }
+.completed-previous-student
+{
+    width: 180px;
+}
+.completed-next-student
+{
+    width: 150px;
+}
 .disabled
 {
     pointer-events: none;
     opacity: 0.5;
 }
-  

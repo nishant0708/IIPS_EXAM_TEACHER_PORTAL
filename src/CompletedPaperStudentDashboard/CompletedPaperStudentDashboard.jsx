@@ -73,7 +73,7 @@ const CompletedPaperStudentDashboard = () => {
         localStorage.setItem("studentId", studentId);
         localStorage.setItem("paperId",paperId);
         navigate(`/Evaluation/${questionId}`, {
-          state: { studentId, paperId }, // Correctly pass both studentId and paperId in a single state object
+          state: { studentId, paperId, studentIds }, // Correctly pass both studentId and paperId in a single state object
         });
 
       } else {
