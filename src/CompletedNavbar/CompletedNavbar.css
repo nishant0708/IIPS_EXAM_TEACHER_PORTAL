@@ -1,5 +1,4 @@
-.completed-navbar
-{
+.completed-navbar {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -10,20 +9,27 @@
     height: 75px;
     font-size: large;
     box-shadow: none;
-    position: relative; 
-}
-.completed-nb-contents
-{
+    position: relative;
+  }
+  
+  .completed-nb-contents {
     display: flex;
-    justify-content: center;
+    align-items: center;
     gap: 10px;
-}
-.completed-nb-fullName
-{
+  }
+  
+  .completed-nb-fullName {
     margin-left: 30px;
-}
-.completed-content-button
-{
+  }
+  
+  .completed-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* Spacing between the buttons */
+  }
+  
+  .completed-content-button {
     background-color: #1a1a1a;
     border-radius: 5px;
     display: flex;
@@ -31,66 +37,49 @@
     align-items: center;
     gap: 5px;
     height: 40px;
-}
-.completed-content-button:hover
-{
+    padding: 0 10px; /* Add padding for better spacing */
+  }
+  
+  .completed-content-button:hover {
     cursor: pointer;
     background-color: #1a1a1aab;
-}
-.completed-previous
-{
-    width: 185px;
-}
-.completed-next
-{
-    width: 150px;
-}
-.completed-student-button
-{
+  }
+  
+  .completed-student-button {
     background-color: #4caf50;
-    width: 125px;
-}
-.completed-allot
-{
-    width: 75px;
+  }
+  
+  .completed-allot {
     background-color: #4caf50;
-}
-.completed-student-button:hover,.completed-allot:hover
-{
+  }
+  
+  .completed-student-button:hover,
+  .completed-allot:hover {
     background-color: #4caf4f69;
-}
-.completed-allot-marks
-{
+  }
+  
+  .completed-allot-marks {
     display: flex;
     align-items: center;
-}
-.completed-nb-marksAllocation .completed-marks
-{
-    font-size: 25px;
-}
-.completed-nb-marksAllocation
-{
+  }
+  
+  .completed-nb-marksAllocation {
     margin-right: 30px;
-}
-.completed-nb-marksAllocation [type="tel"]
-{
+    display: flex;
+    align-items: center;
+  }
+  
+  .completed-nb-marksAllocation [type="tel"] {
     background-color: #1a1a1a;
     color: #ffffff;
-    padding:5px;
+    padding: 5px;
     font-size: 15px;
     width: 100px;
     border: 1px solid black;
-}
-.completed-previous-student
-{
-    width: 180px;
-}
-.completed-next-student
-{
-    width: 150px;
-}
-.disabled
-{
+  }
+  
+  .disabled {
     pointer-events: none;
     opacity: 0.5;
-}
+  }
+  

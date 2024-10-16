@@ -101,25 +101,8 @@ const CompletedNavbar = () => {
       <div className="completed-nb-contents completed-nb-fullName">
         {studentDetails.fullName}
       </div>
-      <div className="completed-nb-contents">
-        {/* Question Navigation */}
-        <div
-          className="completed-content-button completed-previous"
-          onClick={handleLeftQuestion}
-        >
-          <FaChevronLeft />
-          <div>Previous Question</div>
-        </div>
-        <div
-          className="completed-content-button completed-next"
-          onClick={handleRightQuestion}
-        >
-          <div>Next Question</div>
-          <FaChevronRight />
-        </div>
-      </div>
-
-      <div className="completed-nb-contents">
+  
+      <div className="completed-nb-contents completed-navigation">
         {/* Student Navigation */}
         <div
           className={`completed-content-button completed-previous-student completed-student-button${
@@ -130,6 +113,25 @@ const CompletedNavbar = () => {
           <FaChevronLeft />
           <div>Previous Student</div>
         </div>
+  
+        {/* Question Navigation */}
+        <div
+          className="completed-content-button completed-previous"
+          onClick={handleLeftQuestion}
+        >
+          <FaChevronLeft />
+          <div>Previous Question</div>
+        </div>
+  
+        <div
+          className="completed-content-button completed-next"
+          onClick={handleRightQuestion}
+        >
+          <div>Next Question</div>
+          <FaChevronRight />
+        </div>
+  
+        {/* Next Student */}
         <div
           className={`completed-content-button completed-next-student completed-student-button${
             isLastStudent ? " disabled" : ""
@@ -140,7 +142,7 @@ const CompletedNavbar = () => {
           <FaChevronRight />
         </div>
       </div>
-
+  
       <div className="completed-nb-contents completed-nb-marksAllocation">
         <div className="completed-allot-marks">Allotted Marks:</div>
         <input type="tel" onChange={handleMarksChange} value={marks} />
@@ -151,6 +153,7 @@ const CompletedNavbar = () => {
       </div>
     </div>
   );
+  
 };
 
 export default CompletedNavbar;

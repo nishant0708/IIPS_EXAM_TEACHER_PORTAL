@@ -15,7 +15,7 @@ const CompletedPaperStudentDashboard = () => {
   const [loading, setLoading] = useState(true);
   const { paperId } = useParams();
   const evaluations = ["Evaluated", "Not-Evaluated", "Evaluation-in-Progress"];
-  const [studentIds, setStudentIds] = useState([]);
+  const [completedStudentIds, setCompletedStudentIds] = useState([]); // Completed students
   const [questionId, setQuestionId] = useState(null); // State to store questionId
 
   useEffect(() => {
@@ -23,7 +23,11 @@ const CompletedPaperStudentDashboard = () => {
     axios
       .post("http://localhost:5000/student/getStudentByPaperId", { paperId })
       .then((res) => {
-        setStudents(res.data.students);
+        // Sort students by name
+        const sortedStudents = res.data.students.sort((a, b) =>
+          a.fullName.localeCompare(b.fullName)
+        );
+        setStudents(sortedStudents);
       })
       .catch((err) => {
         console.log(err);
@@ -36,10 +40,9 @@ const CompletedPaperStudentDashboard = () => {
 
     // Fetch the first completed question ID for the paper
     axios
-      .post(
-        "http://localhost:5000/student/getFirstCompletedQuestionByPaperId",
-        { paperId }
-      )
+      .post("http://localhost:5000/student/getFirstCompletedQuestionByPaperId", {
+        paperId,
+      })
       .then((res) => {
         setQuestionId(res.data.question._id); // Store the question ID in state
       })
@@ -53,7 +56,7 @@ const CompletedPaperStudentDashboard = () => {
         paperId,
       })
       .then((res) => {
-        setStudentIds(res.data.students);
+        setCompletedStudentIds(res.data.students); // Store completed student IDs separately
       })
       .catch((err) => {
         console.error(err);
@@ -62,28 +65,28 @@ const CompletedPaperStudentDashboard = () => {
 
   // Function to get the attemption status
   const getAttemptionStatus = (studentId) => {
-    return studentIds.indexOf(studentId) === -1 ? "Not-Attempted" : "Attempted";
+    // Compare against the original completed student IDs
+    return completedStudentIds.indexOf(studentId) === -1 ? "Not-Attempted" : "Attempted";
   };
 
   // Function to handle card click
-  const handleCardClick = (studentId) => {
-    if (questionId) {
-      if (getAttemptionStatus(studentId) === "Attempted") {
-        localStorage.setItem("studentId", studentId);
-        localStorage.setItem("paperId",paperId);
-        // navigate(`/Evaluation/${questionId}`, {
-        //   state: { studentId, paperId, studentIds }, // Correctly pass both studentId and paperId in a single state object
-        // });
-        localStorage.setItem("studentIds",JSON.stringify(studentIds));
-        window.location.href=`/Evaluation/${questionId}`;
+  // Function to handle card click
+const handleCardClick = (studentId) => {
+  if (questionId) {
+    // Filter only students who have attempted
+    const attemptedStudentIds = students
+      .filter((student) => getAttemptionStatus(student._id) === "Attempted")
+      .map((student) => student._id); // Create array of attempted student IDs
 
-      } else {
-        console.error("Paper not Attempted by student");
-      }
-    } else {
-      console.error("Question ID not found.");
-    }
-  };
+    localStorage.setItem("studentId", studentId);
+    localStorage.setItem("paperId", paperId);
+    localStorage.setItem("studentIds", JSON.stringify(attemptedStudentIds)); // Store only attempted student IDs
+    window.location.href = `/Evaluation/${questionId}`;
+  } else {
+    console.error("Question ID not found.");
+  }
+};
+
 
   return (
     <>
@@ -99,11 +102,15 @@ const CompletedPaperStudentDashboard = () => {
             <div className="exam-table">
               {students.map((student, index) => {
                 const attemption = getAttemptionStatus(student._id);
+                
                 return (
                   <div
                     className="papers_table"
                     key={index}
-                    onClick={() => handleCardClick(student?._id)} // Handle click
+                    onClick={attemption === "Attempted" ? () => handleCardClick(student?._id) : null} // Only trigger onClick if attempted
+                    style={{
+                      cursor: attemption === "Attempted" ? "pointer" : "not-allowed", // Change cursor to pointer if clickable
+                    }}
                   >
                     <div className="table-data completed-student">
                       <div className="evaluation-attemption">
