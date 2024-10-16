@@ -4,7 +4,7 @@ import Nothing from "../Assets/nothing.svg";
 import Navbar from "../Navbar/Navbar";
 import Skeleton from "../Skeleton/Skeleton";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
@@ -17,7 +17,6 @@ const CompletedPaperStudentDashboard = () => {
   const evaluations = ["Evaluated", "Not-Evaluated", "Evaluation-in-Progress"];
   const [studentIds, setStudentIds] = useState([]);
   const [questionId, setQuestionId] = useState(null); // State to store questionId
-  const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
     // Fetch students based on paperId
@@ -72,9 +71,11 @@ const CompletedPaperStudentDashboard = () => {
       if (getAttemptionStatus(studentId) === "Attempted") {
         localStorage.setItem("studentId", studentId);
         localStorage.setItem("paperId",paperId);
-        navigate(`/Evaluation/${questionId}`, {
-          state: { studentId, paperId, studentIds }, // Correctly pass both studentId and paperId in a single state object
-        });
+        // navigate(`/Evaluation/${questionId}`, {
+        //   state: { studentId, paperId, studentIds }, // Correctly pass both studentId and paperId in a single state object
+        // });
+        localStorage.setItem("studentIds",JSON.stringify(studentIds));
+        window.location.href=`/Evaluation/${questionId}`;
 
       } else {
         console.error("Paper not Attempted by student");

@@ -20,7 +20,7 @@ const CompletedBody = () => {
 
   const questionUrl =
     location.state?.url || "http://localhost:5000/paper/getCompletedQuestion";
-  const studentId = location.state?.studentId || "";
+  const studentId = localStorage.getItem("studentId") || "";
   console.log(studentId);
 
   useEffect(() => {

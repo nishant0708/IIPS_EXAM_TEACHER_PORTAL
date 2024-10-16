@@ -2,18 +2,16 @@ import React, { useState, useEffect } from "react";
 import "./CompletedNavbar.css";
 import axios from "axios";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const CompletedNavbar = () => {
   const [allotDisplay, setAllotDisplay] = useState(false);
   const { questionId } = useParams();
   const [marks, setMarks] = useState("");
   const [studentDetails, setStudentDetails] = useState({});
-  const location = useLocation();
-  const navigate = useNavigate();
 
-  const studentId = location.state?.studentId || "";
-  const studentIds = location.state?.studentIds || [];
+  const studentId = localStorage.getItem("studentId") || "";
+  const studentIds = JSON.parse(localStorage.getItem("studentIds")) || [];
 
   const currentStudentIndex = studentIds.indexOf(studentId);
   const isFirstStudent = currentStudentIndex === 0;
@@ -38,9 +36,12 @@ const CompletedNavbar = () => {
         const nextQuestion = response.data?.question;
         if (nextQuestion && nextQuestion._id) {
           // Use navigate instead of window.location.href
-          navigate(`/Evaluation/${nextQuestion._id}`, {
-            state: { studentId, studentIds },
-          });
+          // navigate(`/Evaluation/${nextQuestion._id}`, {
+          //   state: { studentId, studentIds },
+          // });
+          localStorage.setItem("studentId",studentId);
+          localStorage.setItem("studentIds",JSON.stringify(studentIds));
+          window.location.href=`/Evaluation/${nextQuestion._id}`;
         }
       }
     } catch (err) {
@@ -59,18 +60,24 @@ const CompletedNavbar = () => {
   const handlePreviousStudent = () => {
     if (!isFirstStudent) {
       const prevStudentId = studentIds[currentStudentIndex - 1];
-      navigate(`/Evaluation/${questionId}`, {
-        state: { studentId: prevStudentId, studentIds },
-      });
+      // navigate(`/Evaluation/${questionId}`, {
+      //   state: { studentId: prevStudentId, studentIds },
+      // });
+      localStorage.setItem("studentId",prevStudentId);
+      localStorage.setItem("studentIds",JSON.stringify(studentIds));
+      window.location.href=`/Evaluation/${questionId}`;
     }
   };
 
   const handleNextStudent = () => {
     if (!isLastStudent) {
       const nextStudentId = studentIds[currentStudentIndex + 1];
-      navigate(`/Evaluation/${questionId}`, {
-        state: { studentId: nextStudentId, studentIds },
-      });
+      // navigate(`/Evaluation/${questionId}`, {
+      //   state: { studentId: nextStudentId, studentIds },
+      // });
+      localStorage.setItem("studentId",nextStudentId);
+      localStorage.setItem("studentIds",JSON.stringify(studentIds));
+      window.location.href=`/Evaluation/${questionId}`;
     }
   };
 
