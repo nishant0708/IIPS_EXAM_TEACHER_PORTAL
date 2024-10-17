@@ -8,7 +8,7 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-const CompletedEditor = ({ question, onOutput }) => {
+const CompletedEditor = ({ question, onOutput, studentId }) => {
   const editorContainerRef = useRef(null);
   const editorRef = useRef(null);
   const [input, setInput] = useState("");
@@ -19,7 +19,7 @@ const CompletedEditor = ({ question, onOutput }) => {
   const [response, setResponse] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [runList, setRunList] = useState([]);
-  const studentId = localStorage.getItem("studentId") || "";
+  // const studentId = localStorage.getItem("studentId") || "";
   const paperId = localStorage.getItem("paperId") || "";
   const responseUrl = "http://localhost:5000/student/getResponse";
 
@@ -304,6 +304,7 @@ CompletedEditor.propTypes = {
     _id: PropTypes.string.isRequired,
   }),
   onOutput: PropTypes.func.isRequired,
+  studentId: PropTypes.string.isRequired,
 };
 
 export default CompletedEditor;

@@ -20,7 +20,8 @@ const CompletedBody = () => {
 
   const questionUrl =
     location.state?.url || "http://localhost:5000/paper/getCompletedQuestion";
-
+  const studentId = localStorage.getItem("studentId") || "";
+  console.log(studentId);
 
   useEffect(() => {
     if (questionId) {
@@ -75,10 +76,10 @@ const CompletedBody = () => {
             <CompletedEditor
               question={question}
               onOutput={setOutput}
-       
+              studentId={studentId}
             />
             <div role="separator" tabIndex="1"></div>
-            <CompletedTest output={output} />
+            <CompletedTest output={output} studentId={studentId}/>
           </div>
         )}
       </div>

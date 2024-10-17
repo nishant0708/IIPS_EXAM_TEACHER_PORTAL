@@ -6,7 +6,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import remarkBreaks from "remark-breaks";
 
-const Test = ({ output }) => {
+const Test = ({ output}) => {
   // Split stdout and stderr
   console.log(output);
   const stdout = output?.stdout ||  "";
