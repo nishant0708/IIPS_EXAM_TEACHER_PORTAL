@@ -70,7 +70,7 @@ function Login() {
     axios
       .post("http://localhost:5000/teacher/verify-otp", { email, otp })
       .then((response) => {
-        const { sessionId, message, teacherId, name, email, mobileNumber } =
+        const { sessionId, message, teacherId, name, email, mobileNumber,photo } =
           response.data;
 
         // Set modal state first
@@ -85,6 +85,7 @@ function Login() {
           localStorage.setItem("teacherId", teacherId);
           localStorage.setItem("name", name);
           localStorage.setItem("email", email);
+          localStorage.setItem("photo", photo);
           localStorage.setItem("mobileNumber", mobileNumber);
 
           navigate("/teacherDashboard"); // Navigate to dashboard after successful login

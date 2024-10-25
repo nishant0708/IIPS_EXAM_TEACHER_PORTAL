@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+// import * as XLSX from "xlsx"; // Import xlsx for Excel export
+import ExcelJS from "exceljs";
+import saveAs from "file-saver";
 import "../papers/papers.css";
 import Nothing from "../Assets/nothing.svg";
 import Navbar from "../Navbar/Navbar";
@@ -19,6 +22,7 @@ const CompletedPaperStudentDashboard = () => {
   const [evaluationStatus, setEvaluationStatus] = useState({});
   const [completedStudentIds, setCompletedStudentIds] = useState([]);
   const [questionId, setQuestionId] = useState(null);
+  const [paperDetailing,setpaperDetails]=useState();
 
   useEffect(() => {
     axios
@@ -54,6 +58,7 @@ const CompletedPaperStudentDashboard = () => {
         paperId,
       })
       .then((res) => {
+    setpaperDetails(res.data.paper);
         setCompletedStudentIds(res.data.students);
       })
       .catch((err) => {
@@ -136,6 +141,59 @@ const CompletedPaperStudentDashboard = () => {
       });
   };
 
+  const exportToExcel = async () => {
+    const year = new Date().getFullYear();
+    const testType = paperDetailing.testType;
+    const subject = paperDetailing.subject;
+  
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Students");
+  
+    // Add a blank row to separate from the headers
+    worksheet.addRow([]);
+  
+    // Make the table headers bold
+    worksheet.getCell("A1").font = { bold: true };
+    worksheet.getCell("B1").font = { bold: true };
+    worksheet.getCell("C1").font = { bold: true };
+    worksheet.getCell("D1").font = { bold: true };
+    worksheet.getCell("E1").font = { bold: true };
+  
+    // Add column definitions with width and alignment
+    worksheet.columns = [
+      { header: "Roll Number", key: "RollNumber", width: 15 },
+      { header: "Name", key: "Name", width: 30 },
+      { header: "Email", key: "Email", width: 45 },
+      { header: "Marks Alloted", key: "MarksAlloted", width: 15, style: { alignment: { vertical: 'middle', horizontal: 'center' } } },
+      { header: "Maximum Marks", key: "MaximumMarks", width: 15, style: { alignment: { vertical: 'middle', horizontal: 'center' } } },
+    ];
+  
+    // Add data rows starting from row 3
+    sortedStudents.forEach((student) => {
+      worksheet.addRow({
+        RollNumber: student.rollNumber,
+        Name: student.fullName,
+        Email: student.email,
+        MarksAlloted: evaluationStatus[student._id]?.totalMarks || "N/A",
+        MaximumMarks: paperDetailing.marks,
+      });
+    });
+  
+    // Center align the content of columns D and E
+    worksheet.getColumn('D').eachCell((cell) => {
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
+    });
+    worksheet.getColumn('E').eachCell((cell) => {
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
+    });
+  
+    // Save the file
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    saveAs(blob, `${testType}-${subject}-${year}.xlsx`);
+  };
+  
+
   return (
     <>
       <Navbar />
@@ -148,7 +206,7 @@ const CompletedPaperStudentDashboard = () => {
               <h2>Students:</h2>
               {allAttemptedEvaluated && (
                 <div className="export_completed_paper_buttons_div">
-                  <button className="export_completed_paper_buttons">
+                  <button className="export_completed_paper_buttons" onClick={exportToExcel}>
                     <PiExport /> Export Excel
                   </button>
                   <button
@@ -218,9 +276,7 @@ const CompletedPaperStudentDashboard = () => {
                         </div>
                         <div className="student-name">
                           <div className="classhead">{student.fullName}</div>
-                          <div className="subname">Email: &nbsp;{student.email}</div>
-                          <div className="subname">{student.rollNumber}</div>
-                          <div className="subname">{student.phoneNumber}</div>
+                          <div className="classsubhead">{student.rollNumber}</div>
                         </div>
                       </div>
                     </div>
@@ -230,11 +286,9 @@ const CompletedPaperStudentDashboard = () => {
             </div>
           </>
         ) : (
-          <div className="no-questions-container">
-            <center>
-              <img alt="Nothing" src={Nothing} className="nothing" />
-              <h2>No Students Found</h2>
-            </center>
+          <div className="no-exams">
+            <img src={Nothing} alt="No papers to show" />
+            <h2>No students to show!</h2>
           </div>
         )}
       </div>

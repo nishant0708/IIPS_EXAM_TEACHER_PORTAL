@@ -78,12 +78,15 @@ const CompletedNavbar = () => {
 
   const handleAllotMarks = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/student/allocateMarks", {
-        paperId,
-        studentId,
-        questionId,
-        marks: Number(marks ?? 0),
-      });
+      const response = await axios.post(
+        "http://localhost:5000/student/allocateMarks",
+        {
+          paperId,
+          studentId,
+          questionId,
+          marks: Number(marks ?? 0),
+        }
+      );
       if (response.status === 200) {
         setModalMessage("Marks allocated successfully");
         setModalIsOpen(true); // Open modal on successful allocation
@@ -91,17 +94,52 @@ const CompletedNavbar = () => {
       }
     } catch (err) {
       console.error("Error allocating marks:", err);
-      setModalMessage("Failed" +' '+ err?.response?.data?.message||"Error Failed allocating marks");
+      setModalMessage(
+        "Failed" + " " + err?.response?.data?.message ||
+          "Error Failed allocating marks"
+      );
       setModalIsOpen(true); // Open modal on error
     }
   };
 
-  const handleModalConfirm = () => {
-    // Only navigate to the next question if there is no error
+  const handleModalConfirm = async () => {
     if (!modalMessage.includes("Failed")) {
-      handleRightQuestion(); // Move to the next question if no error
+      try {
+        // Check if a next question exists
+        const response = await axios.post(
+          "http://localhost:5000/student/getCompletedQuestionNavigation",
+          { questionId, direction: "next" }
+        );
+        const nextQuestion = response.data?.question;
+
+        if (nextQuestion && nextQuestion._id) {
+          // Navigate to the next question if it exists
+          window.location.href = `/Evaluation/${nextQuestion._id}`;
+        } else if (!isLastStudent) {
+          // If no next question, but there is a next student, move to the next student
+          handleNextStudent();
+        } else {
+          // If no next question or next student, go to completed papers
+          window.location.href = `/completed_papers_student/${paperId}`;
+        }
+      } catch (err) {
+        if (err.response && err.response.status === 404) {
+          console.warn("No next question found; checking for next student.");
+          if (!isLastStudent) {
+            handleNextStudent();
+          } else {
+            window.location.href = `/completed_papers_student/${paperId}`;
+          }
+        } else {
+          console.error(
+            "Error navigating to the next question or student:",
+            err
+          );
+        }
+      }
     }
-    setModalIsOpen(false); // Close the modal
+    // Close the modal
+    setModalIsOpen(false);
   };
 
   useEffect(() => {
@@ -122,7 +160,10 @@ const CompletedNavbar = () => {
   useEffect(() => {
     if (paperId && studentId) {
       axios
-        .post("http://localhost:5000/student/getResponse", { paperId, studentId })
+        .post("http://localhost:5000/student/getResponse", {
+          paperId,
+          studentId,
+        })
         .then((res) => {
           setResponse(res.data.response);
           console.log(response);
@@ -151,7 +192,9 @@ const CompletedNavbar = () => {
   useEffect(() => {
     if (questionId) {
       axios
-        .post("http://localhost:5000/paper/getCompletedQuestion", { questionId })
+        .post("http://localhost:5000/paper/getCompletedQuestion", {
+          questionId,
+        })
         .then((res) => {
           setQuestionMaxMarks(res.data.question.marks); // Set question max marks
         })
@@ -163,20 +206,24 @@ const CompletedNavbar = () => {
 
   return (
     <div className="completed-navbar">
-       <div
-          className={`completed-content-button completed-previous-student completed-student-button`}
-          onClick={()=>{window.location.href=`/completed_papers_student/${paperId}`}}
-        >
-          <FaChevronLeft />
-          <div>Back</div>
-        </div>
+      <div
+        className={`completed-content-button completed-previous-student completed-student-button`}
+        onClick={() => {
+          window.location.href = `/completed_papers_student/${paperId}`;
+        }}
+      >
+        <FaChevronLeft />
+        <div>Back</div>
+      </div>
       <div className="completed-nb-contents completed-nb-fullName">
         {studentDetails.fullName}
       </div>
 
       <div className="completed-nb-contents completed-navigation">
         <div
-          className={`completed-content-button completed-previous-student completed-student-button${isFirstStudent ? " disabled" : ""}`}
+          className={`completed-content-button completed-previous-student completed-student-button${
+            isFirstStudent ? " disabled" : ""
+          }`}
           onClick={handlePreviousStudent}
         >
           <FaChevronLeft />
@@ -200,7 +247,9 @@ const CompletedNavbar = () => {
         </div>
 
         <div
-          className={`completed-content-button completed-next-student completed-student-button${isLastStudent ? " disabled" : ""}`}
+          className={`completed-content-button completed-next-student completed-student-button${
+            isLastStudent ? " disabled" : ""
+          }`}
           onClick={handleNextStudent}
         >
           <div>Next Student</div>
@@ -209,26 +258,34 @@ const CompletedNavbar = () => {
       </div>
 
       <div className="completed-nb-contents completed-nb-marksAllocation">
-  <div className="completed-allot-marks">Allotted Marks:</div>
-  <input 
-    type="tel" 
-    onChange={handleMarksChange} 
-    value={marks} 
-    disabled={!isEditable} // Disable input if not editable
-  />
-  <div className="completed-allot-marks completed-marks">/{questionMaxMarks}</div>
+        <div className="completed-allot-marks">Allotted Marks:</div>
+        <input
+          type="tel"
+          onChange={handleMarksChange}
+          value={marks}
+          disabled={!isEditable} // Disable input if not editable
+        />
+        <div className="completed-allot-marks completed-marks">
+          /{questionMaxMarks}
+        </div>
 
-  {allotDisplay && (
-    <div className="completed-content-button completed-allot" onClick={handleAllotMarks}>
-      Allot
-    </div>
-  )}
-  {!allotDisplay && !isEditable && (marks !== "" && marks !== null) && (
-  <div className="completed-content-button completed-edit" onClick={handleEditMarks}>
-    Edit
-  </div>
-)}
-</div>
+        {allotDisplay && (
+          <div
+            className="completed-content-button completed-allot"
+            onClick={handleAllotMarks}
+          >
+            Allot
+          </div>
+        )}
+        {!allotDisplay && !isEditable && marks !== "" && marks !== null && (
+          <div
+            className="completed-content-button completed-edit"
+            onClick={handleEditMarks}
+          >
+            Edit
+          </div>
+        )}
+      </div>
 
       <AlertModal
         isOpen={modalIsOpen}

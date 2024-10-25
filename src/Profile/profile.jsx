@@ -6,19 +6,26 @@ import { FaPlus, FaEye, FaEyeSlash } from 'react-icons/fa';
 import Modal from 'react-modal';
 import AlertModal from '../AlertModal/AlertModal';
 import defaultPhoto from "../Assets/profile_photo.png";
+import ReactCrop from "react-easy-crop";
+import getCroppedImg from "./getCroppedImg";
+
 
 Modal.setAppElement('#root');
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
-    photo: defaultPhoto,
+    photo:"",
     name: "",
     email: "",
     mobile_no: "",
     password: "",
     confirmPassword: ""
   });
-
+  const [imageCropModal, setImageCropModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [alertIsOpen, setAlertIsOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -27,28 +34,33 @@ const Profile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
-  const [teacher, setTeacher] = useState();
   const [passwordsMatch, setPasswordMatch] = useState(false);
 
   useEffect(() => {
-    axios.post('http://localhost:5000/teacher/getteacherDetails', { teacherId: localStorage.getItem("teacherId") })
-      .then((response) => {
-        setTeacher(response?.data?.teacher);
-        if (teacher) {
-          setProfileData(prevData => ({
-            ...prevData,
-            name: teacher?.name,
-            email: teacher?.email,
-            mobile_no: teacher?.mobileNumber,
-            password: teacher?.password,
-            confirmPassword: teacher?.password,
-          }));
+    const fetchTeacherDetails = async () => {
+      try {
+        const response = await axios.post('http://localhost:5000/teacher/getteacherDetails', {
+          teacherId: localStorage.getItem("teacherId"),
+        });
+        
+        const teacherData = response?.data?.teacher;
+        if (teacherData) {
+          setProfileData({
+            name: teacherData.name,
+            email: teacherData.email,
+            mobile_no: teacherData.mobileNumber,
+            password: teacherData.password,
+            photo: teacherData.photo || defaultPhoto,
+            confirmPassword: teacherData.password,
+          });
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, );
+      } catch (error) {
+        console.log("Error fetching teacher details:", error);
+      }
+    };
+  
+    fetchTeacherDetails();
+  }, []);
 
   const openModal = () => {
     setNewProfileData({ ...profileData, password: "", confirmPassword: "" });
@@ -119,15 +131,48 @@ const Profile = () => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
-        setProfileData({
-          ...profileData,
-          photo: e.target.result,
-        });
-      };
+      reader.onload = () => setSelectedImage(reader.result);
       reader.readAsDataURL(file);
+      setImageCropModal(true);
     }
   };
+ 
+
+  const onCropComplete = async (croppedArea, croppedAreaPixels) => {
+    const croppedImage = await getCroppedImg(selectedImage, croppedAreaPixels);
+    setCroppedImage(croppedImage);
+  };
+
+ const saveCroppedImage = async () => {
+  if (!croppedImage) return;
+
+  // Prepare the image file for upload using FormData
+  const formData = new FormData();
+  formData.append("file", croppedImage);
+
+  try {
+
+    const uploadResponse = await axios.post("http://localhost:5000/paper/upload", formData);
+
+    const imageUrl = uploadResponse.data.url;
+
+  
+    const teacherId = localStorage.getItem("teacherId");
+
+    await axios.post("http://localhost:5000/teacher/set-photo", {
+      teacherId: teacherId,
+      photo: imageUrl
+    });
+
+   
+    localStorage.setItem("profilePhoto", imageUrl);
+    setProfileData((prevData) => ({ ...prevData, photo: imageUrl }));
+
+    setImageCropModal(false);
+  } catch (error) {
+    console.error("Error updating profile photo:", error);
+  }
+};
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
@@ -138,7 +183,7 @@ const Profile = () => {
       <div className="profile-card">
         <div className="profile-header">
           <img src={profileData.photo} alt="Profile" className="profile-image" />
-          <label htmlFor="file-input" className="profile-plus-icon">
+          <label htmlFor="file-input"  className="profile-plus-icon">
             <FaPlus />
           </label>
           <input
@@ -148,6 +193,7 @@ const Profile = () => {
             onChange={handleImageChange}
             style={{ display: 'none' }}
           />
+   
         </div>
         <div className="profile-details">
           <div className="profile-name">{profileData.name}</div>
@@ -269,6 +315,28 @@ const Profile = () => {
           </div>
         </form>
       </Modal>
+      <Modal
+  isOpen={imageCropModal}
+  onRequestClose={() => setImageCropModal(false)}
+  contentLabel="Crop Image"
+  className="profile-crop-modal"
+  overlayClassName="profile-overlay"
+>
+  <h2 className='crop_h2'>Crop Your Image</h2>
+  <ReactCrop
+    image={selectedImage}
+    crop={crop}
+    zoom={zoom}
+    aspect={1}
+    onCropChange={setCrop}
+    onCropComplete={onCropComplete}
+    onZoomChange={setZoom}
+  />
+  <div className="modal-buttons">
+    <button onClick={saveCroppedImage}>Save</button>
+    <button onClick={() => setImageCropModal(false)}>Cancel</button>
+  </div>
+</Modal>
 
       <AlertModal
         isOpen={alertIsOpen}

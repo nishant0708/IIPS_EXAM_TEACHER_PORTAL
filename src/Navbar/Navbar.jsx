@@ -3,7 +3,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaPowerOff } from "react-icons/fa";
 import "./Navbar.css";
-
+import defaultPhoto from "../Assets/profile_photo.png";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -33,12 +33,12 @@ const Navbar = () => {
           <img
             alt="Image"
             className="pfp"
-            src="https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg"
+            src={localStorage.getItem("photo")||defaultPhoto}
             width="35"
             height="35"
            
           />
-          <div>Nishant Kaushal</div>
+          <div>{localStorage.getItem("name")}</div>
         </div>
         <div className="navbar-contents navbar-displayed">
 
