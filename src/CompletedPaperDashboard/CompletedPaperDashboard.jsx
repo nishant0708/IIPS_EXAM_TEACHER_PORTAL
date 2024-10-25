@@ -1,41 +1,31 @@
-
 import React, { useState, useEffect } from "react";
 import "../papers/papers.css"; 
-// import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Nothing from "../Assets/nothing.svg";
 import Navbar from "../Navbar/Navbar";
 import Skeleton from "../Skeleton/Skeleton";
 import { GoDotFill } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
-// import AlertModal from "../AlertModal/AlertModal";
 
 const CompletedPaperDashboard = () => {
   const navigate = useNavigate();
   const [completedPapers, setCompletedPapers] = useState([]);
-//   const [hoveredItem, setHoveredItem] = useState(null);
   const [loading, setLoading] = useState(true);
-  const evaluations=[
+  const evaluations = [
     "Evaluated",
     "Not-Evaluated",
     "Evaluation-in-Progress",
   ];
 
   const teacherId = localStorage.getItem("teacherId");
-//   const [reload, setReload] = useState(false);
-//   const [modalMessage, setModalMessage] = useState("");
-//   const [isError, setIsError] = useState(false);
-//   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-const getFormattedDateTime = (date, time) => {
+  const getFormattedDateTime = (date, time) => {
     if (!date || !time) {
-      return "Invalid Date or Time"; // Or handle it however you want
+      return "Invalid Date or Time";
     }
-
     const [hours, minutes] = time.split(":").map(Number);
     const dateTime = new Date(date);
     dateTime.setHours(hours, minutes);
-    
     return dateTime.toLocaleString("en-US", {
       year: "numeric",
       month: "long",
@@ -45,6 +35,28 @@ const getFormattedDateTime = (date, time) => {
       hour12: true,
     });
   };
+
+  useEffect(() => {
+    const fetchEvaluationStatus = async () => {
+      try {
+        // Map over completedPapers to create an array of evaluation status requests
+        const evaluationPromises = completedPapers.map((paper) =>
+          axios.post(`http://localhost:5000/paper/paper_evaluate_status`, { paperId: paper._id })
+        );
+
+        // Wait for all requests to complete
+        await Promise.all(evaluationPromises);
+        console.log("Evaluation status updated for all papers.");
+      } catch (error) {
+        console.error("Error updating evaluation status:", error);
+      }
+    };
+
+    // Fetch evaluation status only if completedPapers has data
+    if (completedPapers.length > 0) {
+      fetchEvaluationStatus();
+    }
+  }, [completedPapers]);
 
   useEffect(() => {
     const fetchCompletedPapers = async () => {
@@ -62,12 +74,10 @@ const getFormattedDateTime = (date, time) => {
         }, 1000);
       }
     };
-
     fetchCompletedPapers();
   }, [teacherId]);
 
   const handleCardClick = (paperId) => {
-    // navigate(`/completed_questions/${paperId}`);
     navigate(`/completed_papers_student/${paperId}`);
   };
 
@@ -93,17 +103,14 @@ const getFormattedDateTime = (date, time) => {
                   className="papers_table"
                   key={index}
                   onClick={() => handleCardClick(paper._id)}
-                //   onMouseEnter={() => setHoveredItem(paper._id)}
-                //   onMouseLeave={() => setHoveredItem(null)}
                 >
-                  {/* Since delete and move features are removed, no buttons are shown */}
                   <div className="scheduled">
                     Completed on: {getFormattedDateTime(paper.endTime, paper.time)}
                   </div>
                   <div className="table-data">
                     <div className={`evaluation ${evaluations[0]+"-completed"}`}>
                       <GoDotFill />
-                      <div>{evaluations[0]}</div>
+                      <div>{paper.evaluationStatus}</div>
                     </div>
                     <div className="classhead">
                       {paper.className} {paper.semester}
@@ -129,12 +136,6 @@ const getFormattedDateTime = (date, time) => {
           </div>
         )}
       </div>
-      {/* <AlertModal
-        isOpen={modalIsOpen}
-        onClose={() => setModalIsOpen(false)}
-        message={modalMessage}
-        iserror={isError}
-      /> */}
     </>
   );
 };

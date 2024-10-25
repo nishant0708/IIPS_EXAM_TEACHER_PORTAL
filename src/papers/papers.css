@@ -267,6 +267,9 @@
 {
   margin-top: -25px;
 }
+.completed_student_dashboard_evaluation{
+  padding: 0px 4px;
+}
 @media screen and (max-width: 768px) {
   .student-image {
     width: 80px;
@@ -299,3 +302,30 @@
 {
   position: relative;
 }
+.export_completed_paper_buttons{
+
+  height: 50px;
+  display: flex;
+  border-radius: 5px;
+  background-color: #45a049;
+  color: white;
+  border: 1px solid rgb(0, 0, 0);
+  font-size: 18px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  }
+  .export_completed_paper_buttons svg{
+    font-size: 20px;
+  }
+  .export_completed_paper_buttons:hover
+  {
+      background-color: #45a04970;
+      cursor: pointer;
+  }
+  .export_completed_paper_buttons_div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:10px;
+  }

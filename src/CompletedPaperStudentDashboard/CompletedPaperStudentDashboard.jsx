@@ -9,21 +9,21 @@ import { GoDotFill } from "react-icons/go";
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import image from "../Assets/profile_photo.png";
+import { PiExport } from "react-icons/pi";
 
 const CompletedPaperStudentDashboard = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sendingEmails, setSendingEmails] = useState(false); // Loading state for sending emails
   const { paperId } = useParams();
-  const evaluations = ["Evaluated", "Not-Evaluated", "Evaluation-in-Progress"];
-  const [completedStudentIds, setCompletedStudentIds] = useState([]); // Completed students
-  const [questionId, setQuestionId] = useState(null); // State to store questionId
+  const [evaluationStatus, setEvaluationStatus] = useState({});
+  const [completedStudentIds, setCompletedStudentIds] = useState([]);
+  const [questionId, setQuestionId] = useState(null);
 
   useEffect(() => {
-    // Fetch students based on paperId
     axios
       .post("http://localhost:5000/student/getStudentByPaperId", { paperId })
       .then((res) => {
-        // Sort students by name
         const sortedStudents = res.data.students.sort((a, b) =>
           a.fullName.localeCompare(b.fullName)
         );
@@ -38,55 +38,103 @@ const CompletedPaperStudentDashboard = () => {
         }, 1000);
       });
 
-    // Fetch the first completed question ID for the paper
     axios
       .post("http://localhost:5000/student/getFirstCompletedQuestionByPaperId", {
         paperId,
       })
       .then((res) => {
-        setQuestionId(res.data.question._id); // Store the question ID in state
+        setQuestionId(res.data.question._id);
       })
       .catch((err) => {
         console.error("Error fetching first question:", err);
       });
 
-    // Fetch student IDs who have completed the paper
     axios
       .post("http://localhost:5000/paper/getCompletedPaperByPaperId", {
         paperId,
       })
       .then((res) => {
-        setCompletedStudentIds(res.data.students); // Store completed student IDs separately
+        setCompletedStudentIds(res.data.students);
       })
       .catch((err) => {
         console.error(err);
       });
   }, [paperId]);
 
-  // Function to get the attemption status
+  useEffect(() => {
+    students.forEach((student) => {
+      axios
+        .post("http://localhost:5000/paper/evaluate_status", {
+          studentId: student._id,
+          paperId: paperId,
+        })
+        .then((res) => {
+          setEvaluationStatus((prevStatus) => ({
+            ...prevStatus,
+            [student._id]: {
+              status: res.data.status,
+              totalMarks: res.data.totalMarks || "N/A",
+            },
+          }));
+        })
+        .catch((err) => {
+          console.error(`Error fetching evaluation for student ${student._id}:`, err);
+        });
+    });
+  }, [students, paperId]);
+
   const getAttemptionStatus = (studentId) => {
-    // Compare against the original completed student IDs
-    return completedStudentIds.indexOf(studentId) === -1 ? "Not-Attempted" : "Attempted";
+    return completedStudentIds.includes(studentId) ? "Attempted" : "Not-Attempted";
   };
 
-  // Function to handle card click
-  // Function to handle card click
-const handleCardClick = (studentId) => {
-  if (questionId) {
-    // Filter only students who have attempted
-    const attemptedStudentIds = students
-      .filter((student) => getAttemptionStatus(student._id) === "Attempted")
-      .map((student) => student._id); // Create array of attempted student IDs
+  // Sort students by attempted status and then alphabetically within each group
+  const sortedStudents = students.slice().sort((a, b) => {
+    const aStatus = getAttemptionStatus(a._id);
+    const bStatus = getAttemptionStatus(b._id);
 
-    localStorage.setItem("studentId", studentId);
-    localStorage.setItem("paperId", paperId);
-    localStorage.setItem("studentIds", JSON.stringify(attemptedStudentIds)); // Store only attempted student IDs
-    window.location.href = `/Evaluation/${questionId}`;
-  } else {
-    console.error("Question ID not found.");
-  }
-};
+    if (aStatus === bStatus) return a.fullName.localeCompare(b.fullName);
+    return aStatus === "Attempted" ? -1 : 1;
+  });
 
+  // Check if all attempted students are evaluated
+  const allAttemptedEvaluated = sortedStudents
+    .filter((student) => getAttemptionStatus(student._id) === "Attempted")
+    .every((student) => evaluationStatus[student._id]?.status === "Evaluated");
+
+  const handleCardClick = (studentId) => {
+    if (questionId) {
+      const attemptedStudentIds = sortedStudents
+        .filter((student) => getAttemptionStatus(student._id) === "Attempted")
+        .map((student) => student._id);
+
+      localStorage.setItem("studentId", studentId);
+      localStorage.setItem("paperId", paperId);
+      localStorage.setItem("studentIds", JSON.stringify(attemptedStudentIds));
+      window.location.href = `/Evaluation/${questionId}`;
+    } else {
+      console.error("Question ID not found.");
+    }
+  };
+
+  // Function to send results email to students
+  const sendMailToStudents = () => {
+    setSendingEmails(true); // Start loading state
+    axios
+      .post("http://localhost:5000/paper/sendmailtostudent", {
+        paperId,
+        students,
+        evaluationStatus,
+      })
+      .then((res) => {
+        console.log("Emails sent successfully:", res.data);
+      })
+      .catch((err) => {
+        console.error("Error sending emails:", err);
+      })
+      .finally(() => {
+        setSendingEmails(false); // End loading state
+      });
+  };
 
   return (
     <>
@@ -98,28 +146,55 @@ const handleCardClick = (studentId) => {
           <>
             <div className="header">
               <h2>Students:</h2>
+              {allAttemptedEvaluated && (
+                <div className="export_completed_paper_buttons_div">
+                  <button className="export_completed_paper_buttons">
+                    <PiExport /> Export Excel
+                  </button>
+                  <button
+                    className="export_completed_paper_buttons"
+                    onClick={sendMailToStudents}
+                    disabled={sendingEmails}
+                  >
+                    {sendingEmails ? "Sending Emails..." : "Send Result to Students"}
+                  </button>
+                </div>
+              )}
             </div>
             <div className="exam-table">
-              {students.map((student, index) => {
+              {sortedStudents.map((student, index) => {
                 const attemption = getAttemptionStatus(student._id);
-                
+                const evalInfo = evaluationStatus[student._id] || {};
+                const evalStatus = evalInfo.status || "Not Evaluated";
+
+                // Define color based on evaluation status
+                const evalColor =
+                  evalStatus === "Evaluated"
+                    ? "green"
+                    : evalStatus === "Evaluation in Progress"
+                    ? "yellow"
+                    : "red";
+
                 return (
                   <div
                     className="papers_table"
                     key={index}
-                    onClick={attemption === "Attempted" ? () => handleCardClick(student?._id) : null} // Only trigger onClick if attempted
+                    onClick={attemption === "Attempted" ? () => handleCardClick(student._id) : null}
                     style={{
-                      cursor: attemption === "Attempted" ? "pointer" : "not-allowed", // Change cursor to pointer if clickable
+                      cursor: attemption === "Attempted" ? "pointer" : "not-allowed",
                     }}
                   >
                     <div className="table-data completed-student">
                       <div className="evaluation-attemption">
-                        <div className={`evaluation ${evaluations[index % 3]}`}>
+                        <div
+                          className={`evaluation ${evalStatus.toLowerCase().replace(/ /g, "-")}`}
+                          style={{ color: evalColor }}
+                        >
                           <GoDotFill />
-                          <div>
-                            {evaluations[index % 3]}&nbsp;
-                            {evaluations[index % 3] === "Evaluated" && (
-                              <>Alloted Marks: 20</>
+                          <div className="completed_student_dashboard_evaluation">
+                            {evalStatus}&nbsp;
+                            {evalStatus === "Evaluated" && (
+                              <>Alloted Marks: {evalInfo.totalMarks}</>
                             )}
                           </div>
                         </div>
@@ -143,9 +218,7 @@ const handleCardClick = (studentId) => {
                         </div>
                         <div className="student-name">
                           <div className="classhead">{student.fullName}</div>
-                          <div className="subname">
-                            Email: &nbsp;{student.email}
-                          </div>
+                          <div className="subname">Email: &nbsp;{student.email}</div>
                           <div className="subname">{student.rollNumber}</div>
                           <div className="subname">{student.phoneNumber}</div>
                         </div>
