@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaPowerOff } from "react-icons/fa";
 import "./Navbar.css";
 import defaultPhoto from "../Assets/profile_photo.png";
+import axios from "axios";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const photo = localStorage.getItem("photo") || defaultPhoto;
+
+  
+  const [photo,setPhoto] = useState("");
+  useEffect(()=>
+    {
+      axios.post(`${process.env.REACT_APP_BACKEND_URL}/teacher/getteacherDetails`,{teacherId: localStorage.getItem("teacherId")})
+      .then((res)=>{setPhoto(localStorage.getItem("photo") || res.data.teacher.photo || defaultPhoto)}).catch((err)=>{console.error(err)});
+    },[]);
 
   const responsive = () => {
     const sidebar = document.getElementsByClassName("navbar-sidebar")[0];
@@ -35,7 +43,7 @@ const Navbar = () => {
           <img
             alt="Image"
             className="pfp"
-            src={photo}
+            src={photo || defaultPhoto}
             width="35"
             height="35"
            
