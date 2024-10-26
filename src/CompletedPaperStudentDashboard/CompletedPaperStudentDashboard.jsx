@@ -7,12 +7,13 @@ import Nothing from "../Assets/nothing.svg";
 import Navbar from "../Navbar/Navbar";
 import Skeleton from "../Skeleton/Skeleton";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import image from "../Assets/profile_photo.png";
 import { PiExport } from "react-icons/pi";
+import AlertModal from "../AlertModal/AlertModal";
 
 const CompletedPaperStudentDashboard = () => {
   const [students, setStudents] = useState([]);
@@ -23,6 +24,12 @@ const CompletedPaperStudentDashboard = () => {
   const [completedStudentIds, setCompletedStudentIds] = useState([]);
   const [questionId, setQuestionId] = useState(null);
   const [paperDetailing,setpaperDetails]=useState();
+  const navigate = useNavigate();
+  const [modalIsOpen,setModalIsOpen] = useState(false);
+  const [modalIsConfirm,setModalIsConfirm] = useState(false);
+  const [modalMessage,setModalMessage] = useState("");
+  const [modalIsError,setModalIsError] = useState(false);
+  const [emailIsSent,setEmailIsSent] = useState(false);
 
   useEffect(() => {
     axios
@@ -64,6 +71,13 @@ const CompletedPaperStudentDashboard = () => {
       .catch((err) => {
         console.error(err);
       });
+
+      axios.post("http://localhost:5000/paper/getEmailSent",{
+        paperId,
+      })
+      .then((res)=>{setEmailIsSent(res.data.emailSent)})
+      .catch((err)=>{console.error(err)});
+
   }, [paperId]);
 
   useEffect(() => {
@@ -121,6 +135,17 @@ const CompletedPaperStudentDashboard = () => {
     }
   };
 
+  const sendMail = () =>
+  {
+    if (emailIsSent) {
+      setModalIsConfirm(true);
+      setModalMessage("Emails have already been sent. Do you want to send them again?");
+      setModalIsOpen(true);
+    } else {
+      sendMailToStudents();
+    }
+  }
+
   // Function to send results email to students
   const sendMailToStudents = () => {
     setSendingEmails(true); // Start loading state
@@ -131,15 +156,30 @@ const CompletedPaperStudentDashboard = () => {
         evaluationStatus,
       })
       .then((res) => {
+        setEmailIsSent(true);
         console.log("Emails sent successfully:", res.data);
+        setModalIsError(false);
+        setModalMessage("Emails sent successfully to the students!!!");
+        setModalIsOpen(true);
       })
       .catch((err) => {
         console.error("Error sending emails:", err);
+        setModalIsConfirm(false);
+        setModalIsError(true);
+        setModalIsOpen(true);
+        setModalMessage(err);
       })
       .finally(() => {
         setSendingEmails(false); // End loading state
       });
   };
+
+  const handleModalConfirm = () =>
+    {
+      setModalIsConfirm(false);
+      setModalIsOpen(false);
+      sendMailToStudents();
+    }
 
   const exportToExcel = async () => {
     const year = new Date().getFullYear();
@@ -202,6 +242,7 @@ const CompletedPaperStudentDashboard = () => {
           <Skeleton exams={students} />
         ) : students.length > 0 ? (
           <>
+            <div className="header-back" onClick={()=>{navigate(-1)}}>Back</div>
             <div className="header">
               <h2>Students:</h2>
               {allAttemptedEvaluated && (
@@ -211,7 +252,7 @@ const CompletedPaperStudentDashboard = () => {
                   </button>
                   <button
                     className="export_completed_paper_buttons"
-                    onClick={sendMailToStudents}
+                    onClick={sendMail}
                     disabled={sendingEmails}
                   >
                     {sendingEmails ? "Sending Emails..." : "Send Result to Students"}
@@ -292,6 +333,14 @@ const CompletedPaperStudentDashboard = () => {
           </div>
         )}
       </div>
+      <AlertModal
+      isOpen={modalIsOpen}
+      onClose={()=>{setModalIsOpen(false)}}
+      iserror={modalIsError}
+      message={modalMessage}
+      isConfirm={modalIsConfirm}
+      onConfirm={handleModalConfirm}
+      emailIsConfirm={true}/>
     </>
   );
 };

@@ -166,7 +166,7 @@ const Createpaper = () => {
                 className="create_paper_input"
                 placeholder="Subject Code"
                 value={subjectCode}
-                onChange={(e) => setSubjectCode(e.target.value)}
+                onChange={(e) => setSubjectCode(e.target.value.toUpperCase())}
               />
             </FormGroup>
 

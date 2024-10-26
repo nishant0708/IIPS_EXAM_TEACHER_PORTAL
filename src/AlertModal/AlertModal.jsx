@@ -15,15 +15,21 @@ import './AlertModal.css';
 import cross from "../Assets/cross-mark.svg";
 import tick from "../Assets/accept-check-good-mark-ok-tick.svg";
 
-const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror, isConfirm }) => {
+const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror, isConfirm, emailIsConfirm }) => {
   var image = iserror ? cross : tick;
 
   const handleClose = () => {
     if (onConfirm) {
-      onConfirm(); // Trigger the callback for  any action
+      if(!emailIsConfirm) onConfirm(); // Trigger the callback for  any action
     }
     onClose(); // Always close the modal
   };
+
+  const handleEmailConfirm = ()=>
+  {
+    onConfirm();
+    onClose();
+  }
 
   const handleConfirmClose=()=>
   {
@@ -53,7 +59,7 @@ const AlertModal = ({ isOpen, onClose, onConfirm, message, iserror, isConfirm })
             <>
               <div className='alert_display-flex'>
                 <div>
-                  <button onClick={handleClose} className='alert_confirm-button'>
+                  <button onClick={emailIsConfirm ? handleEmailConfirm : handleClose} className='alert_confirm-button'>
                     <div>Okay</div>
                     </button>
                 </div>
@@ -79,12 +85,14 @@ AlertModal.propTypes = {
   iserror: PropTypes.bool.isRequired,  // iserror should be a boolean
   onConfirm: PropTypes.func, // onConfirm is optional and should be a function
   isConfirm: PropTypes.bool,
+  emailIsConfirm : PropTypes.bool,
 };
 
 // Set default prop for optional onConfirm
 AlertModal.defaultProps = {
   onConfirm: null,
   isConfirm: false,
+  emailIsConfirm: false,
 };
 
 export default AlertModal;

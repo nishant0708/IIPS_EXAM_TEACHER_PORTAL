@@ -329,3 +329,36 @@
     justify-content: center;
     gap:10px;
   }
+
+  .header-back
+  {
+    width: 100px;
+    height: 35px;
+    background-color: #4caf50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 3px;
+    border-radius: 5px;
+    font-size: 18px;
+  }
+  .header-back:hover
+  {
+    cursor: pointer;
+    background-color: #45a04970;
+  }
+
+  @media(max-width: 720px)
+  {
+    .header-back
+    {
+      width: 75px;
+      height: 25px;
+      font-size: 15px;
+    }
+    .export_completed_paper_buttons
+    {
+      font-size: 15px;
+      width: 100px;
+    }
+  }
