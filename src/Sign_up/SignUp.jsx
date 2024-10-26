@@ -41,7 +41,7 @@ const SignUp = () => {
   const handleSignUp = async () => {
     setLoading(true); // Set loading state
     try {
-      const response = await fetch("iipsonlineexambackend-production.up.railway.app/teacher/signup", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/teacher/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

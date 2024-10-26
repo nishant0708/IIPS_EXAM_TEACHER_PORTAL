@@ -26,7 +26,7 @@ const ReadyQuestionPaperDashboard = () => {
     const fetchQuestions = async () => {
       try {
         const res = await axios.post(
-          "iipsonlineexambackend-production.up.railway.app/paper/getReadyQuestionPapersByTeacherId",
+          `${process.env.REACT_APP_BACKEND_URL}/paper/getReadyQuestionPapersByTeacherId`,
           { paperId }
         );
         setQuestions(res.data);
@@ -41,7 +41,7 @@ const ReadyQuestionPaperDashboard = () => {
     const fetchpaperdetails = async () => {
       try {
         const res = await axios.post(
-          "iipsonlineexambackend-production.up.railway.app/paper/getReadyPaperDetailsByPaperId",
+          `${process.env.REACT_APP_BACKEND_URL}/paper/getReadyPaperDetailsByPaperId`,
           { paperId }
         );
         setpaperdetails(res.data[0]);

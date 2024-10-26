@@ -40,7 +40,7 @@ const Reset_Password = () => {
 
     try {
       const response = await axios.post(
-        "iipsonlineexambackend-production.up.railway.app/teacher/reset-password",
+        `${process.env.REACT_APP_BACKEND_URL}/teacher/reset-password`,
         {
           token,
           email,

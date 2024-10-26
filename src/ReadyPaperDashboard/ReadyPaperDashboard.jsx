@@ -48,7 +48,7 @@ const ReadyPaperDashboard = () => {
     const fetchPapers = async () => {
       try {
         const response = await axios.post(
-          `iipsonlineexambackend-production.up.railway.app/paper/getReadyPapersByTeacherId`,
+          `${process.env.REACT_APP_BACKEND_URL}/paper/getReadyPapersByTeacherId`,
           { teacherId }
         );
         setExams(response.data);
@@ -76,7 +76,7 @@ const ReadyPaperDashboard = () => {
 
   const deleteReadyPaper = async (paper) => {
     try {
-      const response = await axios.post(`iipsonlineexambackend-production.up.railway.app/paper/delete-ready-paper`, { paper });
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/paper/delete-ready-paper`, { paper });
       setExams((prevQuestions) => prevQuestions.filter((q) => q._id !== paper._id));
       if (exams.length === 1) {
         setExams([]);
@@ -96,7 +96,7 @@ const ReadyPaperDashboard = () => {
 
   const moveToDashboard = async (paper) => {
     try {
-      const response = await axios.post("iipsonlineexambackend-production.up.railway.app/paper/move-to-dashboard", paper);
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/paper/move-to-dashboard`, paper);
       setExams((prevQuestions) => prevQuestions.filter((q) => q._id !== paper._id));
       if (exams.length === 1) {
         setExams([]);

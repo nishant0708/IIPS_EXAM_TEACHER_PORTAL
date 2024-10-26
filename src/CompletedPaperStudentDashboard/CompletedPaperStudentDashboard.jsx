@@ -33,7 +33,7 @@ const CompletedPaperStudentDashboard = () => {
 
   useEffect(() => {
     axios
-      .post("iipsonlineexambackend-production.up.railway.app/student/getStudentByPaperId", { paperId })
+      .post(`${process.env.REACT_APP_BACKEND_URL}/student/getStudentByPaperId`, { paperId })
       .then((res) => {
         const sortedStudents = res.data.students.sort((a, b) =>
           a.fullName.localeCompare(b.fullName)
@@ -50,7 +50,7 @@ const CompletedPaperStudentDashboard = () => {
       });
 
     axios
-      .post("iipsonlineexambackend-production.up.railway.app/student/getFirstCompletedQuestionByPaperId", {
+      .post(`${process.env.REACT_APP_BACKEND_URL}/student/getFirstCompletedQuestionByPaperId`, {
         paperId,
       })
       .then((res) => {
@@ -61,7 +61,7 @@ const CompletedPaperStudentDashboard = () => {
       });
 
     axios
-      .post("iipsonlineexambackend-production.up.railway.app/paper/getCompletedPaperByPaperId", {
+      .post(`${process.env.REACT_APP_BACKEND_URL}/paper/getCompletedPaperByPaperId`, {
         paperId,
       })
       .then((res) => {
@@ -72,7 +72,7 @@ const CompletedPaperStudentDashboard = () => {
         console.error(err);
       });
 
-      axios.post("http://localhost:5000/paper/getEmailSent",{
+      axios.post(`${process.env.REACT_APP_BACKEND_URL}/paper/getEmailSent`,{
         paperId,
       })
       .then((res)=>{setEmailIsSent(res.data.emailSent)})
@@ -83,7 +83,7 @@ const CompletedPaperStudentDashboard = () => {
   useEffect(() => {
     students.forEach((student) => {
       axios
-        .post("iipsonlineexambackend-production.up.railway.app/paper/evaluate_status", {
+        .post(`${process.env.REACT_APP_BACKEND_URL}/paper/evaluate_status`, {
           studentId: student._id,
           paperId: paperId,
         })
@@ -150,7 +150,7 @@ const CompletedPaperStudentDashboard = () => {
   const sendMailToStudents = () => {
     setSendingEmails(true); // Start loading state
     axios
-      .post("iipsonlineexambackend-production.up.railway.app/paper/sendmailtostudent", {
+      .post(`${process.env.REACT_APP_BACKEND_URL}/paper/sendmailtostudent`, {
         paperId,
         students,
         evaluationStatus,

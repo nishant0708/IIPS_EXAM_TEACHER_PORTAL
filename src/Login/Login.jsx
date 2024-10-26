@@ -27,7 +27,7 @@ function Login() {
     if (sessionId) {
       // Verify the session ID with the backend
       axios
-        .post("iipsonlineexambackend-production.up.railway.app/teacher/verify-session", { sessionId })
+        .post(`${process.env.REACT_APP_BACKEND_URL}/teacher/verify-session`, { sessionId })
         .then((response) => {
           if (response.data.valid) {
             navigate("/teacherDashboard"); // Navigate to dashboard if session is valid
@@ -44,7 +44,7 @@ function Login() {
     setIsLoading(true);
 
     axios
-      .post("iipsonlineexambackend-production.up.railway.app/teacher/login", { email, password })
+      .post(`${process.env.REACT_APP_BACKEND_URL}/teacher/login`, { email, password })
       .then((response) => {
         console.log(response.data.message);
         setShowOtp(true);
@@ -68,7 +68,7 @@ function Login() {
     setIsLoading(true); // Start loading
 
     axios
-      .post("iipsonlineexambackend-production.up.railway.app/teacher/verify-otp", { email, otp })
+      .post(`${process.env.REACT_APP_BACKEND_URL}/teacher/verify-otp`, { email, otp })
       .then((response) => {
         const { sessionId, message, teacherId, name, email, mobileNumber,photo } =
           response.data;

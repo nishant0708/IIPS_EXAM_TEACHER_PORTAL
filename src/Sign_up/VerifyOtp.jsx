@@ -20,7 +20,7 @@ const VerifyOtp = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("iipsonlineexambackend-production.up.railway.app/teacher/verifypasscode", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/teacher/verifypasscode`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp }),

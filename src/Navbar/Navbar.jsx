@@ -8,6 +8,8 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const photo = localStorage.getItem("photo") || defaultPhoto;
+
   const responsive = () => {
     const sidebar = document.getElementsByClassName("navbar-sidebar")[0];
     if (!open) {
@@ -33,7 +35,7 @@ const Navbar = () => {
           <img
             alt="Image"
             className="pfp"
-            src={localStorage.getItem("photo")||defaultPhoto}
+            src={photo}
             width="35"
             height="35"
            

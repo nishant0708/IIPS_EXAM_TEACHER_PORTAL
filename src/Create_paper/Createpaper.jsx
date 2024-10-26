@@ -72,7 +72,7 @@ const Createpaper = () => {
     };
 
     try {
-      const response = await axios.post('iipsonlineexambackend-production.up.railway.app/paper/create', paperData);
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/paper/create`, paperData);
       console.log('Paper created successfully:', response.data);
 
       setModalMessage('Paper created successfully!');

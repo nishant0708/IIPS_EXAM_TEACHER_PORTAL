@@ -39,7 +39,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchTeacherDetails = async () => {
       try {
-        const response = await axios.post('iipsonlineexambackend-production.up.railway.app/teacher/getteacherDetails', {
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/teacher/getteacherDetails`, {
           teacherId: localStorage.getItem("teacherId"),
         });
         
@@ -107,7 +107,7 @@ const Profile = () => {
     }
 
     // Merging /edit API call
-    axios.post('iipsonlineexambackend-production.up.railway.app/teacher/edit', {
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/teacher/edit`, {
       teacherId: localStorage.getItem("teacherId"),
       ...newProfileData,
     })
@@ -152,14 +152,14 @@ const Profile = () => {
 
   try {
 
-    const uploadResponse = await axios.post("iipsonlineexambackend-production.up.railway.app/paper/upload", formData);
+    const uploadResponse = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/paper/upload`, formData);
 
     const imageUrl = uploadResponse.data.url;
 
   
     const teacherId = localStorage.getItem("teacherId");
 
-    await axios.post("iipsonlineexambackend-production.up.railway.app/teacher/set-photo", {
+    await axios.post(`${process.env.REACT_APP_BACKEND_URL}/teacher/set-photo`, {
       teacherId: teacherId,
       photo: imageUrl
     });

@@ -17,7 +17,7 @@ const Body = () => {
   const {questionId} = useParams();
   const [question,setQuestion] = useState("");
   const location=useLocation();
-  const url=location.state?.url || "iipsonlineexambackend-production.up.railway.app/student/getQuestionById";
+  const url=location.state?.url || `${process.env.REACT_APP_BACKEND_URL}/student/getQuestionById`;
 
   // useEffect to observe the width of body-contents
   useEffect(() => {

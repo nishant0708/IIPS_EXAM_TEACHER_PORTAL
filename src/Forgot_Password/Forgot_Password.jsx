@@ -22,7 +22,7 @@ const ForgotPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("iipsonlineexambackend-production.up.railway.app/teacher/forgot-password", { email });
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/teacher/forgot-password`, { email });
             setMessage(response.data.message);
             setIsError(false);
             setModalIsOpen(true);

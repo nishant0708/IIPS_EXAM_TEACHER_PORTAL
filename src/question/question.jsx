@@ -49,7 +49,7 @@ const Question = () => {
         formData.append('file', image);
         formData.append('upload_preset', 'question');
 
-        const uploadResponse = await axios.post('iipsonlineexambackend-production.up.railway.app/paper/upload', formData, {
+        const uploadResponse = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/paper/upload`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
 
@@ -67,7 +67,7 @@ const Question = () => {
   };
 
   const submitQuestion = async (imageUrl) => {
-    const response = await axios.post('iipsonlineexambackend-production.up.railway.app/paper/add-question', {
+    const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/paper/add-question`, {
       paperId,
       questionheading,
       questionDescription,
@@ -125,7 +125,7 @@ const Question = () => {
         setQuestionDescription((prev) => prev + '\nUploading image...');
 
         try {
-          const uploadResponse = await axios.post('iipsonlineexambackend-production.up.railway.app/paper/upload', formData, {
+          const uploadResponse = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/paper/upload`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
           });
 

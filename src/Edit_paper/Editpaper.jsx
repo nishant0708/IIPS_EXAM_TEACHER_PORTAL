@@ -69,7 +69,7 @@ const Editpaper = () => {
     };
 
     try {
-      await axios.post('iipsonlineexambackend-production.up.railway.app/paper/edit-paper', paperData);
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/paper/edit-paper`, paperData);
 
       setModalMessage('Paper edited successfully!');
       setIsError(false); 
