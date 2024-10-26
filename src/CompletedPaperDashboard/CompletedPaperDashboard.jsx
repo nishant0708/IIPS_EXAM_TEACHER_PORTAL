@@ -41,7 +41,7 @@ const CompletedPaperDashboard = () => {
       try {
         // Map over completedPapers to create an array of evaluation status requests
         const evaluationPromises = completedPapers.map((paper) =>
-          axios.post(`http://localhost:5000/paper/paper_evaluate_status`, { paperId: paper._id })
+          axios.post(`iipsonlineexambackend-production.up.railway.app/paper/paper_evaluate_status`, { paperId: paper._id })
         );
 
         // Wait for all requests to complete
@@ -62,7 +62,7 @@ const CompletedPaperDashboard = () => {
     const fetchCompletedPapers = async () => {
       try {
         const response = await axios.post(
-          `http://localhost:5000/paper/getCompletedPapersByTeacherId`,
+          `iipsonlineexambackend-production.up.railway.app/paper/getCompletedPapersByTeacherId`,
           { teacherId }
         );
         setCompletedPapers(response.data);

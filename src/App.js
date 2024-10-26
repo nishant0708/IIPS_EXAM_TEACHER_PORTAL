@@ -40,7 +40,7 @@ const App = () => {
 
     if (sessionId) {
       axios
-        .post("http://localhost:5000/teacher/verify-session", { sessionId })
+        .post("iipsonlineexambackend-production.up.railway.app/teacher/verify-session", { sessionId })
         .then((response) => {
           if (response.data.valid) {
             setIsAuthenticated(true);

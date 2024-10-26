@@ -34,7 +34,7 @@ const QuestionPaperDashboard = () => {
     const fetchQuestions = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:5000/paper/questionsbyid",
+          "iipsonlineexambackend-production.up.railway.app/paper/questionsbyid",
           { paperId }
         );
         setQuestions(res.data);
@@ -49,7 +49,7 @@ const QuestionPaperDashboard = () => {
     const fetchpaperdetails = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:5000/paper/getPapersdetails",
+          "iipsonlineexambackend-production.up.railway.app/paper/getPapersdetails",
           { paperId }
         );
         setpaperdetails(res.data[0]);
@@ -81,7 +81,7 @@ const QuestionPaperDashboard = () => {
   const deleteQuestion = async (question) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/paper/delete-question",
+        "iipsonlineexambackend-production.up.railway.app/paper/delete-question",
         { _id: question._id }
       );
       setQuestions((prevQuestions) =>
@@ -111,7 +111,7 @@ const QuestionPaperDashboard = () => {
   const duplicateQuestion = async (question) => {
     console.log(question);
     const response = await axios.post(
-      `http://localhost:5000/paper/duplicate-question`,
+      `iipsonlineexambackend-production.up.railway.app/paper/duplicate-question`,
       { question }
     );
     if (response.status === 201) {
@@ -138,7 +138,7 @@ const QuestionPaperDashboard = () => {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/paper/submitpaper",
+        "iipsonlineexambackend-production.up.railway.app/paper/submitpaper",
         { paperId }
       );
 
@@ -205,7 +205,7 @@ const QuestionPaperDashboard = () => {
                       navigate(`/preview/${question._id}`,
                         {state:
                           {
-                            url: "http://localhost:5000/paper/getQuestionsDetailsByQuestionId"
+                            url: "iipsonlineexambackend-production.up.railway.app/paper/getQuestionsDetailsByQuestionId"
                           }
                         }
                       );

@@ -21,7 +21,7 @@ const CompletedEditor = ({ question, onOutput, studentId }) => {
   const [runList, setRunList] = useState([]);
   // const studentId = localStorage.getItem("studentId") || "";
   const paperId = localStorage.getItem("paperId") || "";
-  const responseUrl = "http://localhost:5000/student/getResponse";
+  const responseUrl = "iipsonlineexambackend-production.up.railway.app/student/getResponse";
 
   useEffect(() => {
     console.log("Student ID:", studentId);
@@ -127,7 +127,7 @@ const CompletedEditor = ({ question, onOutput, studentId }) => {
 
     setLoading(true);
     try {
-      const res = await axios.post(`http://localhost:5000/student/compile`, {
+      const res = await axios.post(`iipsonlineexambackend-production.up.railway.app/student/compile`, {
         code: code,
         language: question?.compilerReq,
         input: input || "",
@@ -152,7 +152,7 @@ const CompletedEditor = ({ question, onOutput, studentId }) => {
   const executeCode = async (inputValue) => {
     setLoading(true);
     try {
-      const res = await axios.post(`http://localhost:5000/student/compile`, {
+      const res = await axios.post(`iipsonlineexambackend-production.up.railway.app/student/compile`, {
         code: userCode,
         language: question?.compilerReq,
         input: inputValue || "",

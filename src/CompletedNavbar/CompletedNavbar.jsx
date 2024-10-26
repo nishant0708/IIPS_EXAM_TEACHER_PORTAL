@@ -38,7 +38,7 @@ const CompletedNavbar = () => {
   const handleQuestionNavigation = async (direction) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/student/getCompletedQuestionNavigation",
+        "iipsonlineexambackend-production.up.railway.app/student/getCompletedQuestionNavigation",
         { questionId, direction }
       );
       if (response.status === 200) {
@@ -79,7 +79,7 @@ const CompletedNavbar = () => {
   const handleAllotMarks = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/student/allocateMarks",
+        "iipsonlineexambackend-production.up.railway.app/student/allocateMarks",
         {
           paperId,
           studentId,
@@ -107,7 +107,7 @@ const CompletedNavbar = () => {
       try {
         // Check if a next question exists
         const response = await axios.post(
-          "http://localhost:5000/student/getCompletedQuestionNavigation",
+          "iipsonlineexambackend-production.up.railway.app/student/getCompletedQuestionNavigation",
           { questionId, direction: "next" }
         );
         const nextQuestion = response.data?.question;
@@ -145,7 +145,7 @@ const CompletedNavbar = () => {
   useEffect(() => {
     if (studentId) {
       axios
-        .post("http://localhost:5000/student/getStudentDetailsByStudentId", {
+        .post("iipsonlineexambackend-production.up.railway.app/student/getStudentDetailsByStudentId", {
           studentId,
         })
         .then((res) => {
@@ -160,7 +160,7 @@ const CompletedNavbar = () => {
   useEffect(() => {
     if (paperId && studentId) {
       axios
-        .post("http://localhost:5000/student/getResponse", {
+        .post("iipsonlineexambackend-production.up.railway.app/student/getResponse", {
           paperId,
           studentId,
         })
@@ -192,7 +192,7 @@ const CompletedNavbar = () => {
   useEffect(() => {
     if (questionId) {
       axios
-        .post("http://localhost:5000/paper/getCompletedQuestion", {
+        .post("iipsonlineexambackend-production.up.railway.app/paper/getCompletedQuestion", {
           questionId,
         })
         .then((res) => {

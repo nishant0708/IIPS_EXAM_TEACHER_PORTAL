@@ -19,7 +19,7 @@ const CompletedBody = () => {
   const location = useLocation();
 
   const questionUrl =
-    location.state?.url || "http://localhost:5000/paper/getCompletedQuestion";
+    location.state?.url || "iipsonlineexambackend-production.up.railway.app/paper/getCompletedQuestion";
   const studentId = localStorage.getItem("studentId") || "";
   console.log(studentId);
 

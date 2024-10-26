@@ -29,7 +29,7 @@ function Papers() {
     const fetchPapers = async () => {
       try {
         const response = await axios.post(
-          `http://localhost:5000/paper/getPapersByTeacherId`,
+          `iipsonlineexambackend-production.up.railway.app/paper/getPapersByTeacherId`,
           { teacherId }
         );
         setExams(response.data);
@@ -61,7 +61,7 @@ function Papers() {
   const deleteConfirm= async (paper) =>
   {
     try {
-      await axios.post("http://localhost:5000/paper/delete-paper", { _id: paper._id });
+      await axios.post("iipsonlineexambackend-production.up.railway.app/paper/delete-paper", { _id: paper._id });
       setExams((prevQuestions) => prevQuestions.filter((q) => q._id !== paper._id));
       setReload((prev) => !prev);
       setModalMessage("Paper deleted successfully.");
@@ -77,7 +77,7 @@ function Papers() {
 
   const duplicatePaper = async (paper) => {
     try {
-      await axios.post("http://localhost:5000/paper/duplicate-paper", paper);
+      await axios.post("iipsonlineexambackend-production.up.railway.app/paper/duplicate-paper", paper);
       setReload((prev) => !prev);
       setModalMessage("Paper duplicated successfully.");
       setIsError(false);

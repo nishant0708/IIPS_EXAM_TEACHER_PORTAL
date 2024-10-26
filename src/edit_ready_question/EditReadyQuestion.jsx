@@ -49,7 +49,7 @@ const EditReadyQuestion = () => {
 
         try {
           const uploadResponse = await axios.post(
-            "http://localhost:5000/paper/upload",
+            "iipsonlineexambackend-production.up.railway.app/paper/upload",
             formData,
             {
               headers: { "Content-Type": "multipart/form-data" },
@@ -100,7 +100,7 @@ const EditReadyQuestion = () => {
         formData.append("upload_preset", "question");
   
         const uploadResponse = await axios.post(
-          "http://localhost:5000/paper/upload",
+          "iipsonlineexambackend-production.up.railway.app/paper/upload",
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
@@ -122,7 +122,7 @@ const EditReadyQuestion = () => {
   
 
   const editQuestion = async (imageUrl) => {
-    const response = await axios.post('http://localhost:5000/paper/edit-ready-question', {
+    const response = await axios.post('iipsonlineexambackend-production.up.railway.app/paper/edit-ready-question', {
       _id: location.state._id,
       paperId,
       questionheading,
