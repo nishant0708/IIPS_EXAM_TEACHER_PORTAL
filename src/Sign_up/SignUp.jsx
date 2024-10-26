@@ -115,7 +115,7 @@ const SignUp = () => {
 
   const handleAlertConfirm = () => {
     setIsAlertOpen(false);
-    navigate("/verify_passcode");
+    if(!isErrorAlert) navigate("/verify_passcode");
   };
 
   return (

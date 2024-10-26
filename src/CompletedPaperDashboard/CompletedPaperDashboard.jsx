@@ -11,11 +11,11 @@ const CompletedPaperDashboard = () => {
   const navigate = useNavigate();
   const [completedPapers, setCompletedPapers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const evaluations = [
-    "Evaluated",
-    "Not-Evaluated",
-    "Evaluation-in-Progress",
-  ];
+  // const evaluations = [
+  //   "Evaluated",
+  //   "Not-Evaluated",
+  //   "Evaluation-in-Progress",
+  // ];
 
   const teacherId = localStorage.getItem("teacherId");
 
@@ -108,7 +108,7 @@ const CompletedPaperDashboard = () => {
                     Completed on: {getFormattedDateTime(paper.endTime, paper.time)}
                   </div>
                   <div className="table-data">
-                    <div className={`evaluation ${evaluations[0]+"-completed"}`}>
+                    <div className={`evaluation ${paper.evaluationStatus+"-completed"}`}>
                       <GoDotFill />
                       <div>{paper.evaluationStatus}</div>
                     </div>
