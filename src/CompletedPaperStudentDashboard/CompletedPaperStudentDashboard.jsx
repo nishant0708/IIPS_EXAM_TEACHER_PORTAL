@@ -7,7 +7,7 @@ import Nothing from "../Assets/nothing.svg";
 import Navbar from "../Navbar/Navbar";
 import Skeleton from "../Skeleton/Skeleton";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
@@ -23,6 +23,7 @@ const CompletedPaperStudentDashboard = () => {
   const [completedStudentIds, setCompletedStudentIds] = useState([]);
   const [questionId, setQuestionId] = useState(null);
   const [paperDetailing,setpaperDetails]=useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -202,6 +203,7 @@ const CompletedPaperStudentDashboard = () => {
           <Skeleton exams={students} />
         ) : students.length > 0 ? (
           <>
+            <div className="header-back" onClick={()=>{navigate(-1)}}>Back</div>
             <div className="header">
               <h2>Students:</h2>
               {allAttemptedEvaluated && (
