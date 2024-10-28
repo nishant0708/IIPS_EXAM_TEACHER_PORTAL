@@ -214,9 +214,9 @@ const EditReadyQuestion = () => {
                 <div className="add_question_column">
                   <label className="add_question_label">Marks:</label>
                   <input
-                    type="number"
+                    type="tel"
                     value={marks}
-                    onChange={() => setMarks(marks)}
+                    onChange={(e) => setMarks(e.target.value.replace(/[^0-9]/g, ""))}
                     placeholder="Enter marks"
                     required
                     className="add_question_input"
