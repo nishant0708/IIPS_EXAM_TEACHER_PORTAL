@@ -141,19 +141,19 @@ const Createpaper = () => {
             <FormGroup label="Duration:" className="create_paper_duration">
               <div className="create_paper_duration_inputs">
                 <input
-                  type="number"
+                  type="tel"
                   placeholder="Hours"
                   className="create_paper_input create_paper_duration_hours"
                   value={duration.hours}
-                  onChange={(e) => handleDurationChange('hours', e.target.value)}
+                  onChange={(e) =>{const value = e.target.value.replace(/[^0-9]/g, "");handleDurationChange('hours', value)}}
                 />
                 :
                 <input
-                  type="number"
+                  type="tel"
                   placeholder="Minutes"
                   className="create_paper_input create_paper_duration_minutes"
                   value={duration.minutes}
-                  onChange={(e) => handleDurationChange('minutes', e.target.value)}
+                  onChange={(e) =>{const value=e.target.value.replace(/[^0-9]/g, "");handleDurationChange('minutes', value)}}
                 />
               </div>
             </FormGroup>
