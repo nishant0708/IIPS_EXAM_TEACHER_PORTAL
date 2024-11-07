@@ -242,7 +242,7 @@ const CompletedPaperStudentDashboard = () => {
           <Skeleton exams={students} />
         ) : students.length > 0 ? (
           <>
-            <div className="header-back" onClick={()=>{navigate(-1)}}>Back</div>
+            <div className="header-back" onClick={()=>{navigate(`/completed_papers`)}}>Back</div>
             <div className="header">
               <h2>Students:</h2>
               {allAttemptedEvaluated && (
