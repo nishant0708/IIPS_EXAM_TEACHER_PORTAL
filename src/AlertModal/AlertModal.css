@@ -6,7 +6,7 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 2;
+    z-index: 9111;
     bottom: 0;
     display: flex;
     backdrop-filter: blur(12px);

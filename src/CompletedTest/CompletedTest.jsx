@@ -6,11 +6,14 @@ import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import remarkBreaks from "remark-breaks";
 
-const Test = ({ output}) => {
-  // Split stdout and stderr
-  console.log(output);
-  const stdout = output?.stdout ||  "";
-  const stderr = output.stderr || "";
+const Test = ({ output }) => {
+  const stdout = output?.stdout || "";
+  const stderr = output?.stderr || "";
+
+  // Helper function to wrap content in Markdown code blocks
+  const wrapInCodeBlock = (text) => {
+    return `\`\`\`\n${text}\n\`\`\``; // Markdown code block syntax
+  };
 
   return (
     <div className="compiler-test">
@@ -19,25 +22,24 @@ const Test = ({ output}) => {
         Test Output
       </div>
       <div className="test-output">
-        {/* Display stdout in white */}
+        {/* Render stdout */}
         {stdout && (
           <ReactMarkdown
-            className="stdout-output" // Add class for stdout
+            className="stdout-output"
             remarkPlugins={[remarkBreaks]}
             rehypePlugins={[rehypeSanitize]}
           >
-            
-            {stdout}
+            {wrapInCodeBlock(stdout)}
           </ReactMarkdown>
         )}
-        {/* Display stderr in red */}
+        {/* Render stderr */}
         {stderr && (
           <ReactMarkdown
-            className="stderr-output" // Add class for stderr
+            className="stderr-output"
             remarkPlugins={[remarkBreaks]}
             rehypePlugins={[rehypeSanitize]}
           >
-            {stderr}
+            {wrapInCodeBlock(stderr)}
           </ReactMarkdown>
         )}
       </div>
