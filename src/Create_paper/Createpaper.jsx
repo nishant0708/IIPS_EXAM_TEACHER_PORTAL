@@ -188,6 +188,7 @@ const Createpaper = () => {
                 dateFormat="dd/MM/yyyy"
                 className="create_paper_input"
                 placeholderText="DD / MM / YYYY"
+                minDate={new Date()}
               />
             </FormGroup>
 
