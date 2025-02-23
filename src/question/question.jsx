@@ -184,7 +184,7 @@ const Question = () => {
                 <option value="cpp">C++</option>
                 <option value="java">Java</option>
                 <option value="python">Python</option>
-                <option value="sql">SQL</option>
+                <option value="c">C</option>
               </select>
             </div>
             <div className="add_question_column">
